@@ -1,0 +1,816 @@
+[
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/constructs#query-syntax",
+    "title": "Query syntax",
+    "description": "Snowflake supports querying using standard SELECT statements and the following basic syntax:"
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/constructs/for-update",
+    "title": "FOR UPDATE",
+    "description": "Locks the rows that the query selects until the transaction that contains the query commits or\naborts.",
+    "parameters": [
+        {
+            "name": "NOWAIT",
+            "description": "Returns an error if the transaction cannot lock the selected rows immediately.\nNOWAIT is the default."
+        },
+        {
+            "name": "WAIT wait_time",
+            "description": "Specifies the maximum time (in seconds) that the query waits to acquire row-level locks. If\nthe wait time expires, the query returns an error."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/constructs/limit",
+    "title": "LIMIT / FETCH",
+    "description": "Constrains the maximum number of rows returned by a statement or subquery. Both LIMIT (PostgreSQL syntax) and FETCH (ANSI syntax) are supported, and produce the same result.",
+    "syntax": "SELECT ...\nFROM ...\n[ ORDER BY ... ]\nLIMIT <count> [ OFFSET <start> ]\n[ ... ]\n\nSELECT ...\nFROM ...\n[ ORDER BY ... ]\n[ OFFSET <start> ] [ { ROW | ROWS } ] FETCH [ { FIRST | NEXT } ] <count> [ { ROW | ROWS } ] [ ONLY ]\n[ ... ]",
+    "parameters": [
+        {
+            "name": "count",
+            "description": "The number of rows returned. Must be a non-negative integer constant. The values NULL, empty string ( '' ), and $$$$ are also accepted and are treated as\n“unlimited”; this is useful primarily for connectors and drivers (such as the JDBC driver) if they\nreceive an incomplete parameter list when dynamically binding parameters to a statement."
+        },
+        {
+            "name": "OFFSET start",
+            "description": "The row number after which the limited/fetched rows are returned. Must be a non-negative integer constant. If OFFSET is omitted, the output starts from the first row in the result set. The values NULL, empty string ( '' ) and $$$$ are also accepted and are treated as 0\n(i.e. do not skip any rows); this is useful primarily for connectors and drivers (such as the JDBC\ndriver) if they receive an incomplete parameter list when dynamically binding parameters to a statement."
+        },
+        {
+            "name": "ONLY",
+            "description": "Optional keyword that does not affect the output. It is used for emphasis to the\nhuman reader."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/constructs/order-by",
+    "title": "ORDER BY",
+    "description": "Specifies an ordering of the rows of the result table from a SELECT list.",
+    "syntax": "SELECT ...\nFROM ...\nORDER BY orderItem [ , orderItem , ... ]\n[ ... ]\n\norderItem ::= { <column_alias> | <position> | <expr> } [ { ASC | DESC } ] [ NULLS { FIRST | LAST } ]",
+    "parameters": [
+        {
+            "name": "column_alias",
+            "description": "Column alias appearing in the query block’s SELECT list."
+        },
+        {
+            "name": "position",
+            "description": "Position of an expression in the SELECT list."
+        },
+        {
+            "name": "expr",
+            "description": "Any expression on tables in the current scope."
+        },
+        {
+            "name": "{ ASC | DESC }",
+            "description": "Optionally returns the values of the sort key in ascending (lowest to highest) or descending (highest to lowest) order. Default: ASC"
+        },
+        {
+            "name": "NULLS { FIRST | LAST }",
+            "description": "Optionally specifies whether NULL values are returned before/after non-NULL values, based on the sort order (ASC or DESC). Default: Depends on the sort order (ASC or DESC); see the usage notes below for details"
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/constructs/qualify",
+    "title": "QUALIFY",
+    "description": "In a SELECT statement, the QUALIFY clause filters the results of window functions.",
+    "syntax": "QUALIFY <predicate>\n\nSELECT <column_list>\n  FROM <data_source>\n  [GROUP BY ...]\n  [HAVING ...]\n  QUALIFY <predicate>\n  [ ... ]",
+    "parameters": [
+        {
+            "name": "column_list",
+            "description": "This generally follows the rules for the projection clause of a SELECT statement."
+        },
+        {
+            "name": "data_source",
+            "description": "The data source is usually a table, but can be another table-like data source, such as a view, UDTF (user-defined table function),\netc."
+        },
+        {
+            "name": "predicate",
+            "description": "The predicate is an expression that filters the result after aggregates and window functions are computed.\nThe predicate should look similar to a HAVING clause, but without the\nkeyword HAVING . In addition, the predicate can also contain window functions. See the Examples section (in this topic) for predicate examples."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/constructs/having",
+    "title": "HAVING",
+    "description": "Filters rows produced by GROUP BY that do not satisfy a predicate.",
+    "syntax": "SELECT ...\nFROM ...\nGROUP BY ...\nHAVING <predicate>\n[ ... ]",
+    "parameters": [
+        {
+            "name": "predicate",
+            "description": "A Boolean expression ."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/constructs/group-by-rollup",
+    "title": "GROUP BY ROLLUP",
+    "description": "GROUP BY ROLLUP is an extension of the GROUP BY clause that produces sub-total rows\n(in addition to the grouped rows). Sub-total rows are rows that further aggregate whose values are derived\nby computing the same aggregate functions that were used to produce the grouped rows.",
+    "syntax": "SELECT ...\nFROM ...\n[ ... ]\nGROUP BY ROLLUP ( groupRollup [ , groupRollup [ , ... ] ] )\n[ ... ]\n\ngroupRollup ::= { <column_alias> | <position> | <expr> }",
+    "parameters": [
+        {
+            "name": "column_alias",
+            "description": "Column alias appearing in the query block’s SELECT list."
+        },
+        {
+            "name": "position",
+            "description": "Position of an expression in the SELECT list."
+        },
+        {
+            "name": "expr",
+            "description": "Any expression on tables in the current scope."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/constructs/group-by-cube",
+    "title": "GROUP BY CUBE",
+    "description": "GROUP BY CUBE is an extension of the GROUP BY clause similar to\nGROUP BY ROLLUP. In addition to producing all the rows of a\nGROUP BY ROLLUP, GROUP BY CUBE adds all the “cross-tabulations” rows. Sub-total rows are\nrows that further aggregate whose values are derived by computing the same aggregate functions that were used to produce the grouped rows.",
+    "syntax": "SELECT ...\nFROM ...\n[ ... ]\nGROUP BY CUBE ( groupCube [ , groupCube [ , ... ] ] )\n[ ... ]\n\ngroupCube ::= { <column_alias> | <position> | <expr> }",
+    "parameters": [
+        {
+            "name": "column_alias",
+            "description": "Column alias appearing in the query block’s SELECT list."
+        },
+        {
+            "name": "position",
+            "description": "Position of an expression in the SELECT list."
+        },
+        {
+            "name": "expr",
+            "description": "Any expression on tables in the current scope."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/constructs/group-by-grouping-sets",
+    "title": "GROUP BY GROUPING SETS",
+    "description": "GROUP BY GROUPING SETS is a powerful extension of the GROUP BY clause that computes multiple group-by clauses in a single statement. The group set is a set of dimension columns.",
+    "syntax": "SELECT ...\nFROM ...\n[ ... ]\nGROUP BY GROUPING SETS ( groupSet [ , groupSet [ , ... ] ] )\n[ ... ]\n\ngroupSet ::= { <column_alias> | <position> | <expr> }",
+    "parameters": [
+        {
+            "name": "column_alias",
+            "description": "Column alias appearing in the query block’s SELECT list."
+        },
+        {
+            "name": "position",
+            "description": "Position of an expression in the SELECT list."
+        },
+        {
+            "name": "expr",
+            "description": "Any expression on tables in the current scope."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/constructs/group-by",
+    "title": "GROUP BY",
+    "description": "Groups rows with the same group-by-item expressions and computes aggregate functions for the resulting group. A GROUP BY\nexpression can be:",
+    "syntax": "SELECT ...\n  FROM ...\n  [ ... ]\n  GROUP BY groupItem [ , groupItem [ , ... ] ]\n  [ ... ]\n\nSELECT ...\n  FROM ...\n  [ ... ]\n  GROUP BY ALL\n  [ ... ]\n\ngroupItem ::= { <column_alias> | <position> | <expr> }",
+    "examples": [
+        {
+            "title": "Setting up the data for the examples",
+            "code": "CREATE TABLE sales (\n  product_ID INTEGER,\n  retail_price REAL,\n  quantity INTEGER,\n  city VARCHAR,\n  state VARCHAR);\n\nINSERT INTO sales (product_id, retail_price, quantity, city, state) VALUES\n  (1, 2.00,  1, 'SF', 'CA'),\n  (1, 2.00,  2, 'SJ', 'CA'),\n  (2, 5.00,  4, 'SF', 'CA'),\n  (2, 5.00,  8, 'SJ', 'CA'),\n  (2, 5.00, 16, 'Miami', 'FL'),\n  (2, 5.00, 32, 'Orlando', 'FL'),\n  (2, 5.00, 64, 'SJ', 'PR');\n\nCREATE TABLE products (\n  product_ID INTEGER,\n  wholesale_price REAL);\nINSERT INTO products (product_ID, wholesale_price) VALUES (1, 1.00);\nINSERT INTO products (product_ID, wholesale_price) VALUES (2, 2.00);"
+        },
+        {
+            "title": "Group by one column",
+            "code": "SELECT product_ID, SUM(retail_price * quantity) AS gross_revenue\n  FROM sales\n  GROUP BY product_ID;"
+        },
+        {
+            "title": "Group by multiple columns",
+            "code": "SELECT state, city, SUM(retail_price * quantity) AS gross_revenue\n  FROM sales\n  GROUP BY state, city;"
+        },
+        {
+            "title": "Group by all columns",
+            "code": "SELECT state, city, SUM(retail_price * quantity) AS gross_revenue\n  FROM sales\n  GROUP BY ALL;"
+        },
+        {
+            "title": "Demonstrate precedence when a column name and an alias match",
+            "code": "SELECT x, some_expression AS x\n  FROM ..."
+        }
+    ],
+    "parameters": [
+        {
+            "name": "column_alias",
+            "description": "Column alias appearing in the query block’s SELECT list."
+        },
+        {
+            "name": "position",
+            "description": "Position of an expression in the SELECT list."
+        },
+        {
+            "name": "expr",
+            "description": "Any expression on tables in the current scope."
+        },
+        {
+            "name": "GROUP BY ALL",
+            "description": "Specifies that all items in the SELECT list that do not use aggregate functions should be used for grouping. For examples, refer to Group by all columns ."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/constructs/semantic_view",
+    "title": "SEMANTIC_VIEW",
+    "description": "Specifies the semantic view to query.\nYou specify SEMANTIC_VIEW(…) in a FROM clause in a SELECT statement.",
+    "syntax": "SEMANTIC_VIEW(\n  [<namespace>.]<semantic_view_name>\n  [ METRICS <metric> [ , ... ] ]\n  [ DIMENSIONS <dimension_expr>  [ , ... ] ]\n  [ WHERE <predicate> ]\n)",
+    "parameters": [
+        {
+            "name": "[ namespace .] semantic_view_name",
+            "description": "Specifies the identifier for the semantic view to query. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        },
+        {
+            "name": "METRICS metric [ , ... ]",
+            "description": "Specifies the metrics that you want to return in the results. Note You cannot specify an expression that uses a metric. For example, you cannot specify t1.metric_1 + 1 . For the names of the metrics: You can qualify the name of the metric (for example, my_logical_table.my_metric ). Using the unqualified name works only if there are no other identifiers with the same unqualified name in the semantic view.\nFor example, if a metric and a dimension use the same unqualified name, you must qualify the name of the metric in the query. To specify all metrics, use an asterisk, qualified by the logical table name (for example, my_logical_table.* ). You cannot\nspecify an asterisk without qualifying it with a table name. Specify the metrics in the order in which they should appear in the results."
+        },
+        {
+            "name": "DIMENSIONS dimension_expr [ , ... ]",
+            "description": "Specifies the dimensions that you want to return in the results. You can also specify scalar expressions that refer to\ndimensions in the semantic view. For the names of the dimensions: You can qualify the name of the dimension (for example, my_logical_table.my_dimension ). Using the unqualified name works\nonly if there are no other identifiers with the same unqualified name in the semantic view. For example, if a metric and a\ndimension use the same unqualified name, you must qualify the name of the dimension in the query. To specify all dimensions, use an asterisk, qualified by the logical table name (for example, my_logical_table.* ). You\ncannot specify an asterisk without qualifying it with a table name. If you specify a scalar expression, you cannot refer to dimensions in other semantic views, facts, or metrics in that\nexpression. Specify the dimensions in the order in which they should appear in the results."
+        },
+        {
+            "name": "WHERE predicate",
+            "description": "A boolean expression. The expression can include logical operators , built-in functions , and user-defined functions (UDFs) . In the condition, you can only refer to dimensions or expressions that use dimensions. This filter condition is applied before the metrics are computed."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/constructs/where",
+    "title": "WHERE",
+    "description": "The WHERE clause specifies a condition that acts as a filter. You can use the WHERE clause to:",
+    "syntax": "...\nWHERE <predicate>\n[ ... ]",
+    "examples": [
+        {
+            "title": "Simple examples of filtering",
+            "code": "SELECT * FROM invoices\n  WHERE invoice_date < '2018-01-01';\n\nSELECT * FROM invoices\n  WHERE invoice_date < '2018-01-01'\n    AND paid = FALSE;"
+        },
+        {
+            "title": "Performing joins in the WHERE clause",
+            "code": "SELECT t1.col1, t2.col1\n    FROM t1, t2\n    WHERE t2.col1 = t1.col1\n    ORDER BY 1, 2;\n+------+------+\n| COL1 | COL1 |\n|------+------|\n|    2 |    2 |\n|    2 |    2 |\n|    3 |    3 |\n+------+------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "predicate",
+            "description": "A Boolean expression . The expression can include logical operators ,\nsuch as AND , OR , and NOT ."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/constructs/sample",
+    "title": "SAMPLE / TABLESAMPLE",
+    "description": "Returns a subset of rows sampled randomly from the specified table. You can specify different types of sampling methods, and\nyou can sample a fraction of a table or a fixed number of rows:",
+    "syntax": "SELECT ...\nFROM ...\n  { SAMPLE | TABLESAMPLE } [ samplingMethod ]\n[ ... ]\n\nsamplingMethod ::= { { BERNOULLI | ROW } ( { <probability> | <num> ROWS } ) |\n                     { SYSTEM | BLOCK } ( <probability> ) [ { REPEATABLE | SEED } ( <seed> ) ] }",
+    "examples": [
+        {
+            "title": "Fraction-based row sampling",
+            "code": "SELECT * FROM testtable SAMPLE (10);"
+        },
+        {
+            "title": "Sampling with joins",
+            "code": "SELECT i, j\n  FROM\n    table1 AS t1 SAMPLE (25)\n      INNER JOIN\n    table2 AS t2 SAMPLE (50)\n  WHERE t2.j = t1.i;"
+        },
+        {
+            "title": "Fraction-based block sampling with seeds",
+            "code": "SELECT * FROM testtable SAMPLE SYSTEM (3) SEED (82);"
+        },
+        {
+            "title": "Fixed-size row sampling",
+            "code": "SELECT * FROM testtable SAMPLE (10 ROWS);"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "{ BERNOULLI | ROW } or . { SYSTEM | BLOCK }",
+            "description": "Specifies the sampling method to use: BERNOULLI (or ROW ): Includes each row with a probability of p/100 .\nThis method is similar to flipping a weighted coin for each row . SYSTEM (or BLOCK ): Includes each block of rows with a probability of p/100 .\nThis method is similar to flipping a weighted coin for each block of rows . This method doesn’t support fixed-size sampling. The sampling method is optional. If no method is specified, the default is BERNOULLI ."
+        },
+        {
+            "name": "probability or . num ROWS",
+            "description": "Specifies whether to sample based on a fraction of the table or a fixed number of rows in the table, where: probability specifies the percentage probability to use for selecting the sample. Can be any decimal number\nbetween 0 (no rows selected) and 100 (all rows selected) inclusive. num specifies the number of rows (up to 1,000,000) to sample from the table. Can be any integer between 0 (no rows selected) and 1000000 inclusive. In addition to using literals to specify probability or num ROWS , you can also use session or bind variables."
+        },
+        {
+            "name": "{ REPEATABLE | SEED ( seed ) }",
+            "description": "Specifies a seed value to make the sampling deterministic. Can be any integer between 0 and 2147483647 inclusive.\nThis parameter only applies to SYSTEM and BLOCK sampling. In addition to using literals to specify seed , you can also use session or bind variables."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/constructs/values",
+    "title": "VALUES",
+    "description": "In the SELECT statement, the VALUES sub-clause of the FROM clause allows the\nspecification of a set of constants to be used to form a finite set of rows.",
+    "syntax": "SELECT ...\nFROM ( VALUES ( <expr> [ , <expr> [ , ... ] ] ) [ , ( ... ) ] ) [ [ AS ] <table_alias> [ ( <column_alias> [, ... ] ) ] ]\n[ ... ]",
+    "parameters": [
+        {
+            "name": "expr",
+            "description": "Each expression must be a constant, or an expression that can be evaluated as a constant during compilation of the\nSQL statement. Most simple arithmetic expressions and string functions can be evaluated at compile time, but most other expressions\ncannot."
+        },
+        {
+            "name": "table_alias",
+            "description": "An optional alias can be used to give the set of rows a name, as though the set of rows were a table."
+        },
+        {
+            "name": "column_alias",
+            "description": "Optional column aliases can be used to give the columns names."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/constructs/unpivot",
+    "title": "UNPIVOT",
+    "description": "Rotates a table by transforming columns into rows. UNPIVOT is a relational operator that accepts\ntwo columns (from a table or subquery), along with a list of columns, and generates a row for\neach column specified in the list. In a query, it is specified in the FROM clause after\nthe table name or subquery.",
+    "syntax": "SELECT ...\nFROM ...\n    UNPIVOT [ { INCLUDE | EXCLUDE } NULLS ]\n      ( <value_column>\n        FOR <name_column> IN ( <column_list> ) )\n\n[ ... ]",
+    "parameters": [
+        {
+            "name": "{ INCLUDE | EXCLUDE } NULLS",
+            "description": "Specifies whether to include or exclude rows with NULLs in the name_column : INCLUDE NULLS includes rows with NULLs. EXCLUDE NULLS excludes rows with NULLs. Default: EXCLUDE NULLS"
+        },
+        {
+            "name": "value_column",
+            "description": "The name to assign to the generated column that will be populated with the values from the columns in the column list."
+        },
+        {
+            "name": "name_column",
+            "description": "The name to assign to the generated column that will be populated with the names of the columns in the column list."
+        },
+        {
+            "name": "column_list",
+            "description": "The names of the columns in the source table or subquery that will be rotated into a single pivot column.\nThe column names will populate name_column , and the column values will populate value_column . The column_list can only contain literal column names, not a subquery. The columns in column_list must have exactly the same data type, with the following exceptions: The data types for text strings can be different lengths. If the columns contain text strings, different columns can use different data types for text. For example,\nthe list can include a VARCHAR column and a CHAR column."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/constructs/pivot",
+    "title": "PIVOT",
+    "description": "Rotates a table by turning the unique values from one column in the input expression into multiple columns and aggregating results\nwhere required on any remaining column values. In a query, it is specified in the FROM clause after\nthe table name or subquery.",
+    "syntax": "SELECT ...\nFROM ...\n   PIVOT ( <aggregate_function> ( <pivot_column> )\n            FOR <value_column> IN (\n              <pivot_value_1> [ , <pivot_value_2> ... ]\n              | ANY [ ORDER BY ... ]\n              | <subquery>\n            )\n            [ DEFAULT ON NULL (<value>) ]\n         )\n\n[ ... ]",
+    "examples": [
+        {
+            "title": "Dynamic pivot on all distinct column values automatically",
+            "code": "SELECT *\n  FROM quarterly_sales\n    PIVOT(SUM(amount) FOR quarter IN (ANY ORDER BY quarter))\n  ORDER BY empid;"
+        },
+        {
+            "title": "Dynamic pivot on column values using a subquery",
+            "code": "CREATE OR REPLACE TABLE ad_campaign_types_by_quarter(\n  quarter VARCHAR,\n  television BOOLEAN,\n  radio BOOLEAN,\n  print BOOLEAN)\n  AS SELECT * FROM VALUES\n    ('2023_Q1', TRUE, FALSE, FALSE),\n    ('2023_Q2', FALSE, TRUE, TRUE),\n    ('2023_Q3', FALSE, TRUE, FALSE),\n    ('2023_Q4', TRUE, FALSE, TRUE);"
+        },
+        {
+            "title": "Dynamic pivot with multiple aggregations using UNION",
+            "code": "SELECT 'Average sale amount' AS aggregate, *\n  FROM quarterly_sales\n    PIVOT(AVG(amount) FOR quarter IN (ANY ORDER BY quarter))\nUNION\nSELECT 'Highest value sale' AS aggregate, *\n  FROM quarterly_sales\n    PIVOT(MAX(amount) FOR quarter IN (ANY ORDER BY quarter))\nUNION\nSELECT 'Lowest value sale' AS aggregate, *\n  FROM quarterly_sales\n    PIVOT(MIN(amount) FOR quarter IN (ANY ORDER BY quarter))\nUNION\nSELECT 'Number of sales' AS aggregate, *\n  FROM quarterly_sales\n    PIVOT(COUNT(amount) FOR quarter IN (ANY ORDER BY quarter))\nUNION\nSELECT 'Total amount' AS aggregate, *\n  FROM quarterly_sales\n    PIVOT(SUM(amount) FOR quarter IN (ANY ORDER BY quarter))\nORDER BY aggregate, empid;"
+        },
+        {
+            "title": "Dynamic pivot with a join query",
+            "code": "CREATE OR REPLACE TABLE emp_manager(\n    empid INT,\n    managerid INT)\n  AS SELECT * FROM VALUES\n    (1, 7),\n    (2, 8),\n    (3, 9);\n\nSELECT * from emp_manager;"
+        },
+        {
+            "title": "Pivot on a specified list of column values for the pivot column",
+            "code": "SELECT *\n  FROM quarterly_sales\n    PIVOT(SUM(amount) FOR quarter IN (\n      '2023_Q1',\n      '2023_Q2',\n      '2023_Q3'))\n  ORDER BY empid;"
+        },
+        {
+            "title": "Pivot with a default value for NULL values",
+            "code": "SELECT *\n  FROM quarterly_sales\n    PIVOT(SUM(amount) FOR quarter IN (ANY ORDER BY quarter)\n      DEFAULT ON NULL (0))\n  ORDER BY empid;"
+        },
+        {
+            "title": "Pivot examples that involve multiple columns",
+            "code": "ALTER TABLE quarterly_sales ADD COLUMN discount_percent INT DEFAULT 0;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "aggregate_function",
+            "description": "The aggregate function for combining the grouped values from pivot_column ."
+        },
+        {
+            "name": "pivot_column",
+            "description": "The column from the source table or subquery that will be aggregated."
+        },
+        {
+            "name": "value_column",
+            "description": "The column from the source table or subquery that contains the values from which column names will be generated."
+        },
+        {
+            "name": "pivot_value_N",
+            "description": "A list of values for the pivot column to pivot into headings in the query results."
+        },
+        {
+            "name": "ANY [ ORDER BY ... ]",
+            "description": "Pivot on all distinct values of the pivot column. To control the order of the pivot columns in the output,\nspecify an ORDER BY clause after the ANY keyword. If the pivot column contains NULLs,\nthen NULL is also treated as a pivot value."
+        },
+        {
+            "name": "subquery",
+            "description": "Pivot on all values found in the subquery. The DISTINCT keyword is required if the subquery includes an\nORDER BY clause. The subquery must be an uncorrelated subquery that returns a single column. Pivoting is\nperformed on all distinct values returned by the subquery. For information about uncorrelated subqueries,\nsee Working with Subqueries ."
+        },
+        {
+            "name": "DEFAULT ON NULL ( value )",
+            "description": "Replace all NULL values in the pivot result with the specified default value. The default value can be any scalar\nexpression that does not depend on the pivot and aggregation column."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/constructs/match_recognize",
+    "title": "MATCH_RECOGNIZE",
+    "description": "Recognizes matches of a pattern in a set of rows. MATCH_RECOGNIZE accepts a set of rows (from a table,\nview, subquery, or other source) as input, and returns all matches for a given row pattern within this\nset. The pattern is defined similarly to a regular expression.",
+    "syntax": "MATCH_RECOGNIZE (\n    [ PARTITION BY <expr> [, ... ] ]\n    [ ORDER BY <expr> [, ... ] ]\n    [ MEASURES <expr> [AS] <alias> [, ... ] ]\n    [ ONE ROW PER MATCH |\n      ALL ROWS PER MATCH [ { SHOW EMPTY MATCHES | OMIT EMPTY MATCHES | WITH UNMATCHED ROWS } ]\n      ]\n    [ AFTER MATCH SKIP\n          {\n          PAST LAST ROW   |\n          TO NEXT ROW   |\n          TO [ { FIRST | LAST} ] <symbol>\n          }\n      ]\n    PATTERN ( <pattern> )\n    DEFINE <symbol> AS <expr> [, ... ]\n)",
+    "examples": [
+        {
+            "title": "Report one summary row for each",
+            "code": "SELECT * FROM stock_price_history\n  MATCH_RECOGNIZE(\n    PARTITION BY company\n    ORDER BY price_date\n    MEASURES\n      MATCH_NUMBER() AS match_number,\n      FIRST(price_date) AS start_date,\n      LAST(price_date) AS end_date,\n      COUNT(*) AS rows_in_sequence,\n      COUNT(row_with_price_decrease.*) AS num_decreases,\n      COUNT(row_with_price_increase.*) AS num_increases\n    ONE ROW PER MATCH\n    AFTER MATCH SKIP TO LAST row_with_price_increase\n    PATTERN(row_before_decrease row_with_price_decrease+ row_with_price_increase+)\n    DEFINE\n      row_with_price_decrease AS price < LAG(price),\n      row_with_price_increase AS price > LAG(price)\n  )\nORDER BY company, match_number;\n+---------+--------------+------------+------------+------------------+---------------+---------------+\n| COMPANY | MATCH_NUMBER | START_DATE | END_DATE   | ROWS_IN_SEQUENCE | NUM_DECREASES | NUM_INCREASES |\n|---------+--------------+------------+------------+------------------+---------------+---------------|\n| ABCD    |            1 | 2020-10-01 | 2020-10-04 |                4 |             1 |             2 |\n| ABCD    |            2 | 2020-10-04 | 2020-10-08 |                5 |             1 |             3 |\n| XYZ     |            1 | 2020-10-01 | 2020-10-05 |                5 |             1 |             3 |\n| XYZ     |            2 | 2020-10-05 | 2020-10-08 |                4 |             2 |             1 |\n| XYZ     |            3 | 2020-10-08 | 2020-10-10 |                3 |             1 |             1 |\n+---------+--------------+------------+------------+------------------+---------------+---------------+"
+        },
+        {
+            "title": "Report all rows for all matches for one company",
+            "code": "select price_date, match_number, msq, price, cl from\n  (select * from stock_price_history where company='ABCD') match_recognize(\n    order by price_date\n    measures\n        match_number() as \"MATCH_NUMBER\",\n        match_sequence_number() as msq,\n        classifier() as cl\n    all rows per match\n    pattern(ANY_ROW UP+)\n    define\n        ANY_ROW AS TRUE,\n        UP as price > lag(price)\n)\norder by match_number, msq;\n+------------+--------------+-----+-------+---------+\n| PRICE_DATE | MATCH_NUMBER | MSQ | PRICE | CL      |\n|------------+--------------+-----+-------+---------|\n| 2020-10-02 |            1 |   1 |    36 | ANY_ROW |\n| 2020-10-03 |            1 |   2 |    39 | UP      |\n| 2020-10-04 |            1 |   3 |    42 | UP      |\n| 2020-10-05 |            2 |   1 |    30 | ANY_ROW |\n| 2020-10-06 |            2 |   2 |    47 | UP      |\n| 2020-10-07 |            2 |   3 |    71 | UP      |\n| 2020-10-08 |            2 |   4 |    80 | UP      |\n+------------+--------------+-----+-------+---------+"
+        },
+        {
+            "title": "Omit empty matches",
+            "code": "select * from stock_price_history match_recognize(\n    partition by company\n    order by price_date\n    measures\n        match_number() as \"MATCH_NUMBER\"\n    all rows per match omit empty matches\n    pattern(OVERAVG*)\n    define\n        OVERAVG as price > avg(price) over (rows between unbounded\n                                  preceding and unbounded following)\n)\norder by company, price_date;\n+---------+------------+-------+--------------+\n| COMPANY | PRICE_DATE | PRICE | MATCH_NUMBER |\n|---------+------------+-------+--------------|\n| ABCD    | 2020-10-07 |    71 |            7 |\n| ABCD    | 2020-10-08 |    80 |            7 |\n| ABCD    | 2020-10-09 |    75 |            7 |\n| ABCD    | 2020-10-10 |    63 |            7 |\n| XYZ     | 2020-10-01 |    89 |            1 |\n| XYZ     | 2020-10-04 |    63 |            4 |\n| XYZ     | 2020-10-05 |    65 |            4 |\n| XYZ     | 2020-10-06 |    56 |            4 |\n| XYZ     | 2020-10-08 |    54 |            6 |\n+---------+------------+-------+--------------+"
+        },
+        {
+            "title": "Demonstrate the WITH UNMATCHED ROWS option",
+            "code": "select * from stock_price_history match_recognize(\n    partition by company\n    order by price_date\n    measures\n        match_number() as \"MATCH_NUMBER\",\n        classifier() as cl\n    all rows per match with unmatched rows\n    pattern(OVERAVG+)\n    define\n        OVERAVG as price > avg(price) over (rows between unbounded\n                                 preceding and unbounded following)\n)\norder by company, price_date;\n+---------+------------+-------+--------------+---------+\n| COMPANY | PRICE_DATE | PRICE | MATCH_NUMBER | CL      |\n|---------+------------+-------+--------------+---------|\n| ABCD    | 2020-10-01 |    50 |         NULL | NULL    |\n| ABCD    | 2020-10-02 |    36 |         NULL | NULL    |\n| ABCD    | 2020-10-03 |    39 |         NULL | NULL    |\n| ABCD    | 2020-10-04 |    42 |         NULL | NULL    |\n| ABCD    | 2020-10-05 |    30 |         NULL | NULL    |\n| ABCD    | 2020-10-06 |    47 |         NULL | NULL    |\n| ABCD    | 2020-10-07 |    71 |            1 | OVERAVG |\n| ABCD    | 2020-10-08 |    80 |            1 | OVERAVG |\n| ABCD    | 2020-10-09 |    75 |            1 | OVERAVG |\n| ABCD    | 2020-10-10 |    63 |            1 | OVERAVG |\n| XYZ     | 2020-10-01 |    89 |            1 | OVERAVG |\n| XYZ     | 2020-10-02 |    24 |         NULL | NULL    |\n| XYZ     | 2020-10-03 |    37 |         NULL | NULL    |\n| XYZ     | 2020-10-04 |    63 |            2 | OVERAVG |\n| XYZ     | 2020-10-05 |    65 |            2 | OVERAVG |\n| XYZ     | 2020-10-06 |    56 |            2 | OVERAVG |\n| XYZ     | 2020-10-07 |    50 |         NULL | NULL    |\n| XYZ     | 2020-10-08 |    54 |            3 | OVERAVG |\n| XYZ     | 2020-10-09 |    30 |         NULL | NULL    |\n| XYZ     | 2020-10-10 |    32 |         NULL | NULL    |\n+---------+------------+-------+--------------+---------+"
+        },
+        {
+            "title": "Demonstrate symbol predicates in the MEASURES clause",
+            "code": "SELECT company, price_date, price, \"FINAL FIRST(LT45.price)\", \"FINAL LAST(LT45.price)\"\n    FROM stock_price_history\n       MATCH_RECOGNIZE (\n           PARTITION BY company\n           ORDER BY price_date\n           MEASURES\n               FINAL FIRST(LT45.price) AS \"FINAL FIRST(LT45.price)\",\n               FINAL LAST(LT45.price)  AS \"FINAL LAST(LT45.price)\"\n           ALL ROWS PER MATCH\n           AFTER MATCH SKIP PAST LAST ROW\n           PATTERN (LT45 LT45)\n           DEFINE\n               LT45 AS price < 45.00\n           )\n    WHERE company = 'ABCD'\n    ORDER BY price_date;\n+---------+------------+-------+-------------------------+------------------------+\n| COMPANY | PRICE_DATE | PRICE | FINAL FIRST(LT45.price) | FINAL LAST(LT45.price) |\n|---------+------------+-------+-------------------------+------------------------|\n| ABCD    | 2020-10-02 |    36 |                      36 |                     39 |\n| ABCD    | 2020-10-03 |    39 |                      36 |                     39 |\n| ABCD    | 2020-10-04 |    42 |                      42 |                     30 |\n| ABCD    | 2020-10-05 |    30 |                      42 |                     30 |\n+---------+------------+-------+-------------------------+------------------------+"
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/constructs/join-lateral",
+    "title": "LATERAL",
+    "description": "In a FROM clause, the LATERAL keyword allows an inline view to reference columns\nfrom a table expression that precedes that inline view.",
+    "syntax": "SELECT ...\nFROM <left_hand_table_expression>, LATERAL ( <inline_view> )\n...",
+    "parameters": [
+        {
+            "name": "left_hand_table_expression",
+            "description": "This is a source of rows, such as: A table. A view. A subquery. A table function. The result of an earlier join."
+        },
+        {
+            "name": "inline_view",
+            "description": "The inline_view can be: An inline view: a view defined within the statement, and valid only for the duration of the statement. A subquery. A table function: either a built-in table function such as FLATTEN or a user-defined table function (UDTF). The inline_view cannot be a table."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/constructs/asof-join",
+    "title": "ASOF JOIN",
+    "description": "An ASOF JOIN operation combines rows from two tables based on timestamp values that follow each\nother, precede each other, or match exactly. For each row in the first (or left) table, the join finds a single\nrow in the second (or right) table that has the closest timestamp value. The qualifying row on the right side\nis the closest match, which could be equal in time, earlier in time, or later in time, depending on the specified\ncomparison operator.",
+    "syntax": "FROM <left_table> ASOF JOIN <right_table>\n  MATCH_CONDITION ( <left_table.timecol> <comparison_operator> <right_table.timecol> )\n  [ ON <table.col> = <table.col> [ AND ... ] | USING ( <column_list> ) ]",
+    "examples": [
+        {
+            "title": "NULL-padded results",
+            "code": "INSERT INTO trades VALUES('SNOW','2023-09-30 12:02:55.000',3000);"
+        },
+        {
+            "title": "Using a different comparison operator in the match condition",
+            "code": "SELECT t.stock_symbol, t.trade_time, t.quantity, q.quote_time, q.price\n  FROM trades t ASOF JOIN quotes q\n    MATCH_CONDITION(t.trade_time <= quote_time)\n    ON t.stock_symbol=q.stock_symbol\n  ORDER BY t.stock_symbol;"
+        },
+        {
+            "title": "Specifying a USING condition instead of an ON condition",
+            "code": "SELECT t.stock_symbol, t.trade_time, t.quantity, q.quote_time, q.price\n  FROM trades t ASOF JOIN quotes q\n    MATCH_CONDITION(t.trade_time <= quote_time)\n    USING(stock_symbol)\n  ORDER BY t.stock_symbol;"
+        },
+        {
+            "title": "Inner join to a third table",
+            "code": "CREATE OR REPLACE TABLE companies(\n  stock_symbol VARCHAR(4),\n  company_name VARCHAR(100)\n);\n\n INSERT INTO companies VALUES\n  ('NVDA','NVIDIA Corp'),\n  ('TSLA','Tesla Inc'),\n  ('SNOW','Snowflake Inc'),\n  ('AAPL','Apple Inc')\n;"
+        },
+        {
+            "title": "Numbers as timestamps",
+            "code": "SELECT * FROM trades_unixtime;"
+        },
+        {
+            "title": "TIME columns in the match condition",
+            "code": "CREATE OR REPLACE TABLE raintime(\n  observed TIME(9),\n  location VARCHAR(40),\n  state VARCHAR(2),\n  observation NUMBER(5,2)\n);\n\nINSERT INTO raintime VALUES\n  ('14:42:59.230', 'Ahwahnee', 'CA', 0.90),\n  ('14:42:59.001', 'Oakhurst', 'CA', 0.50),\n  ('14:42:44.435', 'Reno', 'NV', 0.00)\n;\n\nCREATE OR REPLACE TABLE preciptime(\n  observed TIME(9),\n  location VARCHAR(40),\n  state VARCHAR(2),\n  observation NUMBER(5,2)\n);\n\nINSERT INTO preciptime VALUES\n  ('14:42:59.230', 'Ahwahnee', 'CA', 0.91),\n  ('14:42:59.001', 'Oakhurst', 'CA', 0.51),\n  ('14:41:44.435', 'Las Vegas', 'NV', 0.01),\n  ('14:42:44.435', 'Reno', 'NV', 0.01),\n  ('14:40:34.000', 'Bozeman', 'MT', 1.11)\n;\n\nCREATE OR REPLACE TABLE snowtime(\n  observed TIME(9),\n  location VARCHAR(40),\n  state VARCHAR(2),\n  observation NUMBER(5,2)\n);\n\nINSERT INTO snowtime VALUES\n  ('14:42:59.199', 'Fish Camp', 'CA', 3.20),\n  ('14:42:44.435', 'Reno', 'NV', 3.00),\n  ('14:43:01.000', 'Lake Tahoe', 'CA', 4.20),\n  ('14:42:45.000', 'Bozeman', 'MT', 1.80)\n;"
+        },
+        {
+            "title": "Multiple ASOF joins in a query",
+            "code": "ALTER SESSION SET TIME_OUTPUT_FORMAT = 'HH24:MI:SS.FF3';\n\nSELECT *\n  FROM snowtime s\n    ASOF JOIN raintime r\n      MATCH_CONDITION(s.observed>=r.observed)\n      ON s.state=r.state\n    ASOF JOIN preciptime p\n      MATCH_CONDITION(s.observed>=p.observed)\n      ON s.state=p.state\n  ORDER BY s.observed;"
+        },
+        {
+            "title": "Less than and greater than comparison operators",
+            "code": "SELECT *\n  FROM snowtime s\n    ASOF JOIN raintime r\n      MATCH_CONDITION(s.observed>r.observed)\n      ON s.state=r.state\n    ASOF JOIN preciptime p\n      MATCH_CONDITION(s.observed<p.observed)\n      ON s.state=p.state\n  ORDER BY s.observed;"
+        },
+        {
+            "title": "Examples of expected error cases",
+            "code": "SELECT * FROM snowtime s ASOF JOIN preciptime p MATCH_CONDITION(p.observed>=s.observed);"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "FROM",
+            "description": "The first (or left) table in the FROM clause is assumed to contain records that either follow (in time),\nprecede, or are exactly synchronized with, the records in the second (or right) table. When there is no\nmatch for a row in the left table, the columns from the right table are null-padded. In addition to regular tables and views, any object reference can be used in an ASOF JOIN.\nSee FROM . ASOF JOIN can be used in most contexts where joins are supported. For information about some restrictions, see Usage Notes ."
+        },
+        {
+            "name": "MATCH_CONDITION ( left_table.timecol comparison_operator right_table.timecol )",
+            "description": "This condition names the specific timestamp columns to be compared in each table. The order of tables is important in the condition. The left table must be named first. The parentheses are required. The comparison operator must be one of the following: >= , <= , > , < . The equals operator ( = ) is\nnot supported. All of the following data types are supported: DATE, TIME, DATETIME, TIMESTAMP, TIMESTAMP_LTZ, TIMESTAMP_NTZ, TIMESTAMP_TZ. You can also use NUMBER columns in the match condition. For example, you might have NUMBER columns that contain UNIX\ntimestamps (which define the number of seconds that have elapsed since January 1st, 1970). The data types of the two matched columns don’t have to be exactly the same, but they must be compatible ."
+        },
+        {
+            "name": "ON table.col = table.col [ AND ... ] | USING ( column_list )",
+            "description": "The optional ON or USING clause defines one or more equality conditions on columns in the two tables, for the purpose of\nlogically grouping the results of the query. For general information about ON and USING, see JOIN . Note that a join specified with USING\nprojects one of the joining columns in its intermediate result set, not both. A join specified with an ON clause projects both\njoining columns. The following notes are specific to ASOF JOIN: The comparison operator in the ON clause must be the equal sign (=). The ON clause cannot contain disjuncts (conditions connected with OR). Conditions connected with AND are supported. Each side of a condition must refer to only one of the two tables in the join. However, the order of the table references doesn’t matter. Each condition can be enclosed in parentheses, but they aren’t required."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/constructs/join",
+    "title": "JOIN",
+    "description": "A JOIN operation combines rows from two tables (or other table-like sources, such as\nviews or table functions) to create a new combined row that can be used in the query.\nFor a conceptual explanation of joins, see Working with Joins.",
+    "syntax": "SELECT ...\nFROM <object_ref1> [\n                     {\n                       INNER\n                       | { LEFT | RIGHT | FULL } [ OUTER ]\n                     }\n                   ]\n                   JOIN <object_ref2>\n  [ ON <condition> ]\n[ ... ]\n\nSELECT *\nFROM <object_ref1> [\n                     {\n                       INNER\n                       | { LEFT | RIGHT | FULL } [ OUTER ]\n                     }\n                   ]\n                   JOIN <object_ref2>\n  [ USING( <column_list> ) ]\n[ ... ]\n\nSELECT ...\nFROM <object_ref1> [\n                     {\n                       | NATURAL [ { LEFT | RIGHT | FULL } [ OUTER ] ]\n                       | CROSS\n                     }\n                   ]\n                   JOIN <object_ref2>\n[ ... ]",
+    "parameters": [
+        {
+            "name": "object_ref1 and object_ref2",
+            "description": "Each object reference is a table or table-like data source."
+        },
+        {
+            "name": "JOIN",
+            "description": "Use the JOIN keyword to specify that the tables should be joined. Combine JOIN with other join-related\nkeywords (e.g. INNER or OUTER ) to specify the type of join. The semantics of joins are as follows (for brevity, this topic uses o1 and o2 for object_ref1 and object_ref2 , respectively). Join Type Semantics o1 INNER JOIN o2 For each row of o1 , a row is produced for each row of o2 that matches according to the ON condition subclause. (Note that you can also use a comma to specify an inner join. For an example, see the examples section below.) If you use INNER JOIN without the ON clause (or if you use comma without a WHERE clause), the result is the same as using CROSS JOIN : a Cartesian product (every row of o1 paired with every row of o2 ). o1 LEFT OUTER JOIN o2 The result of the inner join is augmented with a row for each row of o1 that has no matches in o2 . The result columns referencing o2 contain null. o1 RIGHT OUTER JOIN o2 The result of the inner join is augmented with a row for each row of o2 that has no matches in o1 . The result columns referencing o1 contain null. o1 FULL OUTER JOIN o2 Returns all joined rows, plus one row for each unmatched left side row (extended with nulls on the right), plus one row for each unmatched right side row (extended with nulls on the left). o1 CROSS JOIN o2 For every possible combination of rows from o1 and o2 (i.e. Cartesian product), the joined table contains a row consisting of all columns in o1 followed by all columns in o2 . A CROSS JOIN cannot be combined with an ON condition clause. However, you can use a WHERE clause to filter the results. o1 NATURAL JOIN o2 A NATURAL JOIN is identical to an explicit JOIN on the common columns of the two tables, except that the common columns are included only once in the output. (A natural join assumes that columns with the same name, but in different tables, contain corresponding data.) See the Examples section below for some examples. A NATURAL JOIN can be combined with an OUTER JOIN . A NATURAL JOIN cannot be combined with an ON condition clause because the JOIN condition is already implied. However, you can use a WHERE clause to filter the results. See also: LATERAL ASOF JOIN Default: INNER JOIN If the word JOIN is used without specifying INNER or OUTER , then the JOIN is an inner join."
+        },
+        {
+            "name": "ON condition",
+            "description": "A Boolean expression that defines the rows from the two sides of the JOIN that are considered to match, for example: Conditions are discussed in more detail in the WHERE clause documentation. The ON clause is prohibited for CROSS JOIN . The ON clause is unnecessary (and prohibited) for NATURAL JOIN ; the join columns are implied. For other joins, the ON clause is optional. However, omitting\nthe ON clause results in a Cartesian product (every row of object_ref1 paired with every row of object_ref2 ). A\nCartesian product can produce a very large volume of output, almost all of\nwhich consists of pairs of rows that aren’t actually related; this consumes\na lot of resources and is often a user error."
+        },
+        {
+            "name": "USING( <column_list> )",
+            "description": "A list of columns in common between the two tables being joined; these\ncolumns are used as the join columns. The columns must have the same\nname and meaning in each of the tables being joined. For example, suppose that the SQL statement contains: In the simple case, this would be equivalent to: In the standard JOIN syntax, the projection list (the list of columns\nand other expressions after the SELECT keyword) is “*”. This causes\nthe query to return the key_column exactly once. The columns\nare returned in the following order: The columns in the USING clause in the order specified. The left table columns not specified in the USING clause. The right table columns not specified in the USING clause. For examples of standard and non-standard usage, see the examples below."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/constructs/connect-by",
+    "title": "CONNECT BY",
+    "description": "Joins a table to itself to process hierarchical data in the table. The CONNECT BY subclause of the\nFROM clause iterates to process the data.",
+    "syntax": "SELECT <column_list> [ , <level_expression> ]\n  FROM <data_source>\n    START WITH <predicate>\n    CONNECT BY [ PRIOR ] <col1_identifier> = [ PRIOR ] <col2_identifier>\n           [ , [ PRIOR ] <col3_identifier> = [ PRIOR ] <col4_identifier> ]\n           ...\n  ...",
+    "parameters": [
+        {
+            "name": "column_list",
+            "description": "This generally follows the rules for the projection clause of a SELECT statement."
+        },
+        {
+            "name": "level_expression",
+            "description": "CONNECT BY queries allow some pseudo-columns.\nOne of those pseudo-columns is LEVEL , which indicates the current level\nof the hierarchy (where level 1 represents the top of the hierarchy).\nThe projection clause of the query can use LEVEL as a column."
+        },
+        {
+            "name": "data_source",
+            "description": "The data source is usually a table, but can be another table-like data source, such as a view, UDTF, etc."
+        },
+        {
+            "name": "predicate",
+            "description": "The predicate is an expression that selects the first “level” of the\nhierarchy (e.g. the president of the company or the top-level component in\na parts explosion). The predicate should look similar to a WHERE clause, but without the keyword WHERE . See the Examples section (in this topic) for predicate examples."
+        },
+        {
+            "name": "colN_identifier",
+            "description": "The CONNECT BY clause should contain one or more expressions similar to those\nused in joins. Specifically, a column in the “current” level of the table\nshould refer to a column in the “prior” (higher) level of the table. For example, in a manager/employee hierarchy, the clause might look similar to: The keyword PRIOR indicates that the value should be taken from the\nprior (higher/parent) level. In this example, the current employee’s manager_ID should match the prior level’s employee_ID . The CONNECT BY clause can contain more than one such expression, for example: Each expression similar to the following should have exactly one occurrence of the keyword PRIOR: The keyword PRIOR may be on either the left-hand or right-hand side of the = sign. For example: or"
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/constructs/changes",
+    "title": "CHANGES",
+    "description": "The CHANGES clause enables querying the change tracking metadata for a table or view within a specified interval of time\nwithout having to create a stream with an explicit transactional offset. Multiple queries can retrieve the change tracking\nmetadata between different transactional start and endpoints.",
+    "syntax": "SELECT ...\nFROM ...\n   CHANGES ( INFORMATION => { DEFAULT | APPEND_ONLY } )\n   AT ( { TIMESTAMP => <timestamp> | OFFSET => <time_difference> | STATEMENT => <id> | STREAM => '<name>' } ) | BEFORE ( STATEMENT => <id> )\n   [ END( { TIMESTAMP => <timestamp> | OFFSET => <time_difference> | STATEMENT => <id> } ) ]\n[ ... ]",
+    "parameters": [
+        {
+            "name": "INFORMATION => { DEFAULT | APPEND_ONLY }",
+            "description": "Specifies the type of change tracking data to return based on the metadata recorded in each: Returns all DML changes to the source object, including inserts, updates, and deletes (including table truncates). This type of change\ntracking compares inserted and deleted rows in the change set to provide the row level delta. As a net effect, for example, a row that\nis inserted and then deleted between two transactional points of time in a table is removed in the delta (i.e. is not returned in the\nquery results). Returns appended rows only; therefore no join is performed. As a result, querying append-only changes can be much more performant than querying standard (default) changes for extract, load, transform (ELT) and similar scenarios that depend exclusively on row inserts."
+        },
+        {
+            "name": "DEFAULT",
+            "description": "Returns all DML changes to the source object, including inserts, updates, and deletes (including table truncates). This type of change\ntracking compares inserted and deleted rows in the change set to provide the row level delta. As a net effect, for example, a row that\nis inserted and then deleted between two transactional points of time in a table is removed in the delta (i.e. is not returned in the\nquery results)."
+        },
+        {
+            "name": "APPEND_ONLY",
+            "description": "Returns appended rows only; therefore no join is performed. As a result, querying append-only changes can be much more performant than querying standard (default) changes for extract, load, transform (ELT) and similar scenarios that depend exclusively on row inserts."
+        },
+        {
+            "name": "TIMESTAMP => timestamp",
+            "description": "Specifies an exact date and time to use for Time Travel. Note that the value must be explicitly cast to a TIMESTAMP."
+        },
+        {
+            "name": "OFFSET => time_difference",
+            "description": "Specifies the difference in seconds from the current time to use for Time Travel, in the form -N where N can be an integer or arithmetic expression (e.g. -120 is 120 seconds, -30*60 is 1800 seconds or 30 minutes)."
+        },
+        {
+            "name": "STATEMENT => id",
+            "description": "Specifies the query ID of a statement to use as the reference point for Time Travel. This parameter supports any statement of one of the following types: DML (e.g. INSERT, UPDATE, DELETE) TCL (BEGIN, COMMIT transaction) SELECT"
+        },
+        {
+            "name": "STREAM => ' name '",
+            "description": "Specifies the identifier (i.e. name) for an existing stream on the queried table or view. The current offset in\nthe stream is used as the AT point in time for returning change data for the source object."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/constructs/at-before",
+    "title": "AT | BEFORE",
+    "description": "The AT or BEFORE clause is used for Snowflake Time Travel. In a query, it is specified in the FROM clause\nimmediately after the table name, and it determines the point in the past from which historical data is requested for the object:",
+    "syntax": "SELECT ...\nFROM ...\n  { AT | BEFORE }\n  (\n    { TIMESTAMP => <timestamp> |\n      OFFSET => <time_difference> |\n      STATEMENT => <id> |\n      STREAM => '<name>' }\n  )\n[ ... ]",
+    "parameters": [
+        {
+            "name": "TIMESTAMP => timestamp",
+            "description": "Specifies an exact date and time to use for Time Travel. The value must be explicitly cast to a TIMESTAMP,\nTIMESTAMP_LTZ, TIMESTAMP_NTZ, or TIMESTAMP_TZ data type. If no explicit cast is specified, the timestamp in the AT clause is treated as a timestamp with the UTC time zone (equivalent to\nTIMESTAMP_NTZ). Using the TIMESTAMP data type for an explicit cast may also result in the value being treated as a TIMESTAMP_NTZ\nvalue. For details, see Date & time data types ."
+        },
+        {
+            "name": "OFFSET => time_difference",
+            "description": "Specifies the difference in seconds from the current time to use for Time Travel, in the form -N where N can be an integer or arithmetic expression (e.g. -120 is 120 seconds, -30*60 is 1800 seconds or 30 minutes)."
+        },
+        {
+            "name": "STATEMENT => id",
+            "description": "Specifies the query ID of a statement to use as the reference point for Time Travel. This parameter supports any statement of one of the\nfollowing types: DML (e.g. INSERT, UPDATE, DELETE) TCL (BEGIN, COMMIT transaction) SELECT The query ID must reference a query that has been executed within the last 14 days. If the query ID references a query over 14 days old,\nthe following error is returned: To work around this limitation, use the timestamp for the referenced query."
+        },
+        {
+            "name": "STREAM => ' name '",
+            "description": "Specifies the identifier (i.e. name) for an existing stream on the queried table or view. The current offset in\nthe stream is used as the AT or BEFORE point in time for returning change data for the source object. This keyword is supported only when creating a stream (using CREATE STREAM ) or querying change data (using\nthe CHANGES clause). For examples, see those topics."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/constructs/from",
+    "title": "FROM",
+    "description": "Specifies the tables, views, or table functions to use in a SELECT statement.",
+    "syntax": "SELECT ...\nFROM objectReference [ JOIN objectReference [ ... ] ]\n[ ... ]\n\nobjectReference ::=\n   {\n      [<namespace>.]<object_name>\n           [ AT | BEFORE ( <object_state> ) ]\n           [ CHANGES ( <change_tracking_type> ) ]\n           [ MATCH_RECOGNIZE ]\n           [ PIVOT | UNPIVOT ]\n           [ [ AS ] <alias_name> ]\n           [ SAMPLE ]\n     | <table_function>\n           [ PIVOT | UNPIVOT ]\n           [ [ AS ] <alias_name> ]\n           [ SAMPLE ]\n     | ( VALUES (...) )\n           [ SAMPLE ]\n     | [ LATERAL ] ( <subquery> )\n           [ [ AS ] <alias_name> ]\n     | @[<namespace>.]<stage_name>[/<path>]\n           [ ( FILE_FORMAT => <format_name>, PATTERN => '<regex_pattern>' ) ]\n           [ [ AS ] <alias_name> ]\n     | DIRECTORY( @<stage_name> )\n     | SEMANTIC_VIEW( ... )\n   }",
+    "parameters": [
+        {
+            "name": "JOIN",
+            "description": "Subclause that specifies to perform a join between two or more tables (or views or table functions).\nThe join can be an inner join, outer join, or other type of join.\nThe join can use the keyword JOIN or an alternative supported join syntax.\nFor more details about joins, see JOIN and ASOF JOIN ."
+        },
+        {
+            "name": "[ AS ] alias_name",
+            "description": "Specifies a name given to the object reference it is attached to. Can be used with any of the other subclauses in the FROM clause. Alias names must follow the rules for Object identifiers ."
+        },
+        {
+            "name": "VALUES",
+            "description": "The VALUES clause can specify literal values or expressions to be used in the FROM clause.\nThis clause can contain table and column aliases (not shown in the diagram above).\nFor more details about the VALUES clause, see VALUES ."
+        },
+        {
+            "name": "[ namespace .] object_name",
+            "description": "Specifies the name of the object (table or view) being queried. The object name can be qualified using namespace (in the form of db_name . schema_name . object_name or schema_name . object_name ). A namespace is not required if\nthe context can be derived from the current database and schema for the session. When specifying a table/view name to query, you can also specify the following optional subclause: Optional subclause that specifies the time-based or event-based historical state of the table or view for Time Travel. For more details, see AT | BEFORE . Optional subclause for finding sequences of rows that match a pattern. For more details, see MATCH_RECOGNIZE ."
+        },
+        {
+            "name": "{ AT | BEFORE } ( object_state )",
+            "description": "Optional subclause that specifies the time-based or event-based historical state of the table or view for Time Travel. For more details, see AT | BEFORE ."
+        },
+        {
+            "name": "MATCH_RECOGNIZE",
+            "description": "Optional subclause for finding sequences of rows that match a pattern. For more details, see MATCH_RECOGNIZE ."
+        },
+        {
+            "name": "table_function",
+            "description": "Specifies a system-defined table function, a UDF table function, or a class method to call within the FROM clause. For details,\nsee the following topics: Using a table function in the FROM clause Calling a UDTF Selecting columns from SQL class instance methods that return tabular data"
+        },
+        {
+            "name": "{ PIVOT | UNPIVOT }",
+            "description": "Optional subclause that specifies to pivot or unpivot the results of the FROM clause. For more details, see PIVOT and UNPIVOT ."
+        },
+        {
+            "name": "SAMPLE",
+            "description": "Optional subclause that specifies to sample rows from the table/view. For more details, see SAMPLE / TABLESAMPLE ."
+        },
+        {
+            "name": "[ LATERAL ] ( subquery )",
+            "description": "Specifies an inline view within the FROM clause. If the optional LATERAL keyword is used, then the subquery can refer to columns from other tables (or views or table functions) that are in the current\nFROM clause and to the left of the inline view. For more information about subqueries in general, see Working with Subqueries ."
+        },
+        {
+            "name": "@[ namespace .] stage_name [/ path ]",
+            "description": "Specifies a named stage to be queried (or ~ for referring to the stage for the current user or % followed by a table name for referring to the stage for the specified table). When querying a stage, you can also optionally specify a named file format and pattern: Specifies a named file format object to use for the stage and a pattern to filter the set of files in the stage. For more details about querying stages, see Querying Data in Staged Files ."
+        },
+        {
+            "name": "( FILE_FORMAT => format_name [ , PATTERN => ' regex_pattern ' ] )",
+            "description": "Specifies a named file format object to use for the stage and a pattern to filter the set of files in the stage."
+        },
+        {
+            "name": "DIRECTORY( @ stage_name )",
+            "description": "Specifies the name of a stage that includes a directory table ."
+        },
+        {
+            "name": "hierarchical_query_result",
+            "description": "A hierarchical query result is the result set from using a clause such as CONNECT BY to query a table of hierarchical\ndata. For more details, see CONNECT BY ."
+        },
+        {
+            "name": "SEMANTIC_VIEW(...)",
+            "description": "Specifies the semantic view that you want to query . For information, see SEMANTIC_VIEW ."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/constructs/into",
+    "title": "INTO",
+    "description": "Sets Snowflake Scripting variables to the values in a row returned by a\nSELECT statement. See Setting variables to the results of a SELECT statement for details.",
+    "syntax": "SELECT <expression1>\n   [ , <expression2> ]\n   [ , <expressionN> ]\n[ INTO :<variable1> ]\n   [ , :<variable2> ]\n   [ , :<variableN> ]\nFROM ...\nWHERE ...\n[ ... ]",
+    "parameters": [
+        {
+            "name": "expression1 , . expression2 , . expressionN",
+            "description": "Specifies scalar expressions (e.g. columns in a table specified by the FROM clause)."
+        },
+        {
+            "name": "variable1 , . variable2 , . variableN",
+            "description": "Snowflake Scripting variables that should be set to the values in the\nexpressions in the SELECT clause."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/constructs/top_n",
+    "title": "TOP",
+    "description": "Constrains the maximum number of rows returned by a statement or subquery.",
+    "syntax": "SELECT\n    [ TOP <n> ]\n    ...\nFROM ...\n[ ORDER BY ... ]\n[ ... ]",
+    "parameters": [
+        {
+            "name": "n",
+            "description": "The maximum number of rows to return in the result set."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/constructs/with",
+    "title": "WITH",
+    "description": "The WITH clause is an optional clause that precedes the body of the SELECT statement, and defines one\nor more CTEs (common table expressions) that can be used later in the statement. For example,\nCTEs can be referenced in the FROM clause.",
+    "syntax": "[ WITH\n       <cte_name1> [ ( <cte_column_list> ) ] AS ( SELECT ...  )\n   [ , <cte_name2> [ ( <cte_column_list> ) ] AS ( SELECT ...  ) ]\n   [ , <cte_nameN> [ ( <cte_column_list> ) ] AS ( SELECT ...  ) ]\n]\nSELECT ...\n\n[ WITH [ RECURSIVE ]\n       <cte_name1> ( <cte_column_list> ) AS ( anchorClause UNION ALL recursiveClause )\n   [ , <cte_name2> ( <cte_column_list> ) AS ( anchorClause UNION ALL recursiveClause ) ]\n   [ , <cte_nameN> ( <cte_column_list> ) AS ( anchorClause UNION ALL recursiveClause ) ]\n]\nSELECT ...\n\nanchorClause ::=\n    SELECT <anchor_column_list> FROM ...\n\nrecursiveClause ::=\n    SELECT <recursive_column_list> FROM ... [ JOIN ... ]",
+    "examples": [
+        {
+            "title": "Non-recursive examples",
+            "code": "with\n  albums_1976 as (select * from music_albums where album_year = 1976)\nselect album_name from albums_1976 order by album_name;\n+----------------------+\n| ALBUM_NAME           |\n|----------------------|\n| Amigos               |\n| Look Into The Future |\n+----------------------+"
+        },
+        {
+            "title": "Recursive examples",
+            "code": "WITH RECURSIVE current_f (current_val, previous_val) AS\n    (\n    SELECT 0, 1\n    UNION ALL \n    SELECT current_val + previous_val, current_val FROM current_f\n      WHERE current_val + previous_val < 100\n    )\n  SELECT current_val FROM current_f ORDER BY current_val;\n+-------------+\n| CURRENT_VAL |\n|-------------|\n|           0 |\n|           1 |\n|           1 |\n|           2 |\n|           3 |\n|           5 |\n|           8 |\n|          13 |\n|          21 |\n|          34 |\n|          55 |\n|          89 |\n+-------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "cte_name1 , cte_nameN",
+            "description": "The CTE name must follow the rules for views and similar object identifiers ."
+        },
+        {
+            "name": "cte_column_list",
+            "description": "The names of the columns in the CTE (common table expression)."
+        },
+        {
+            "name": "anchor_column_list",
+            "description": "The columns used in the anchor clause for the recursive CTE. The columns in this list must\ncorrespond to the columns defined in cte_column_list ."
+        },
+        {
+            "name": "recursive_column_list",
+            "description": "The columns used in the recursive clause for the recursive CTE. The columns in this list must\ncorrespond to the columns defined in cte_column_list ."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/select",
+    "title": "SELECT",
+    "description": "SELECT can be used as either a statement or as a clause within other statements:",
+    "syntax": "[ ... ]\nSELECT [ { ALL | DISTINCT } ]\n       [ TOP <n> ]\n       [{<object_name>|<alias>}.]*\n\n       [ ILIKE '<pattern>' ]\n\n       [ EXCLUDE\n         {\n           <col_name> | ( <col_name>, <col_name>, ... )\n         }\n       ]\n\n       [ REPLACE\n         {\n           ( <expr> AS <col_name> [ , <expr> AS <col_name>, ... ] )\n         }\n       ]\n\n       [ RENAME\n         {\n           <col_name> AS <col_alias>\n           | ( <col_name> AS <col_alias>, <col_name> AS <col_alias>, ... )\n         }\n       ]\n\nSELECT * ILIKE ... REPLACE ...\n\nSELECT * ILIKE ... RENAME ...\n\nSELECT * ILIKE ... REPLACE ... RENAME ...\n\nSELECT * EXCLUDE ... REPLACE ...\n\nSELECT * EXCLUDE ... RENAME ...\n\nSELECT * EXCLUDE ... REPLACE ... RENAME ...\n\nSELECT * REPLACE ... RENAME ...\n\n[ ... ]\nSELECT [ { ALL | DISTINCT } ]\n       [ TOP <n> ]\n       {\n         [{<object_name>|<alias>}.]<col_name>\n         | [{<object_name>|<alias>}.]$<col_position>\n         | <expr>\n       }\n       [ [ AS ] <col_alias> ]\n       [ , ... ]\n[ ... ]\n\nSELECT emp_id,\n       name,\n       dept,\n  FROM employees;",
+    "examples": [
+        {
+            "title": "Setting up the data for the examples",
+            "code": "CREATE TABLE employee_table (\n    employee_ID INTEGER,\n    last_name VARCHAR,\n    first_name VARCHAR,\n    department_ID INTEGER\n    );\n\nCREATE TABLE department_table (\n    department_ID INTEGER,\n    department_name VARCHAR\n    );"
+        },
+        {
+            "title": "Examples of selecting all columns (SELECT *)",
+            "code": "SELECT * FROM employee_table;"
+        },
+        {
+            "title": "Examples of selecting specific columns (SELECT colname)",
+            "code": "SELECT last_name FROM employee_table WHERE employee_ID = 101;\n+------------+\n| LAST_NAME  |\n|------------|\n| Montgomery |\n+------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "ALL | DISTINCT",
+            "description": "Specifies whether to perform duplicate elimination on the result set: ALL includes all values in the result set. DISTINCT eliminates duplicate values from the result set. Default: ALL"
+        },
+        {
+            "name": "TOP n",
+            "description": "Specifies the maximum number of results to return. See TOP <n> ."
+        },
+        {
+            "name": "object_name or . alias",
+            "description": "Specifies the object identifier or object alias as defined in the FROM clause."
+        },
+        {
+            "name": "*",
+            "description": "The asterisk is shorthand to indicate that the output should include all columns of the specified object, or all columns of\nall objects if * is not qualified with an object name or alias. The columns are returned in the order shown by\nexecuting the DESCRIBE command on the object. When you specify * , you can also specify ILIKE , EXCLUDE , REPLACE , and RENAME : Specifies that only the columns that match pattern should be included in the results. In pattern , you can use the following SQL wildcards: Use an underscore ( _ ) to match any single character. Use a percent sign ( % ) to match any sequence of zero or more characters. To match a sequence anywhere within the column name, begin and end the pattern with % . Matching is case-insensitive. If no columns match the specified pattern, a compilation error occurs ( 001080 (42601): ... SELECT with no columns ). Specifies the columns that should be excluded from the results. If you are selecting from multiple tables, use SELECT table_name .* to specify that you want to select all columns\nfrom a specific table, and specify the unqualified column name in EXCLUDE . For example: Replaces the value of col_name with the value of the evaluated expression expr . For example, to prepend the string 'DEPT-' to the values in the department_id column, use: For col_name : The column must exist and cannot be filtered out by ILIKE or EXCEPT . You cannot specify the same column more than once in the list of replacements. If the column is in multiple tables (for example, in both tables in a join), the statement fails with an “ambiguous column”\nerror. expr must evaluate to a single value. Specifies the column aliases that should be used in the results. If you are selecting from multiple tables, use SELECT table_name .* to specify that you want to select all columns\nfrom a specific table, and specify the unqualified column name in RENAME . For example: Note When specifying a combination of keywords after SELECT * : You cannot specify both ILIKE and EXCLUDE . If you specify EXCLUDE with RENAME or REPLACE : You must specify EXCLUDE before RENAME or REPLACE : You cannot specify the same column in EXCLUDE and RENAME . If you specify ILIKE with RENAME or REPLACE , you must specify ILIKE first: If you specify REPLACE and RENAME : You must specify REPLACE first: You can specify the same column name in REPLACE and RENAME :"
+        },
+        {
+            "name": "ILIKE ' pattern '",
+            "description": "Specifies that only the columns that match pattern should be included in the results. In pattern , you can use the following SQL wildcards: Use an underscore ( _ ) to match any single character. Use a percent sign ( % ) to match any sequence of zero or more characters. To match a sequence anywhere within the column name, begin and end the pattern with % . Matching is case-insensitive. If no columns match the specified pattern, a compilation error occurs ( 001080 (42601): ... SELECT with no columns )."
+        },
+        {
+            "name": "EXCLUDE col_name . EXCLUDE ( col_name , col_name , ...)",
+            "description": "Specifies the columns that should be excluded from the results. If you are selecting from multiple tables, use SELECT table_name .* to specify that you want to select all columns\nfrom a specific table, and specify the unqualified column name in EXCLUDE . For example:"
+        },
+        {
+            "name": "REPLACE ( expr AS col_name [ , expr AS col_name , ...] )",
+            "description": "Replaces the value of col_name with the value of the evaluated expression expr . For example, to prepend the string 'DEPT-' to the values in the department_id column, use: For col_name : The column must exist and cannot be filtered out by ILIKE or EXCEPT . You cannot specify the same column more than once in the list of replacements. If the column is in multiple tables (for example, in both tables in a join), the statement fails with an “ambiguous column”\nerror. expr must evaluate to a single value."
+        },
+        {
+            "name": "RENAME col_name AS col_alias . RENAME ( col_name AS col_alias , col_name AS col_alias , ...)",
+            "description": "Specifies the column aliases that should be used in the results. If you are selecting from multiple tables, use SELECT table_name .* to specify that you want to select all columns\nfrom a specific table, and specify the unqualified column name in RENAME . For example:"
+        },
+        {
+            "name": "col_name",
+            "description": "Specifies the column identifier as defined in the FROM clause."
+        },
+        {
+            "name": "$ col_position",
+            "description": "Specifies the position of the column (1-based) as defined in the FROM clause. If a column is\nreferenced from a table, this number can’t exceed the maximum number of columns in the table."
+        },
+        {
+            "name": "expr",
+            "description": "Specifies an expression, such as a mathematical expression, that evaluates\nto a specific value for any given row."
+        },
+        {
+            "name": "[ AS ] col_alias",
+            "description": "Specifies the column alias assigned to the resulting expression. This is used as the display name in a top-level SELECT list, and the column name in an inline view. Do not assign a column alias that is the same as the name of another column referenced in the query.\nFor example, if you are selecting columns named prod_id and product_id , do not alias prod_id as product_id .\nSee Error case: Specifying an alias that matches another column name ."
+        }
+    ]
+}
+]

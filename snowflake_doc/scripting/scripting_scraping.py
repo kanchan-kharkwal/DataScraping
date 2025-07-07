@@ -16,8 +16,7 @@ def parse_dt_dd_pairs(response, section_id):
     for elem in pairs:
         tag = elem.root.tag
         if tag == 'dt':
-            text_parts = elem.xpath('.//text()').getall()
-            current_name = ' '.join(part.strip() for part in text_parts if part.strip())
+            current_name = elem.xpath('.//span[@class="pre"]/text()').get() or elem.xpath('string(.)').get()
         elif tag == 'dd' and current_name:
             desc_parts = elem.xpath('.//p//text()').getall() or elem.xpath('.//text()').getall()
             desc = ' '.join(t.strip() for t in desc_parts if t.strip())
@@ -30,11 +29,12 @@ def parse_dt_dd_pairs(response, section_id):
 
 
 def parse_examples_with_titles(response):
-    """Extracts structured examples with optional headings from the #examples section."""
     examples = []
-    example_section = response.xpath('//section[@id="examples"]/section')
+    example_sections = response.xpath('//section[@id="examples"]//section')
+    if not example_sections:
+        example_sections = response.xpath('//section[@id="examples"]')
 
-    for sec in example_section:
+    for sec in example_sections:
         title = (
             sec.xpath('.//h2/text()').get() or
             sec.xpath('.//h3/text()').get() or
@@ -46,26 +46,56 @@ def parse_examples_with_titles(response):
             examples.append({
                 'title': title,
                 'code': code.strip()
-            })    
+            })
 
     return examples
 
 
-def parse_pre_blocks(response, section_id):
-    blocks = response.xpath(f'//section[@id="{section_id}"]//pre')
-    return '\n\n'.join(
-        b.xpath('string(.)').get().strip()
-        for b in blocks if b.xpath('string(.)').get()
-    )
+def parse_syntax_blocks(response, section_id):
+    syntax_blocks = []
+    section = response.xpath(f'//section[@id="{section_id}"]')
+
+    if not section:
+        return syntax_blocks
+    
+    pre_blocks = section.xpath('.//pre')
+
+    for pre in pre_blocks:
+        # Get the nearest heading above the <pre> (if any)
+        heading = pre.xpath('./ancestor::*[self::div or self::section][1]/preceding-sibling::*[self::h2 or self::h3 or self::h4][1]')
+        title = heading.xpath('string(.)').get(default='').strip()
+
+        code = pre.xpath('string(.)').get()
+        if code:
+            block = {'code': code.strip()}
+            if title:  # Only add title if non-empty
+                block['title'] = title
+            syntax_blocks.append(block)
+    return syntax_blocks
+
+def parse_usage_notes(response):
+    """
+    Extracts paragraphs and bullet points from the Usage Notes section.
+    """
+    section = response.xpath('//section[@id="usage-notes"]')
+    if not section:
+        return ""
+
+    paragraphs = section.xpath('.//p//text()').getall()
+    bullets = section.xpath('.//ul/li//text()').getall()
+    combined = paragraphs + bullets
+
+    return '\n'.join(t.strip() for t in combined if t.strip())
 
 
-class SnowflakeQuerySyntaxSpider(scrapy.Spider):
-    name = 'snowflake_query_syntax'
-    start_urls = ['https://docs.snowflake.com/en/sql-reference/constructs']
+
+class SnowflakeScriptingSpider(scrapy.Spider):
+    name = 'snowflake_scripting_all'
+    start_urls = ['https://docs.snowflake.com/en/sql-reference-snowflake-scripting']
 
     custom_settings = {
         'FEEDS': {
-            'D:/Ridgeant/POC\'s/DataScraping/snowflake_doc/query_syntax/query_syntax_scaped.json': {
+            'D:/Ridgeant/POC\'s/DataScraping/snowflake_doc/scripting/snowflake_scripting.json': {
                 'format': 'json',
                 'overwrite': True,
                 'encoding': 'utf8',
@@ -79,26 +109,21 @@ class SnowflakeQuerySyntaxSpider(scrapy.Spider):
     }
 
     def parse(self, response):
-        self.logger.info("Parsing Query Syntax index page...")
+        self.logger.info("Parsing Snowflake Scripting page for Next Topic links...")
+
+        # Parse "Next Topics" links
         next_topic_links = response.xpath('//section[contains(.,"Next Topics")]//a/@href').getall()
 
-        manual_links = [
-            "https://docs.snowflake.com/en/sql-reference/sql/select"
-        ]
+        for link in next_topic_links:
+            full_url = urljoin(response.url, link)
+            yield response.follow(full_url, callback=self.parse_scripting_topic, meta={'url': full_url})
 
-        all_links = [urljoin(response.url, link) for link in next_topic_links] + manual_links
-
-        for full_url in all_links:
-            yield response.follow(full_url, callback=self.parse_construct_detail, meta={'url': full_url})
-
-
-    def parse_construct_detail(self, response):
+    def parse_scripting_topic(self, response):
         title = response.css('main h1::text').get(default='').strip()
         description = response.xpath('//main//h1/following-sibling::p[1]').xpath('string(.)').get(default='').strip()
-        syntax = parse_pre_blocks(response, 'syntax')
+        syntax = parse_syntax_blocks(response, 'syntax')
+        usage_notes = parse_usage_notes(response)
         examples = parse_examples_with_titles(response)
-        arguments = parse_dt_dd_pairs(response, 'arguments')
-        parameters = parse_dt_dd_pairs(response, 'parameters')
 
         returns_block = response.xpath('//section[@id="returns"]//p').xpath('string(.)').get()
         returns = returns_block.strip() if returns_block else ''
@@ -110,9 +135,8 @@ class SnowflakeQuerySyntaxSpider(scrapy.Spider):
         add_if_not_empty(result, 'title', title)
         add_if_not_empty(result, 'description', description)
         add_if_not_empty(result, 'syntax', syntax)
+        add_if_not_empty(result, 'usage notes', usage_notes)
         add_if_not_empty(result, 'examples', examples)
-        add_if_not_empty(result, 'arguments', arguments)
-        add_if_not_empty(result, 'parameters', parameters)
         add_if_not_empty(result, 'returns', returns)
 
         self.logger.info(f"Scraped: {title} from {response.meta['url']}")
@@ -120,8 +144,8 @@ class SnowflakeQuerySyntaxSpider(scrapy.Spider):
 
 
 if __name__ == '__main__':
-    print("Starting scraper for Snowflake Query Syntax constructs...")
-    process = CrawlerProcess(settings=SnowflakeQuerySyntaxSpider.custom_settings)
-    process.crawl(SnowflakeQuerySyntaxSpider)
+    print("Starting scraper for all Snowflake Scripting topics...")
+    process = CrawlerProcess(settings=SnowflakeScriptingSpider.custom_settings)
+    process.crawl(SnowflakeScriptingSpider)
     process.start()
     print("Scraping completed. Data saved.")

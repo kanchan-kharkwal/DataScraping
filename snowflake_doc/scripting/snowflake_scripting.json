@@ -1,0 +1,412 @@
+[
+{
+    "url": "https://docs.snowflake.com/en/sql-reference-snowflake-scripting#snowflake-scripting-reference",
+    "title": "Snowflake Scripting reference",
+    "description": "These topics provide reference information for the language elements supported in\nSnowflake Scripting."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/snowflake-scripting/while",
+    "title": "WHILE (Snowflake Scripting)",
+    "description": "A WHILE loop iterates while a specified condition is true.",
+    "syntax": [
+        {
+            "code": "WHILE ( <condition> ) { DO | LOOP }\n    <statement>;\n    [ <statement>; ... ]\nEND { WHILE | LOOP } [ <label> ] ;"
+        }
+    ],
+    "usage notes": "Put parentheses around the condition in the\nWHILE\n. For example:\nWHILE\n(\n<condition>\n)\n.\nIf the\ncondition\nnever evaluates to FALSE, and the loop doesn’t contain a\nBREAK (Snowflake Scripting)\ncommand (or equivalent), then the loop will run and consume credits\nindefinitely.\nIf the\ncondition\nis NULL, then it is treated as FALSE.\nA loop can contain multiple statements. You can use, but are not required to use, a\nBEGIN … END\nblock\nto contain those statements.\nPair the keyword\nDO\nwith\nEND\nWHILE\n, and pair the keyword\nLOOP\nwith\nEND\nLOOP\n.\nFor example:\nPut parentheses around the condition in the\nWHILE\n. For example:\nWHILE\n(\n<condition>\n)\n.\nIf the\ncondition\nnever evaluates to FALSE, and the loop doesn’t contain a\nBREAK (Snowflake Scripting)\ncommand (or equivalent), then the loop will run and consume credits\nindefinitely.\nIf the\ncondition\nis NULL, then it is treated as FALSE.\nA loop can contain multiple statements. You can use, but are not required to use, a\nBEGIN … END\nblock\nto contain those statements.\nPair the keyword\nDO\nwith\nEND\nWHILE\n, and pair the keyword\nLOOP\nwith\nEND\nLOOP\n.\nFor example:\nWHILE\n(...)\nDO\n...\nEND WHILE\n;\nWHILE\n(...)\nLOOP\n...\nEND LOOP\n;\nCopy",
+    "examples": [
+        {
+            "title": "Examples",
+            "code": "CREATE PROCEDURE power_of_2()\nRETURNS NUMBER(8, 0)\nLANGUAGE SQL\nAS\n$$\nDECLARE\n  counter NUMBER(8, 0);      -- Loop counter.\n  power_of_2 NUMBER(8, 0);   -- Stores the most recent power of 2 that we calculated.\nBEGIN\n  counter := 1;\n  power_of_2 := 1;\n  WHILE (counter <= 8) DO\n    power_of_2 := power_of_2 * 2;\n    counter := counter + 1;\n  END WHILE;\n  RETURN power_of_2;\nEND;\n$$\n;"
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/snowflake-scripting/return",
+    "title": "RETURN (Snowflake Scripting)",
+    "description": "Returns the value of a specified expression.",
+    "syntax": [
+        {
+            "code": "RETURN <expression>;"
+        }
+    ],
+    "usage notes": "A RETURN statement can be executed in:\nA stored procedure.\nAn anonymous block.\nA RETURN statement returns one of the following types:\nA\nSQL data type\nA table. Use\nTABLE(...)\nin the\nRETURN\nstatement.\nIf your block is in a stored procedure, you must also specify the\nRETURNS\nTABLE...\nclause in the\nCREATE PROCEDURE\nstatement.\nNote\nCurrently, in the\nRETURNS\nTABLE(...)\nclause, you can’t specify GEOGRAPHY as a column type. This\napplies whether you are creating a stored or anonymous procedure.\nIf you attempt to specify GEOGRAPHY as a column type, calling the stored procedure results in the error:\nTo work around this issue, you can omit the column arguments and types in\nRETURNS\nTABLE()\n.\nIf you want to return the data that a RESULTSET points to, pass the RESULTSET to TABLE(…), as shown in the example below:\nSee\nReturning a RESULTSET as a table\n.\nYou can set a variable to the return value of a stored procedure. For more information, see\nUsing the value returned from a stored procedure call\n.\nA RETURN statement can be executed in:\nA stored procedure.\nAn anonymous block.\nA RETURN statement returns one of the following types:\nA\nSQL data type\nA table. Use\nTABLE(...)\nin the\nRETURN\nstatement.\nIf your block is in a stored procedure, you must also specify the\nRETURNS\nTABLE...\nclause in the\nCREATE PROCEDURE\nstatement.\nNote\nCurrently, in the\nRETURNS\nTABLE(...)\nclause, you can’t specify GEOGRAPHY as a column type. This\napplies whether you are creating a stored or anonymous procedure.\nCREATE\nOR\nREPLACE\nPROCEDURE\ntest_return_geography_table_1\n()\nRETURNS\nTABLE\n(\ng\nGEOGRAPHY\n)\n...\nCopy\nWITH\ntest_return_geography_table_1\n()\nAS\nPROCEDURE\nRETURNS\nTABLE\n(\ng\nGEOGRAPHY\n)\n...\nCALL\ntest_return_geography_table_1\n();\nCopy\nIf you attempt to specify GEOGRAPHY as a column type, calling the stored procedure results in the error:\nStored procedure execution error: data type of returned table does not match expected returned table type\nCopy\nTo work around this issue, you can omit the column arguments and types in\nRETURNS\nTABLE()\n.\nCREATE\nOR\nREPLACE\nPROCEDURE\ntest_return_geography_table_1\n()\nRETURNS\nTABLE\n()\n...\nCopy\nWITH\ntest_return_geography_table_1\n()\nAS\nPROCEDURE\nRETURNS\nTABLE\n()\n...\nCALL\ntest_return_geography_table_1\n();\nCopy\nIf you want to return the data that a RESULTSET points to, pass the RESULTSET to TABLE(…), as shown in the example below:\nCREATE\nPROCEDURE\n...\nRETURNS\nTABLE\n(...)\n...\nRETURN\nTABLE\n(\nmy_result_set\n);\n...\nCopy\nSee\nReturning a RESULTSET as a table\n.\nYou can set a variable to the return value of a stored procedure. For more information, see\nUsing the value returned from a stored procedure call\n.",
+    "examples": [
+        {
+            "title": "Examples",
+            "code": "DECLARE\n  my_var VARCHAR;\nBEGIN\n  my_var := 'Snowflake';\n  RETURN my_var;\nEND;"
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/snowflake-scripting/repeat",
+    "title": "REPEAT (Snowflake Scripting)",
+    "description": "A REPEAT loop iterates until a specified condition is true. A REPEAT loop tests the condition at\nthe end of the loop. This means that the body of a REPEAT loop always executes at least once.",
+    "syntax": [
+        {
+            "code": "REPEAT\n    <statement>;\n    [ <statement>; ... ]\nUNTIL ( <condition> )\nEND REPEAT [ <label> ] ;"
+        }
+    ],
+    "usage notes": "Put parentheses around the condition in the\nREPEAT\n. For example:\nREPEAT\n(\n<condition>\n)\n.\nIf the\ncondition\nnever evaluates to TRUE, and the loop does not contain a\nBREAK\ncommand (or equivalent), then the loop will run and consume credits\nindefinitely.\nIf the\ncondition\nis NULL, then it is treated as FALSE.\nA loop can contain multiple statements. You can use, but are not required to use, a\nBEGIN … END\nblock\nto contain those statements.\nPut parentheses around the condition in the\nREPEAT\n. For example:\nREPEAT\n(\n<condition>\n)\n.\nIf the\ncondition\nnever evaluates to TRUE, and the loop does not contain a\nBREAK\ncommand (or equivalent), then the loop will run and consume credits\nindefinitely.\nIf the\ncondition\nis NULL, then it is treated as FALSE.\nA loop can contain multiple statements. You can use, but are not required to use, a\nBEGIN … END\nblock\nto contain those statements.",
+    "examples": [
+        {
+            "title": "Examples",
+            "code": "CREATE PROCEDURE power_of_2()\nRETURNS NUMBER(8, 0)\nLANGUAGE SQL\nAS\n$$\nDECLARE\n    counter NUMBER(8, 0);      -- Loop counter.\n    power_of_2 NUMBER(8, 0);   -- Stores the most recent power of 2 that we calculated.\nBEGIN\n    counter := 1;\n    power_of_2 := 1;\n    REPEAT\n        power_of_2 := power_of_2 * 2;\n        counter := counter + 1;\n    UNTIL (counter > 8)\n    END REPEAT;\n    RETURN power_of_2;\nEND;\n$$;"
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/snowflake-scripting/raise",
+    "title": "RAISE (Snowflake Scripting)",
+    "description": "Raises an exception.",
+    "syntax": [
+        {
+            "code": "RAISE <exception_name> ;"
+        }
+    ],
+    "examples": [
+        {
+            "title": "Examples",
+            "code": "CREATE PROCEDURE thrower()\nRETURNS VARCHAR\nLANGUAGE SQL\nAS\n$$\n    DECLARE\n        MY_EXCEPTION EXCEPTION;\n    BEGIN\n        RAISE MY_EXCEPTION;\n    END;\n$$\n;"
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/snowflake-scripting/open",
+    "title": "OPEN (Snowflake Scripting)",
+    "description": "Opens a cursor.",
+    "syntax": [
+        {
+            "code": "OPEN <cursor_name> [ USING (bind_variable_1 [, bind_variable_2 ...] ) ] ;"
+        }
+    ],
+    "usage notes": "The result set of a query can be thought of as a set of rows. Internally, opening a cursor executes the query,\nreads the rows, and positions an internal pointer to the first of the rows.\nAs with any SQL query, if the query definition does not contain an\nORDER BY\nat the outermost level, then the result\nset has no defined order. When the result set for the cursor is created, its order persists until the cursor is\nclosed. However, re-declaring or re-opening the cursor might produce the rows in a different order.\nSimilarly, if a cursor is closed, and then the underlying table(s) are updated before it is re-opened, the\nresult set can also change.\nThe result set of a query can be thought of as a set of rows. Internally, opening a cursor executes the query,\nreads the rows, and positions an internal pointer to the first of the rows.\nAs with any SQL query, if the query definition does not contain an\nORDER BY\nat the outermost level, then the result\nset has no defined order. When the result set for the cursor is created, its order persists until the cursor is\nclosed. However, re-declaring or re-opening the cursor might produce the rows in a different order.\nSimilarly, if a cursor is closed, and then the underlying table(s) are updated before it is re-opened, the\nresult set can also change.",
+    "examples": [
+        {
+            "title": "Examples",
+            "code": "DECLARE\n    c1 CURSOR FOR SELECT price FROM invoices;\nBEGIN\n    OPEN c1;\n    ..."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/snowflake-scripting/loop",
+    "title": "LOOP (Snowflake Scripting)",
+    "description": "A LOOP loop does not specify a number of iterations or a terminating condition. The user must explicitly\nexit the loop by using BREAK or RETURN inside the loop.",
+    "syntax": [
+        {
+            "code": "LOOP\n    <statement>;\n    [ <statement>; ... ]\nEND LOOP [ <label> ] ;"
+        }
+    ],
+    "usage notes": "A\nLOOP\nrepeats until a\nBREAK\nor\nRETURN\nis executed. The\nBREAK\nor\nRETURN\ncommand is almost always\ninside a conditional expression (e.g.\nIF\nor\nCASE\n).\nA loop can contain multiple statements. You can use, but are not required to use, a\nBEGIN … END\nblock\nto contain those statements.\nA\nLOOP\nrepeats until a\nBREAK\nor\nRETURN\nis executed. The\nBREAK\nor\nRETURN\ncommand is almost always\ninside a conditional expression (e.g.\nIF\nor\nCASE\n).\nA loop can contain multiple statements. You can use, but are not required to use, a\nBEGIN … END\nblock\nto contain those statements.",
+    "examples": [
+        {
+            "title": "Examples",
+            "code": "CREATE TABLE dummy_data (ID INTEGER);\n\nCREATE PROCEDURE break_out_of_loop()\nRETURNS INTEGER\nLANGUAGE SQL\nAS\n$$\n    DECLARE\n        counter INTEGER;\n    BEGIN\n        counter := 0;\n        LOOP\n            counter := counter + 1;\n            IF (counter > 5) THEN\n                BREAK;\n            END IF;\n            INSERT INTO dummy_data (ID) VALUES (:counter);\n        END LOOP;\n        RETURN counter;\n    END;\n$$\n;"
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/snowflake-scripting/null",
+    "title": "NULL (Snowflake Scripting)",
+    "description": "NULL can be used as a “no-op” (no operation) statement.",
+    "syntax": [
+        {
+            "code": "NULL;"
+        }
+    ],
+    "usage notes": "The NULL statement can be executed only inside\nSnowflake Scripting\nscripts.\nA NULL statement in an exception handler ensures that the code continues executing rather than aborting if there is no\nhigher-level handler.\nA NULL statement in a branch does nothing; however, it communicates to the reader that the author of the code explicitly\nconsidered the condition for which the branch would execute. In other words, the NULL shows that the branch condition was not\noverlooked or accidentally omitted.\nBefore using the NULL statement, consider alternatives.\nFor example, suppose you are writing a stored procedure with an exception handler. In most stored procedures, if each\nnon-exception code path should return a value, then each code path involving an exception handler should also return a value.\nIn that case, avoid executing a NULL statement. Instead, consider explicitly returning NULL, an empty result set, or an\nerror indicator.\nThe NULL statement can be executed only inside\nSnowflake Scripting\nscripts.\nA NULL statement in an exception handler ensures that the code continues executing rather than aborting if there is no\nhigher-level handler.\nA NULL statement in a branch does nothing; however, it communicates to the reader that the author of the code explicitly\nconsidered the condition for which the branch would execute. In other words, the NULL shows that the branch condition was not\noverlooked or accidentally omitted.\nBefore using the NULL statement, consider alternatives.\nFor example, suppose you are writing a stored procedure with an exception handler. In most stored procedures, if each\nnon-exception code path should return a value, then each code path involving an exception handler should also return a value.\nIn that case, avoid executing a NULL statement. Instead, consider explicitly returning NULL, an empty result set, or an\nerror indicator."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/snowflake-scripting/let",
+    "title": "LET (Snowflake Scripting)",
+    "description": "Assigns an expression to a Snowflake Scripting variable, cursor, or RESULTSET.",
+    "syntax": [
+        {
+            "code": "LET { <variable_assignment> | <cursor_assignment> | <resultset_assignment> }"
+        },
+        {
+            "code": "LET <variable_name> <type> { DEFAULT | := } <expression> ;\n\nLET <variable_name> { DEFAULT | := } <expression> ;"
+        },
+        {
+            "code": "BEGIN\n  ...\n  LET profit NUMBER(38, 2) DEFAULT 0.0;\n  LET revenue NUMBER(38, 2) DEFAULT 110.0;\n  LET cost NUMBER(38, 2) := 100.0;\n  ..."
+        },
+        {
+            "code": "LET <cursor_name> CURSOR FOR <query> ;"
+        },
+        {
+            "code": "LET <cursor_name> CURSOR FOR <resultset_name> ;"
+        },
+        {
+            "code": "BEGIN\n  ...\n  LET c1 CURSOR FOR SELECT price FROM invoices;\n  ..."
+        },
+        {
+            "code": "<resultset_name> := ( <query> ) ;"
+        },
+        {
+            "code": "BEGIN\n  ...\n  LET res RESULTSET := (SELECT price FROM invoices);\n  ..."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/snowflake-scripting/if",
+    "title": "IF (Snowflake Scripting)",
+    "description": "An IF statement provides a way to execute a set of statements if a condition is met.",
+    "syntax": [
+        {
+            "code": "IF ( <condition> ) THEN\n    <statement>;\n    [ <statement>; ... ]\n[\nELSEIF ( <condition> ) THEN\n    <statement>;\n    [ <statement>; ... ]\n]\n[\nELSE\n    <statement>;\n    [ <statement>; ... ]\n]\nEND IF;"
+        }
+    ],
+    "usage notes": "The keyword\nTHEN\nis required.\nELSEIF\nis one word (no spaces).\nEND\nIF\nis two words.\nAfter each\nTHEN\nor\nELSE\nclause, the body allows the\nBEGIN\nand\nEND\nkeywords, but does not require\nthem, even if the body contains more than one\nstatement\n.\nIf the\ncondition\nis NULL, then it is treated as FALSE.\nThe keyword\nTHEN\nis required.\nELSEIF\nis one word (no spaces).\nEND\nIF\nis two words.\nAfter each\nTHEN\nor\nELSE\nclause, the body allows the\nBEGIN\nand\nEND\nkeywords, but does not require\nthem, even if the body contains more than one\nstatement\n.\nIf the\ncondition\nis NULL, then it is treated as FALSE.",
+    "examples": [
+        {
+            "title": "Examples",
+            "code": "CREATE OR REPLACE PROCEDURE example_if(flag INTEGER)\nRETURNS VARCHAR\nLANGUAGE SQL\nAS\n$$\nBEGIN\n  IF (FLAG = 1) THEN\n    RETURN 'one';\n  ELSEIF (FLAG = 2) THEN\n    RETURN 'two';\n  ELSE\n    RETURN 'Unexpected input.';\n  END IF;\nEND;\n$$\n;"
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/snowflake-scripting/for",
+    "title": "FOR (Snowflake Scripting)",
+    "description": "A FOR loop repeats a sequence of steps a specific number of times. The number of times might be specified by the\nuser, or might be specified by the number of rows in a cursor. The syntax\nof these two types of FOR loops is slightly different.",
+    "syntax": [
+        {
+            "code": "FOR <row_variable> IN <cursor_name> DO\n    statement;\n    [ statement; ... ]\nEND FOR [ <label> ] ;"
+        },
+        {
+            "code": "FOR <counter_variable> IN [ REVERSE ] <start> TO <end> { DO | LOOP }\n    statement;\n    [ statement; ... ]\nEND { FOR | LOOP } [ <label> ] ;"
+        }
+    ],
+    "usage notes": "The loop iterates up to and including the\nend\npoint.\nFor example,\nFOR\ni\nIN\n1\nTO\n10\nloops 10 times, and during the final iteration the value of\ni\nis 10.\nIf you use the\nREVERSE\nkeyword, then the loop iterates backwards down to and including the\nstart\nvalue.\nA loop can contain multiple statements. You can use, but are not required to use, a\nBEGIN … END (Snowflake Scripting)\nblock\nto contain those statements.\nThe optional keyword\nREVERSE\ncauses Snowflake to start with the\nend\nvalue and decrement down to the\nstart\nvalue.\nAlthough you can change the value of the\ncounter_variable\ninside the loop, Snowflake recommends that you avoid doing this.\nChanging the value makes the code more difficult to understand.\nIf you use the keyword\nDO\n, then use\nEND\nFOR\nat the end of the\nFOR\nloop. If you use the keyword\nLOOP\n, then use\nEND\nLOOP\nat the end of the\nFOR\nloop.\nThe loop iterates up to and including the\nend\npoint.\nFor example,\nFOR\ni\nIN\n1\nTO\n10\nloops 10 times, and during the final iteration the value of\ni\nis 10.\nIf you use the\nREVERSE\nkeyword, then the loop iterates backwards down to and including the\nstart\nvalue.\nA loop can contain multiple statements. You can use, but are not required to use, a\nBEGIN … END (Snowflake Scripting)\nblock\nto contain those statements.\nThe optional keyword\nREVERSE\ncauses Snowflake to start with the\nend\nvalue and decrement down to the\nstart\nvalue.\nAlthough you can change the value of the\ncounter_variable\ninside the loop, Snowflake recommends that you avoid doing this.\nChanging the value makes the code more difficult to understand.\nIf you use the keyword\nDO\n, then use\nEND\nFOR\nat the end of the\nFOR\nloop. If you use the keyword\nLOOP\n, then use\nEND\nLOOP\nat the end of the\nFOR\nloop.",
+    "examples": [
+        {
+            "title": "Examples",
+            "code": "CREATE or replace TABLE invoices (price NUMBER(12, 2));\nINSERT INTO invoices (price) VALUES\n    (11.11),\n    (22.22);"
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/snowflake-scripting/fetch",
+    "title": "FETCH (Snowflake Scripting)",
+    "description": "Uses the specified cursor to fetch one or more rows.",
+    "syntax": [
+        {
+            "code": "FETCH <cursor_name> INTO <variable> [, <variable> ... ] ;"
+        }
+    ],
+    "usage notes": "The number of\nvariable\ns should match the number of expressions selected in the\nSELECT\nclause of\nthe cursor declaration.\nIf you try to\nFETCH\na row after the last row, you get NULL values.\nA RESULTSET or CURSOR does not necessarily cache all the rows of the result set at the time that the query is executed.\nFETCH operations can experience latency.\nThe number of\nvariable\ns should match the number of expressions selected in the\nSELECT\nclause of\nthe cursor declaration.\nIf you try to\nFETCH\na row after the last row, you get NULL values.\nA RESULTSET or CURSOR does not necessarily cache all the rows of the result set at the time that the query is executed.\nFETCH operations can experience latency.",
+    "examples": [
+        {
+            "title": "Examples",
+            "code": "FETCH my_cursor_name INTO my_variable_name ;"
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/snowflake-scripting/exception",
+    "title": "EXCEPTION (Snowflake Scripting)",
+    "description": "Specifies how to handle exceptions raised in the Snowflake Scripting block.",
+    "syntax": [
+        {
+            "code": "EXCEPTION\n    WHEN <exception_name> [ OR <exception_name> ... ] THEN\n        <statement>;\n        [ <statement>; ... ]\n    [ WHEN ... ]\n    [ WHEN OTHER THEN ]\n        <statement>;\n        [ <statement>; ... ]"
+        }
+    ],
+    "usage notes": "Each\nblock\ncan have its own exception handler.\nSnowflake supports no more than one exception handler per block. However, that handler can catch more than one type\nof exception by having more than one\nWHEN\nclause.\nThe exception handler should be at the end of the block. If the block contains statements after the\nexception handler, those statements are not executed.\nThe\nWHEN\nOTHER\nTHEN\nclause catches any exception not yet specified.\nIf more than one\nWHEN\nclause could match a specific exception, then the first\nWHEN\nclause that\nmatches is the one that is executed. The other clauses are not executed.\nAn exception handler can handle a specified exception only if that specified exception is in\nscope\n.\nIf a stored procedure is intended to return a value, then it should return a value from each possible path,\nincluding\neach\nWHEN\nclause of the exception handler.\nTo use a variable in an exception handler, the variable must be declared in the\nDECLARE\nsection or passed as an argument to a\nstored procedure. It can’t be declared in the\nBEGIN … END\nsection. For more information, see\nPassing variables to an exception handler\n.\nEach\nblock\ncan have its own exception handler.\nSnowflake supports no more than one exception handler per block. However, that handler can catch more than one type\nof exception by having more than one\nWHEN\nclause.\nThe exception handler should be at the end of the block. If the block contains statements after the\nexception handler, those statements are not executed.\nThe\nWHEN\nOTHER\nTHEN\nclause catches any exception not yet specified.\nIf more than one\nWHEN\nclause could match a specific exception, then the first\nWHEN\nclause that\nmatches is the one that is executed. The other clauses are not executed.\nAn exception handler can handle a specified exception only if that specified exception is in\nscope\n.\nIf a stored procedure is intended to return a value, then it should return a value from each possible path,\nincluding\neach\nWHEN\nclause of the exception handler.\nTo use a variable in an exception handler, the variable must be declared in the\nDECLARE\nsection or passed as an argument to a\nstored procedure. It can’t be declared in the\nBEGIN … END\nsection. For more information, see\nPassing variables to an exception handler\n.",
+    "examples": [
+        {
+            "title": "Examples",
+            "code": "DECLARE\n  RESULT VARCHAR;\n  EXCEPTION_1 EXCEPTION (-20001, 'I caught the expected exception.');\n  EXCEPTION_2 EXCEPTION (-20002, 'Not the expected exception!');\nBEGIN\n  RESULT := 'If you see this, I did not catch any exception.';\n  IF (TRUE) THEN\n    RAISE EXCEPTION_1;\n  END IF;\n  RETURN RESULT;\nEXCEPTION\n  WHEN EXCEPTION_2 THEN\n    RETURN SQLERRM;\n  WHEN EXCEPTION_1 THEN\n    RETURN SQLERRM;\nEND;"
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/snowflake-scripting/declare",
+    "title": "DECLARE (Snowflake Scripting)",
+    "description": "Declares one or more Snowflake Scripting variables, cursors, RESULTSETs, nested stored procedures, or exceptions.",
+    "syntax": [
+        {
+            "code": "DECLARE\n  {   <variable_declaration>\n    | <cursor_declaration>\n    | <resultset_declaration>\n    | <nested_stored_procedure_declaration>\n    | <exception_declaration> };\n  [\n    {   <variable_declaration>\n      | <cursor_declaration>\n      | <resultset_declaration>\n      | <nested_stored_procedure_declaration>\n      | <exception_declaration> };\n    ...\n  ]"
+        },
+        {
+            "code": "<variable_declaration> ::=\n  <variable_name> [<type>] [ { DEFAULT | := } <expression>]"
+        },
+        {
+            "code": "profit NUMBER(38, 2) := 0;"
+        },
+        {
+            "code": "<cursor_declaration> ::=\n  <cursor_name> CURSOR FOR <query>"
+        },
+        {
+            "code": "c1 CURSOR FOR SELECT id, price FROM invoices;"
+        },
+        {
+            "code": "<resultset_name> RESULTSET [ { DEFAULT | := } [ ASYNC ] ( <query> ) ] ;"
+        },
+        {
+            "code": "res RESULTSET DEFAULT (SELECT col1 FROM mytable ORDER BY col1);"
+        },
+        {
+            "code": "<nested_procedure_name> PROCEDURE (\n    [ <arg_name> <arg_data_type> ] [ , ... ] )\n  RETURNS { <result_data_type> | TABLE ( [ <col_name> <col_data_type> [ , ... ] ] ) }\n  AS <nested_procedure_definition>"
+        },
+        {
+            "code": "RETURNS TABLE (sales_date DATE, quantity NUMBER)"
+        },
+        {
+            "code": "RETURNS TABLE ()"
+        },
+        {
+            "code": "CREATE OR REPLACE PROCEDURE test_return_geography_table_1()\n  RETURNS TABLE(g GEOGRAPHY)\n  ..."
+        },
+        {
+            "code": "WITH test_return_geography_table_1() AS PROCEDURE\n  RETURNS TABLE(g GEOGRAPHY)\n  ...\nCALL test_return_geography_table_1();"
+        },
+        {
+            "code": "Stored procedure execution error: data type of returned table does not match expected returned table type"
+        },
+        {
+            "code": "CREATE OR REPLACE PROCEDURE test_return_geography_table_1()\n  RETURNS TABLE()\n  ..."
+        },
+        {
+            "code": "WITH test_return_geography_table_1() AS PROCEDURE\n  RETURNS TABLE()\n  ...\nCALL test_return_geography_table_1();"
+        },
+        {
+            "code": "<exception_name> EXCEPTION [ ( <exception_number> , '<exception_message>' ) ] ;"
+        },
+        {
+            "code": "exception_could_not_create_table EXCEPTION (-20003, 'ERROR: Could not create table.');"
+        }
+    ],
+    "examples": [
+        {
+            "title": "Examples",
+            "code": "DECLARE\n  profit number(38, 2) DEFAULT 0.0;\nBEGIN\n  LET cost number(38, 2) := 100.0;\n  LET revenue number(38, 2) DEFAULT 110.0;\n\n  profit := revenue - cost;\n  RETURN profit;\nEND;"
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/snowflake-scripting/continue",
+    "title": "CONTINUE (Snowflake Scripting)",
+    "description": "CONTINUE (or ITERATE) skips the rest of the statements in the iteration of a loop and starts the next iteration of\nthe loop.",
+    "syntax": [
+        {
+            "code": "{ CONTINUE | ITERATE } [ <label> ] ;"
+        }
+    ],
+    "usage notes": "CONTINUE\nand\nITERATE\nare synonymous.\nIf the loop is embedded in another loop(s), you can break out of not only the current loop and start from the first statement in\nthe enclosing loop by including the enclosing loop’s label as part of the\nCONTINUE\n. For an example, see the examples\nsection below.\nCONTINUE\nand\nITERATE\nare synonymous.\nIf the loop is embedded in another loop(s), you can break out of not only the current loop and start from the first statement in\nthe enclosing loop by including the enclosing loop’s label as part of the\nCONTINUE\n. For an example, see the examples\nsection below.",
+    "examples": [
+        {
+            "title": "Examples",
+            "code": "DECLARE\n  counter1 NUMBER(8, 0);\n  counter2 NUMBER(8, 0);\nBEGIN\n  counter1 := 0;\n  counter2 := 0;\n  WHILE (counter1 < 3) DO\n    counter1 := counter1 + 1;\n    CONTINUE;\n    counter2 := counter2 + 1;\n  END WHILE;\n  RETURN counter2;\nEND;"
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/snowflake-scripting/close",
+    "title": "CLOSE (Snowflake Scripting)",
+    "description": "Closes the specified cursor.",
+    "syntax": [
+        {
+            "code": "CLOSE <cursor_name> ;"
+        }
+    ],
+    "usage notes": "After a cursor is closed, the cursor’s current row pointer is invalid. Re-opening the cursor causes the cursor to start from\nthe beginning of the new result set.\nAfter a cursor is closed, the cursor’s current row pointer is invalid. Re-opening the cursor causes the cursor to start from\nthe beginning of the new result set.",
+    "examples": [
+        {
+            "title": "Examples",
+            "code": "CLOSE my_cursor_name;"
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/snowflake-scripting/case",
+    "title": "CASE (Snowflake Scripting)",
+    "description": "A CASE statement provides a way to specify multiple conditions.",
+    "syntax": [
+        {
+            "code": "CASE ( <expression_to_match> )\n    WHEN <expression> THEN\n        <statement>;\n        [ <statement>; ... ]\n    [ WHEN ... ]\n    [ ELSE\n        <statement>;\n        [ <statement>; ... ]\n    ]\nEND [ CASE ] ;"
+        },
+        {
+            "code": "CASE\n    WHEN <boolean_expression> THEN\n        <statement>;\n        [ <statement>; ... ]\n    [ WHEN ... ]\n    [ ELSE\n        <statement>;\n        [ <statement>; ... ]\n    ]\nEND [ CASE ] ;"
+        }
+    ],
+    "usage notes": "If more than one branch of the\nCASE\nwould match the expression, only the first is used.\nWhen you compare expressions, NULL does not match NULL. If you wish to test explicitly for NULL values, use\nIS [ NOT ] NULL\n.\nIf more than one branch of the\nCASE\nwould match the expression, only the first is used.\nWhen you compare expressions, NULL does not match NULL. If you wish to test explicitly for NULL values, use\nIS [ NOT ] NULL\n.",
+    "examples": [
+        {
+            "title": "Examples",
+            "code": "CREATE PROCEDURE case_demo_01(v VARCHAR)\nRETURNS VARCHAR\nLANGUAGE SQL\nAS\n  BEGIN\n    CASE (v)\n      WHEN 'first choice' THEN\n        RETURN 'one';\n      WHEN 'second choice' THEN\n        RETURN 'two';\n      ELSE\n        RETURN 'unexpected choice';\n    END;\n  END;"
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/snowflake-scripting/cancel",
+    "title": "CANCEL (Snowflake Scripting)",
+    "description": "Cancels an asynchronous child job\nthat is running for a RESULTSET.",
+    "syntax": [
+        {
+            "code": "CANCEL <result_set_name> ;"
+        }
+    ],
+    "usage notes": "An asynchronous child job is created for a RESULTSET when the ASYNC keyword is specified for the query\nthat is associated with the RESULTSET.\nIf the child job for the RESULTSET has already completed, the CANCEL statement has no effect.\nAn asynchronous child job is created for a RESULTSET when the ASYNC keyword is specified for the query\nthat is associated with the RESULTSET.\nIf the child job for the RESULTSET has already completed, the CANCEL statement has no effect.",
+    "examples": [
+        {
+            "title": "Examples",
+            "code": "CANCEL my_result_set;"
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/snowflake-scripting/break",
+    "title": "BREAK (Snowflake Scripting)",
+    "description": "BREAK (or EXIT) terminates a loop.",
+    "syntax": [
+        {
+            "code": "{ BREAK | EXIT } [ <label> ] ;"
+        }
+    ],
+    "usage notes": "BREAK\nand\nEXIT\nare synonymous.\nIf the loop is embedded in another loop(s), you can exit out of not only the current loop, but also an\nenclosing loop, by including the enclosing loop’s label as part of the\nBREAK\n. For an example, see the examples\nsection below.\nBREAK\nand\nEXIT\nare synonymous.\nIf the loop is embedded in another loop(s), you can exit out of not only the current loop, but also an\nenclosing loop, by including the enclosing loop’s label as part of the\nBREAK\n. For an example, see the examples\nsection below.",
+    "examples": [
+        {
+            "title": "Examples",
+            "code": "DECLARE\n  i INTEGER;\n  j INTEGER;\nBEGIN\n  i := 1;\n  j := 1;\n  WHILE (i <= 4) DO\n    WHILE (j <= 4) DO\n      -- Exit when j is 3, even if i is still 1.\n      IF (j = 3) THEN\n        BREAK outer_loop;\n      END IF;\n      j := j + 1;\n    END WHILE inner_loop;\n    i := i + 1;\n  END WHILE outer_loop;\n  -- Execution resumes here after the BREAK executes.\n  RETURN i;\nEND;"
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/snowflake-scripting/begin",
+    "title": "BEGIN … END (Snowflake Scripting)",
+    "description": "BEGIN and END define a Snowflake Scripting block.",
+    "syntax": [
+        {
+            "code": "BEGIN\n    <statement>;\n    [ <statement>; ... ]\n[ EXCEPTION <exception_handler> ]\nEND;"
+        }
+    ],
+    "usage notes": "The keyword\nEND\nmust be followed immediately by a semicolon, or followed immediately by a label that is\nimmediately followed by a semicolon.\nThe keyword\nBEGIN\nmust\nnot\nbe followed immediately by a semicolon.\nBEGIN\nand\nEND\nare usually used inside another language construct, such as a looping or branching construct,\nor inside a stored procedure. However, this is not required. A BEGIN/END block can be the top-level construct inside\nan anonymous block.\nBlocks can be nested.\nThe keyword\nEND\nmust be followed immediately by a semicolon, or followed immediately by a label that is\nimmediately followed by a semicolon.\nThe keyword\nBEGIN\nmust\nnot\nbe followed immediately by a semicolon.\nBEGIN\nand\nEND\nare usually used inside another language construct, such as a looping or branching construct,\nor inside a stored procedure. However, this is not required. A BEGIN/END block can be the top-level construct inside\nan anonymous block.\nBlocks can be nested.",
+    "examples": [
+        {
+            "title": "Examples",
+            "code": "EXECUTE IMMEDIATE $$\nBEGIN\n    CREATE TABLE parent (ID INTEGER);\n    CREATE TABLE child (ID INTEGER, parent_ID INTEGER);\n    RETURN 'Completed';\nEND;\n$$\n;"
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/snowflake-scripting/await",
+    "title": "AWAIT (Snowflake Scripting)",
+    "description": "Waits for all asynchronous child jobs\nthat are running to finish or for a specific asynchronous child job that is running for a\nRESULTSET to finish, then returns\nwhen the all jobs have finished or the specific job has finished, respectively.",
+    "syntax": [
+        {
+            "code": "AWAIT { ALL | <result_set_name> };"
+        }
+    ],
+    "usage notes": "An asynchronous child job is created when the ASYNC keyword is specified for a query.\nFor more information, see\nWorking with asynchronous child jobs\n.\nWhen the ASYNC keyword is specified for a query, the stored procedure can’t access the query results\nuntil an AWAIT statement returns the results.\nWhen you run an asynchronous child job, “fire and forget” isn’t supported. Therefore, if the stored\nprocedure runs a child job that is still running when the stored procedure completes, the child job\nis canceled automatically.\nSnowflake Scripting supports built-in variables that you can use in the code for stored procedures.\nThese variables behave in the following ways for asynchronous child jobs:\nThe\nSQLID\nvariable is available for the query\nspecified for an asynchronous child job immediately after the asynchronous child job is created.\nThe following\nbuilt-in variables for exception handling\nare available after the AWAIT or AWAIT ALL statement associated with the asynchronous child job that\ncaused the error runs:\nSQLCODE\nSQLERRM\nSQLSTATE\nWhen an AWAIT ALL statement is associated with multiple asynchronous child jobs, these built-in variables\ncapture information about the first failing asynchronous child job.\nThe following built-in variables related to\nthe number of rows affected by DML commands\nare available after the AWAIT statement associated with the asynchronous child job for a\nRESULTSET runs:\nSQLROWCOUNT\nSQLFOUND\nSQLNOTFOUND\nThese variables aren’t available when an AWAIT ALL statement runs.\nIf an asynchronous child job fails, the AWAIT or AWAIT ALL statement associated with the asynchronous job\nfails with an error, and execution of the stored procedure stops. For example, the following stored procedure\nfails and returns an error when execution reaches the AWAIT statement:\nAn asynchronous child job is created when the ASYNC keyword is specified for a query.\nFor more information, see\nWorking with asynchronous child jobs\n.\nWhen the ASYNC keyword is specified for a query, the stored procedure can’t access the query results\nuntil an AWAIT statement returns the results.\nWhen you run an asynchronous child job, “fire and forget” isn’t supported. Therefore, if the stored\nprocedure runs a child job that is still running when the stored procedure completes, the child job\nis canceled automatically.\nSnowflake Scripting supports built-in variables that you can use in the code for stored procedures.\nThese variables behave in the following ways for asynchronous child jobs:\nThe\nSQLID\nvariable is available for the query\nspecified for an asynchronous child job immediately after the asynchronous child job is created.\nThe following\nbuilt-in variables for exception handling\nare available after the AWAIT or AWAIT ALL statement associated with the asynchronous child job that\ncaused the error runs:\nSQLCODE\nSQLERRM\nSQLSTATE\nWhen an AWAIT ALL statement is associated with multiple asynchronous child jobs, these built-in variables\ncapture information about the first failing asynchronous child job.\nThe following built-in variables related to\nthe number of rows affected by DML commands\nare available after the AWAIT statement associated with the asynchronous child job for a\nRESULTSET runs:\nSQLROWCOUNT\nSQLFOUND\nSQLNOTFOUND\nThese variables aren’t available when an AWAIT ALL statement runs.\nIf an asynchronous child job fails, the AWAIT or AWAIT ALL statement associated with the asynchronous job\nfails with an error, and execution of the stored procedure stops. For example, the following stored procedure\nfails and returns an error when execution reaches the AWAIT statement:\nBEGIN\nLET\nres\nRESULTSET\n:=\nASYNC\n(\nSELECT\n*\nFROM\ninvalid_table\n);\nAWAIT\nres\n;\nEND\n;\nCopy\n002003 (42S02): Uncaught exception of type 'STATEMENT_ERROR' on line 2 at position 4 : SQL compilation error:\nTable 'INVALID_TABLE' does not exist or not authorized.",
+    "examples": [
+        {
+            "title": "Examples",
+            "code": "AWAIT ALL;"
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/developer-guide/snowflake-scripting/index",
+    "title": "Snowflake Scripting Developer Guide",
+    "description": "Topics in this section explain how to write a stored procedure in SQL by using Snowflake Scripting.\nSnowflake Scripting is an extension to Snowflake SQL that adds support for procedural logic. You can use Snowflake Scripting to\nwrite stored procedures and procedural code outside of a stored procedure. This guide\nexplains how to use Snowflake Scripting."
+}
+]
