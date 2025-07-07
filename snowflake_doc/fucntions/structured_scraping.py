@@ -1,15 +1,18 @@
 import scrapy
 from scrapy.crawler import CrawlerProcess
 from urllib.parse import urljoin
-
-
+                
+def add_if_not_empty(target_dict, key, value):
+    if value:
+        target_dict[key] = value
+        
 class SnowflakeFunctionsSpider(scrapy.Spider):
     name = 'snowflake_functions'
     start_urls = ['https://docs.snowflake.com/en/sql-reference/functions-all']
 
     custom_settings = {
         'FEEDS': {
-            'snowflake_functions_parsed.json': {
+            'D:/Ridgeant/POC\'s/DataScraping/snowflake_doc/fucntions/all_snowflake_functions.json': {
                 'format': 'json',
                 'overwrite': True,
                 'encoding': 'utf8',
@@ -49,50 +52,56 @@ class SnowflakeFunctionsSpider(scrapy.Spider):
                 )
 
     def parse_function_details(self, response):
-        """
-        Parses each function's detail page for title, description, syntax, and examples.
-        """
-
-        # Title from <h1>
         title = response.css('main h1::text').get(default='').strip()
-
-        # Description - first paragraph in <main> (right under h1)
         description = response.css('main h1 + p::text').get(default='').strip()
 
-        # Syntax - extract full inner text even if nested inside <span>, etc.
         syntax_block = response.xpath('//section[@id="syntax"]//pre').xpath('string(.)').get()
         syntax = syntax_block.strip() if syntax_block else ''
 
-        # Examples - multiple <pre> blocks under #examples section
         example_blocks = response.xpath('//section[@id="examples"]//pre')
         examples = [ex.xpath('string(.)').get().strip() for ex in example_blocks if ex.xpath('string(.)').get()]
         example = '\n\n'.join(examples)
         
-        # Arguments
-        arg_blocks = response.xpath('//section[@id="arguments"]//p')
-        arguments = [arg.xpath('string(.)').get().strip() for arg in arg_blocks if arg.xpath('string(.)').get()]
-        arguments_text = '\n\n'.join(arguments)
+        argument_pairs = []
+        dt_dd_pairs = response.xpath('//section[@id="arguments"]//dl/*')
+        arg_name = None
+        for elem in dt_dd_pairs:
+            tag = elem.root.tag
+            if tag == 'dt':
+                arg_name = elem.xpath('.//span[@class="pre"]/text()').get()
+            elif tag == 'dd' and arg_name:
+                arg_desc = elem.xpath('.//p//text()').getall()
+                arg_desc = ' '.join([t.strip() for t in arg_desc if t.strip()])
+                argument_pairs.append({
+                    'name': arg_name.strip(),
+                    'description': arg_desc
+                })
+                arg_name = None
 
         # Return type
         returns_block = response.xpath('//section[@id="returns"]//p').xpath('string(.)').get()
         returns = returns_block.strip() if returns_block else ''
 
-        yield {
-        'function_name': response.meta['function_name'],
-        'summary': response.meta['summary'],
-        'category': response.meta['category'],
-        'url': response.meta['url'],
-        'title': title,
-        'description': description,
-        'syntax': syntax,
-        'example': example,
-        'arguments': arguments_text,
-        'returns': returns
-    }
+        result = {
+            'function_name': response.meta['function_name'],
+            'summary': response.meta['summary'],
+            'category': response.meta['category'],
+            'url': response.meta['url']
+        }
+
+        add_if_not_empty(result, 'title', title)
+        add_if_not_empty(result, 'description', description)
+        add_if_not_empty(result, 'syntax', syntax)
+        add_if_not_empty(result, 'example', example)
+        add_if_not_empty(result, 'arguments', argument_pairs)
+        add_if_not_empty(result, 'returns', returns)
+
+        yield result
+
 
 if __name__ == '__main__':
     print("Starting full scraper for Snowflake function details...")
     process = CrawlerProcess(settings=SnowflakeFunctionsSpider.custom_settings)
     process.crawl(SnowflakeFunctionsSpider)
     process.start()
-    print("Scraping completed. Data saved to 'snowflake_functions_detailed.json'")
+    print("Scraping completed. Data saved ")

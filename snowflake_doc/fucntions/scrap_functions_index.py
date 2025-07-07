@@ -7,7 +7,7 @@ class SnowflakeFunctionsSpider(scrapy.Spider):
     
     custom_settings = {
         'FEEDS': {
-            'snowflake_functions.json': {
+            'D:\Ridgeant\POC\'s\DataScraping\snowflake_doc\fucntions\snowflake_functions.json': {
                 'format': 'json',
                 'overwrite': True,
                 'encoding': 'utf8',

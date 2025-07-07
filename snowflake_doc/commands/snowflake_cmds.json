@@ -1,0 +1,2146 @@
+[
+{
+    "cmd_name": "ALTER <object>",
+    "summary": "Modifies the metadata of an account-level or database object, or the parameters for a session."
+},
+{
+    "cmd_name": "ALTER ACCOUNT",
+    "summary": "Modifies an account."
+},
+{
+    "cmd_name": "ALTER AGGREGATION POLICY",
+    "summary": "Replaces the existing rules or comment of an aggregation policy."
+},
+{
+    "cmd_name": "ALTER ALERT",
+    "summary": "Modifies the properties of an existing alert and suspends or resumes an existing alert."
+},
+{
+    "cmd_name": "ALTER API INTEGRATION",
+    "summary": "Modifies the properties of an existing API integration."
+},
+{
+    "cmd_name": "ALTER APPLICATION",
+    "summary": "Modifies the properties of an installed"
+},
+{
+    "cmd_name": "ALTER APPLICATION DROP SPECIFICATION",
+    "summary": "Drops an app specification from an app."
+},
+{
+    "cmd_name": "ALTER APPLICATION PACKAGE",
+    "summary": "Modifies the properties of an existing application package in the Native Apps Framework."
+},
+{
+    "cmd_name": "ALTER APPLICATION PACKAGE … RELEASE DIRECTIVE",
+    "summary": "Modifies the properties of an existing application package in the Native Apps Framework."
+},
+{
+    "cmd_name": "ALTER APPLICATION PACKAGE … VERSION",
+    "summary": "Modifies the versioning of an existing application package in the"
+},
+{
+    "cmd_name": "ALTER APPLICATION ROLE",
+    "summary": "Modifies the properties for an existing application role."
+},
+{
+    "cmd_name": "ALTER APPLICATION … { APPROVE | DECLINE} SPECIFICATION",
+    "summary": "Approves or declines an app specification using the specified sequence number."
+},
+{
+    "cmd_name": "ALTER APPLICATION SET SPECIFICATIONS",
+    "summary": "Creates or updates an app specification for a"
+},
+{
+    "cmd_name": "ALTER AUTHENTICATION POLICY",
+    "summary": "Modifies the properties of an authentication policy."
+},
+{
+    "cmd_name": "ALTER CATALOG INTEGRATION",
+    "summary": "Modifies the properties of an existing catalog integration."
+},
+{
+    "cmd_name": "ALTER COMPUTE POOL",
+    "summary": "Modifies the properties of an existing compute pool."
+},
+{
+    "cmd_name": "ALTER CONNECTION",
+    "summary": "Modifies the properties for an existing connection."
+},
+{
+    "cmd_name": "ALTER CONTACT",
+    "summary": "Modifies the properties of an existing contact."
+},
+{
+    "cmd_name": "ALTER CORTEX SEARCH SERVICE",
+    "summary": "Suspends, resumes, or modifies the properties of an existing Cortex Search service."
+},
+{
+    "cmd_name": "ALTER DATABASE",
+    "summary": "Modifies the properties for an existing database."
+},
+{
+    "cmd_name": "ALTER DATABASE ROLE",
+    "summary": "Modifies the properties for an existing database role."
+},
+{
+    "cmd_name": "ALTER DATASET",
+    "summary": "Modifies a dataset by adding or dropping dataset versions."
+},
+{
+    "cmd_name": "ALTER DATASET … ADD VERSION",
+    "summary": "Adds a version to a dataset."
+},
+{
+    "cmd_name": "ALTER DATASET … DROP VERSION",
+    "summary": "Drops a dataset version."
+},
+{
+    "cmd_name": "ALTER DBT PROJECT",
+    "summary": "Modifies the properties of an existing dbt project object."
+},
+{
+    "cmd_name": "ALTER DYNAMIC TABLE",
+    "summary": "Modifies the properties of a dynamic table."
+},
+{
+    "cmd_name": "ALTER EXTERNAL ACCESS INTEGRATION",
+    "summary": "Modifies the properties of an existing external access integration."
+},
+{
+    "cmd_name": "ALTER EXTERNAL TABLE",
+    "summary": "Modifies the properties, columns, or constraints for an existing external table."
+},
+{
+    "cmd_name": "ALTER EXTERNAL VOLUME",
+    "summary": "Modifies the properties for an existing external volume."
+},
+{
+    "cmd_name": "ALTER FAILOVER GROUP",
+    "summary": "Modifies the properties for an existing failover group."
+},
+{
+    "cmd_name": "ALTER FEATURE POLICY",
+    "summary": "Alters or renames a feature policy."
+},
+{
+    "cmd_name": "ALTER FILE FORMAT",
+    "summary": "Modifies the properties for an existing file format object."
+},
+{
+    "cmd_name": "ALTER FUNCTION",
+    "summary": "Modifies the properties of an existing user-defined or external function."
+},
+{
+    "cmd_name": "ALTER FUNCTION (DMF)",
+    "summary": "Modifies the properties of an existing data metric function (DMF)."
+},
+{
+    "cmd_name": "ALTER FUNCTION (Snowpark Container Services)",
+    "summary": "Modifies the properties of an existing service function."
+},
+{
+    "cmd_name": "ALTER GIT REPOSITORY",
+    "summary": "Modifies the properties of a Snowflake Git repository clone."
+},
+{
+    "cmd_name": "ALTER ICEBERG TABLE",
+    "summary": "Modifies properties such as clustering options and tags for an existing Apache Iceberg™ table."
+},
+{
+    "cmd_name": "ALTER ICEBERG TABLE … ALTER COLUMN … SET DATA TYPE",
+    "summary": "Modifies (evolves) a structured type column in a Snowflake-managed Apache Iceberg™ table."
+},
+{
+    "cmd_name": "ALTER ICEBERG TABLE … CONVERT TO MANAGED",
+    "summary": "Converts an Apache Iceberg™ table that uses an external Iceberg catalog into a table that uses Snowflake as the catalog (a Snowflake-managed Iceberg table)."
+},
+{
+    "cmd_name": "ALTER ICEBERG TABLE … REFRESH",
+    "summary": "Refreshes the metadata for an Apache Iceberg™ table that uses an external Iceberg catalog."
+},
+{
+    "cmd_name": "ALTER INTEGRATION",
+    "summary": "Modifies the properties for an existing integration."
+},
+{
+    "cmd_name": "ALTER JOIN POLICY",
+    "summary": "Replaces the existing rules or comment for a join policy."
+},
+{
+    "cmd_name": "ALTER LISTING",
+    "summary": "Modifies the properties of a listings with an inline YAML manifest, or from a file located in a stage location."
+},
+{
+    "cmd_name": "ALTER MASKING POLICY",
+    "summary": "Replaces the existing masking policy rules with new rules or a new comment and allows the renaming of a masking policy."
+},
+{
+    "cmd_name": "ALTER MATERIALIZED VIEW",
+    "summary": "Alters a materialized view in the current/specified schema."
+},
+{
+    "cmd_name": "ALTER MODEL",
+    "summary": "Modifies the properties for an existing model, including its name, tags, default version, or comment."
+},
+{
+    "cmd_name": "ALTER MODEL … ADD VERSION",
+    "summary": "Adds a new version to an existing model from an existing model version."
+},
+{
+    "cmd_name": "ALTER MODEL … DROP VERSION",
+    "summary": "Removes a version from the specified machine learning model."
+},
+{
+    "cmd_name": "ALTER MODEL … MODIFY VERSION",
+    "summary": "Modifies a version of a model, changing the version’s comment or metadata."
+},
+{
+    "cmd_name": "ALTER MODEL MONITOR",
+    "summary": "Modifies the properties of a model monitor."
+},
+{
+    "cmd_name": "ALTER NETWORK POLICY",
+    "summary": "Modifies the properties for an existing network policy."
+},
+{
+    "cmd_name": "ALTER NETWORK RULE",
+    "summary": "Modifies an existing network rule."
+},
+{
+    "cmd_name": "ALTER NOTEBOOK",
+    "summary": "Modifies the properties of an existing notebook."
+},
+{
+    "cmd_name": "ALTER NOTIFICATION INTEGRATION",
+    "summary": "Modifies the properties for an existing notification integration."
+},
+{
+    "cmd_name": "ALTER NOTIFICATION INTEGRATION (email)",
+    "summary": "Modifies the properties for an existing notification integration for sending email messages."
+},
+{
+    "cmd_name": "ALTER NOTIFICATION INTEGRATION (inbound from an Azure Event Grid topic)",
+    "summary": "Modifies the properties for an existing notification integration for receiving messages from an Azure Event Grid topic."
+},
+{
+    "cmd_name": "ALTER NOTIFICATION INTEGRATION (inbound from a Google Pub/Sub topic)",
+    "summary": "Modifies the properties for an existing notification integration for receiving messages from a Google Pub/Sub topic."
+},
+{
+    "cmd_name": "ALTER NOTIFICATION INTEGRATION (outbound to an Amazon SNS topic)",
+    "summary": "Modifies the properties for an existing notification integration for sending a message to an Amazon SNS topic."
+},
+{
+    "cmd_name": "ALTER NOTIFICATION INTEGRATION (outbound to an Azure Event Grid topic)",
+    "summary": "Modifies the properties for an existing notification integration for sending a message to an Azure Event Grid topic."
+},
+{
+    "cmd_name": "ALTER NOTIFICATION INTEGRATION (outbound to a Google Pub/Sub topic)",
+    "summary": "Modifies the properties for an existing notification integration for sending a message to a Google Pub/Sub topic."
+},
+{
+    "cmd_name": "ALTER NOTIFICATION INTEGRATION (webhooks)",
+    "summary": "Modifies the properties for an existing notification integration for a webhook."
+},
+{
+    "cmd_name": "ALTER ORGANIZATION ACCOUNT",
+    "summary": "Modifies the properties of an existing organization account."
+},
+{
+    "cmd_name": "ALTER ORGANIZATION PROFILE",
+    "summary": "Modifies the properties of an organization profile."
+},
+{
+    "cmd_name": "ALTER ORGANIZATION USER",
+    "summary": "Modifies the properties of an existing organization user."
+},
+{
+    "cmd_name": "ALTER ORGANIZATION USER GROUP",
+    "summary": "Modifies the properties of an existing organization user group."
+},
+{
+    "cmd_name": "ALTER PACKAGES POLICY",
+    "summary": "Modifies the properties for an existing packages policy."
+},
+{
+    "cmd_name": "ALTER PASSWORD POLICY",
+    "summary": "Modifies the properties for an existing password policy."
+},
+{
+    "cmd_name": "ALTER PIPE",
+    "summary": "Modifies a limited set of properties for an existing pipe object."
+},
+{
+    "cmd_name": "ALTER PRIVACY POLICY",
+    "summary": "Modifies the properties of an existing privacy policy."
+},
+{
+    "cmd_name": "ALTER PROCEDURE",
+    "summary": "Modifies the properties for an existing stored procedure."
+},
+{
+    "cmd_name": "ALTER PROJECTION POLICY",
+    "summary": "Replaces the existing projection policy rules with new rules or a new comment and allows the renaming of a projection policy."
+},
+{
+    "cmd_name": "ALTER REPLICATION GROUP",
+    "summary": "Modifies the properties for an existing replication group."
+},
+{
+    "cmd_name": "ALTER RESOURCE MONITOR",
+    "summary": "Modifies the properties and triggers for an existing resource monitor."
+},
+{
+    "cmd_name": "ALTER ROLE",
+    "summary": "Modifies the properties for an existing custom role."
+},
+{
+    "cmd_name": "ALTER ROW ACCESS POLICY",
+    "summary": "Modifies the properties for an existing row access policy, including renaming the policy or replacing the policy rules."
+},
+{
+    "cmd_name": "ALTER SCHEMA",
+    "summary": "Modifies the properties for an existing schema, including renaming the schema or swapping it with another schema, and changing the Time Travel data retention period (if you are using Snowflake Enterprise Edition or higher)."
+},
+{
+    "cmd_name": "ALTER SECRET",
+    "summary": "Modifies the properties of an existing secret."
+},
+{
+    "cmd_name": "ALTER SECURITY INTEGRATION",
+    "summary": "Modifies the properties for an existing security integration."
+},
+{
+    "cmd_name": "ALTER SECURITY INTEGRATION (External API Authentication)",
+    "summary": "Modifies the properties of an existing security integration created for External API Authentication."
+},
+{
+    "cmd_name": "ALTER SECURITY INTEGRATION (AWS IAM Authentication)",
+    "summary": "Modifies the properties of an existing security integration created for authenticating with AWS IAM."
+},
+{
+    "cmd_name": "ALTER SECURITY INTEGRATION (External OAuth)",
+    "summary": "Modifies the properties of an existing security integration created for External OAuth."
+},
+{
+    "cmd_name": "ALTER SECURITY INTEGRATION (Snowflake OAuth)",
+    "summary": "Modifies the properties of an existing security integration created for a Snowflake OAuth client."
+},
+{
+    "cmd_name": "ALTER SECURITY INTEGRATION (SAML2)",
+    "summary": "Modifies the properties of an existing SAML2 security integration."
+},
+{
+    "cmd_name": "ALTER SECURITY INTEGRATION (SCIM)",
+    "summary": "Modifies the properties of an existing SCIM security integration."
+},
+{
+    "cmd_name": "ALTER SEQUENCE",
+    "summary": "Modifies the properties for an existing sequence."
+},
+{
+    "cmd_name": "ALTER SERVICE",
+    "summary": "Modifies Snowpark Container Services service configuration, upgrades the code for the service, and allows you to suspend or resume a service."
+},
+{
+    "cmd_name": "ALTER SESSION",
+    "summary": "Sets parameters that change the behavior for the current session."
+},
+{
+    "cmd_name": "ALTER SESSION POLICY",
+    "summary": "Modifies the properties for an existing session policy."
+},
+{
+    "cmd_name": "ALTER SHARE",
+    "summary": "Modifies the properties for an existing share."
+},
+{
+    "cmd_name": "ALTER SNAPSHOT",
+    "summary": "Modifies the properties of an existing snapshot."
+},
+{
+    "cmd_name": "ALTER STAGE",
+    "summary": "Modifies the properties for an existing named internal or external stage."
+},
+{
+    "cmd_name": "ALTER STORAGE INTEGRATION",
+    "summary": "Modifies the properties for an existing storage integration."
+},
+{
+    "cmd_name": "ALTER STREAM",
+    "summary": "Modifies the properties, columns, or constraints for an existing stream."
+},
+{
+    "cmd_name": "ALTER STREAMLIT",
+    "summary": "Modifies the properties of an existing Streamlit object."
+},
+{
+    "cmd_name": "ALTER TABLE",
+    "summary": "Modifies the properties, columns, or constraints for an existing table."
+},
+{
+    "cmd_name": "ALTER TABLE … ALTER COLUMN",
+    "summary": "This topic describes how to modify one or more column properties for a table using an ALTER COLUMN clause in a ALTER TABLE statement."
+},
+{
+    "cmd_name": "ALTER TABLE (event tables)",
+    "summary": "Modifies the properties, columns, or constraints for an existing event table."
+},
+{
+    "cmd_name": "ALTER TAG",
+    "summary": "Modifies the properties for an existing tag, including renaming the tag and setting a masking policy on a tag."
+},
+{
+    "cmd_name": "ALTER TASK",
+    "summary": "Modifies the properties for an existing task."
+},
+{
+    "cmd_name": "ALTER USER",
+    "summary": "Modifies the properties and object/session parameters for an existing user in the system."
+},
+{
+    "cmd_name": "ALTER USER … ADD PROGRAMMATIC ACCESS TOKEN (PAT)",
+    "summary": "Creates a programmatic access token for a user."
+},
+{
+    "cmd_name": "ALTER USER … MODIFY PROGRAMMATIC ACCESS TOKEN (PAT)",
+    "summary": "Changes the name of a programmatic access token or a property of the token."
+},
+{
+    "cmd_name": "ALTER USER … REMOVE PROGRAMMATIC ACCESS TOKEN (PAT)",
+    "summary": "Revokes a programmatic access token for a user."
+},
+{
+    "cmd_name": "ALTER USER … ROTATE PROGRAMMATIC ACCESS TOKEN (PAT)",
+    "summary": "Rotates programmatic access token, generating a new token secret with an extended expiration time, and expiring the existing token secret."
+},
+{
+    "cmd_name": "ALTER VIEW",
+    "summary": "Modifies the properties for an existing view."
+},
+{
+    "cmd_name": "ALTER WAREHOUSE",
+    "summary": "Suspends or resumes a virtual warehouse, or aborts all queries (and other SQL statements) for a warehouse."
+},
+{
+    "cmd_name": "BEGIN",
+    "summary": "Begins a transaction in the current session."
+},
+{
+    "cmd_name": "CALL",
+    "summary": "Calls a stored procedure."
+},
+{
+    "cmd_name": "CALL (with anonymous procedure)",
+    "summary": "Creates and calls an anonymous procedure that is like a stored procedure but is not stored for later use."
+},
+{
+    "cmd_name": "COMMENT",
+    "summary": "Adds a comment or overwrites an existing comment for an existing object."
+},
+{
+    "cmd_name": "COMMIT",
+    "summary": "Commits an open transaction in the current session."
+},
+{
+    "cmd_name": "COPY FILES",
+    "summary": "Copy files from a source stage to an output stage."
+},
+{
+    "cmd_name": "COPY INTO <location>",
+    "summary": "Unloads data from a table (or query) into one or more files in one of the following locations."
+},
+{
+    "cmd_name": "COPY INTO <table>",
+    "summary": "Loads data from files to an existing table."
+},
+{
+    "cmd_name": "CREATE <object>",
+    "summary": "Creates a new object of the specified type."
+},
+{
+    "cmd_name": "CREATE ACCOUNT",
+    "summary": "Creates a new account in your organization."
+},
+{
+    "cmd_name": "CREATE AGGREGATION POLICY",
+    "summary": "Creates a new aggregation policy in the current/specified schema or replaces an existing aggregation policy."
+},
+{
+    "cmd_name": "CREATE ALERT",
+    "summary": "Creates a new alert in the current schema."
+},
+{
+    "cmd_name": "CREATE API INTEGRATION",
+    "summary": "Creates a new API integration object in the account or replaces an existing API integration."
+},
+{
+    "cmd_name": "CREATE APPLICATION",
+    "summary": "Creates a new application object using an application package or listing."
+},
+{
+    "cmd_name": "CREATE APPLICATION PACKAGE",
+    "summary": "Creates a new application package that contains the data content and application logic of"
+},
+{
+    "cmd_name": "CREATE APPLICATION ROLE",
+    "summary": "Creates a new application role or replaces an existing application role."
+},
+{
+    "cmd_name": "CREATE AUTHENTICATION POLICY",
+    "summary": "Creates a new authentication policy in the current or specified schema or replaces an existing authentication policy."
+},
+{
+    "cmd_name": "CREATE CATALOG INTEGRATION",
+    "summary": "Creates a new catalog integration for Apache Iceberg™ tables in the account or replaces an existing catalog integration."
+},
+{
+    "cmd_name": "CREATE CATALOG INTEGRATION (AWS Glue)",
+    "summary": "Creates a new catalog integration in the account or replaces an existing catalog integration for Apache Iceberg™ tables that use AWS Glue as the catalog."
+},
+{
+    "cmd_name": "CREATE CATALOG INTEGRATION (Object storage)",
+    "summary": "Creates a new catalog integration in the account or replaces an existing catalog integration for the following sources."
+},
+{
+    "cmd_name": "CREATE CATALOG INTEGRATION (Snowflake Open Catalog)",
+    "summary": "Creates a new catalog integration for Apache Iceberg™ tables that integrate with Snowflake Open Catalog in the account or replaces an existing catalog integration."
+},
+{
+    "cmd_name": "CREATE CATALOG INTEGRATION (Apache Iceberg™ REST)",
+    "summary": "Creates a new catalog integration in the account or replaces an existing catalog integration for Apache Iceberg™ tables managed in a remote catalog that complies with the open source Apache Iceberg™ REST OpenAPI specification."
+},
+{
+    "cmd_name": "CREATE <object> … CLONE",
+    "summary": "Creates a copy of an existing object in the system."
+},
+{
+    "cmd_name": "CREATE COMPUTE POOL",
+    "summary": "Creates a new compute pool in the current account."
+},
+{
+    "cmd_name": "CREATE CONNECTION",
+    "summary": "Creates a new connection in the account."
+},
+{
+    "cmd_name": "CREATE CONTACT",
+    "summary": "Creates a new contact or replaces an existing contact."
+},
+{
+    "cmd_name": "CREATE CORTEX SEARCH SERVICE",
+    "summary": "Creates a new Cortex Search service or replaces an existing one."
+},
+{
+    "cmd_name": "CREATE DATA METRIC FUNCTION",
+    "summary": "Creates a new data metric function (DMF) in the current or specified schema, or replaces an existing data metric function."
+},
+{
+    "cmd_name": "CREATE DATABASE",
+    "summary": "Creates a new database in the system."
+},
+{
+    "cmd_name": "CREATE DATABASE ROLE",
+    "summary": "Create a new database role or replace an existing database role in the system."
+},
+{
+    "cmd_name": "CREATE DATASET",
+    "summary": "Creates a new machine learning dataset in the current schema or the schema that you specify."
+},
+{
+    "cmd_name": "CREATE DBT PROJECT",
+    "summary": "Creates a new dbt project object or replaces an existing dbt project."
+},
+{
+    "cmd_name": "CREATE DYNAMIC TABLE",
+    "summary": "Creates a dynamic table, based on a specified query."
+},
+{
+    "cmd_name": "CREATE EVENT TABLE",
+    "summary": "Creates an event table that captures events, including logged messages from functions and procedures."
+},
+{
+    "cmd_name": "CREATE EXTERNAL ACCESS INTEGRATION",
+    "summary": "Creates an external access integration for access to external network locations from a UDF or procedure handler."
+},
+{
+    "cmd_name": "CREATE EXTERNAL FUNCTION",
+    "summary": "Creates a new external function."
+},
+{
+    "cmd_name": "CREATE EXTERNAL TABLE",
+    "summary": "Creates a new external table in the current/specified schema or replaces an existing external table."
+},
+{
+    "cmd_name": "CREATE EXTERNAL VOLUME",
+    "summary": "Creates a new external volume for Apache Iceberg™ tables in the account or replaces an existing external volume."
+},
+{
+    "cmd_name": "CREATE FAILOVER GROUP",
+    "summary": "Creates a new failover group of specified objects in the system."
+},
+{
+    "cmd_name": "CREATE FEATURE POLICY",
+    "summary": "Creates a new feature policy."
+},
+{
+    "cmd_name": "CREATE FILE FORMAT",
+    "summary": "Creates a named file format that describes a set of staged data to access or load into Snowflake tables."
+},
+{
+    "cmd_name": "CREATE FUNCTION",
+    "summary": "Creates a new UDF (user-defined function)."
+},
+{
+    "cmd_name": "CREATE FUNCTION (Snowpark Container Services)",
+    "summary": "Creates a service function."
+},
+{
+    "cmd_name": "CREATE GIT REPOSITORY",
+    "summary": "Creates a Snowflake Git repository clone in the schema or replaces an existing Git repository clone."
+},
+{
+    "cmd_name": "CREATE HYBRID TABLE",
+    "summary": "Creates a new hybrid table in the current/specified schema or replaces an existing table."
+},
+{
+    "cmd_name": "CREATE ICEBERG TABLE",
+    "summary": "Creates or replaces an Apache Iceberg™ table in the current/specified schema."
+},
+{
+    "cmd_name": "CREATE ICEBERG TABLE (AWS Glue as the Iceberg catalog)",
+    "summary": "Creates or replaces an Apache Iceberg™ table in the current/specified schema using an Iceberg table that is registered in the AWS Glue Data Catalog."
+},
+{
+    "cmd_name": "CREATE ICEBERG TABLE (Delta files in object storage)",
+    "summary": "Creates or replaces an Apache Iceberg™ table in the current/specified schema using Delta table files in object storage (external cloud storage)."
+},
+{
+    "cmd_name": "CREATE ICEBERG TABLE (Iceberg files in object storage)",
+    "summary": "Creates or replaces an Apache Iceberg™ table in the current/specified schema using Iceberg files in object storage (external cloud storage)."
+},
+{
+    "cmd_name": "CREATE ICEBERG TABLE (Iceberg REST catalog)",
+    "summary": "Creates or replaces an Apache Iceberg™ table in the current/specified schema for an Iceberg REST catalog."
+},
+{
+    "cmd_name": "CREATE ICEBERG TABLE (Snowflake as the Iceberg catalog)",
+    "summary": "Creates or replaces an Apache Iceberg™ table that uses Snowflake as the Iceberg catalog in the current/specified schema."
+},
+{
+    "cmd_name": "CREATE IMAGE REPOSITORY",
+    "summary": "Creates a new image repository in the current schema."
+},
+{
+    "cmd_name": "CREATE INDEX",
+    "summary": "Creates a new secondary index in an existing hybrid table and populates the index with data."
+},
+{
+    "cmd_name": "CREATE INTEGRATION",
+    "summary": "Creates a new integration in the system or replaces an existing integration."
+},
+{
+    "cmd_name": "CREATE JOIN POLICY",
+    "summary": "Creates a new join policy in the current/specified schema or replaces an existing join policy."
+},
+{
+    "cmd_name": "CREATE LISTING",
+    "summary": "Create a free listing to share directly with specific consumers, with an inline YAML manifest, or from a file located in a stage location."
+},
+{
+    "cmd_name": "CREATE MANAGED ACCOUNT",
+    "summary": "Creates a new managed account."
+},
+{
+    "cmd_name": "CREATE MASKING POLICY",
+    "summary": "Creates a new masking policy in the current/specified schema or replaces an existing masking policy."
+},
+{
+    "cmd_name": "CREATE MATERIALIZED VIEW",
+    "summary": "Creates a new materialized view in the current/specified schema, based on a query of an existing table, and populates the view with data."
+},
+{
+    "cmd_name": "CREATE MODEL",
+    "summary": "Creates a new machine learning model in the current/specified schema or replaces an existing model."
+},
+{
+    "cmd_name": "CREATE MODEL MONITOR",
+    "summary": "Create or replace a model monitor in the current or specified schema."
+},
+{
+    "cmd_name": "CREATE NETWORK POLICY",
+    "summary": "Creates a network policy or replaces an existing network policy."
+},
+{
+    "cmd_name": "CREATE NETWORK RULE",
+    "summary": "Creates a network rule or replaces an existing network rule."
+},
+{
+    "cmd_name": "CREATE NOTEBOOK",
+    "summary": "Creates a new Snowflake notebook or replaces an existing notebook."
+},
+{
+    "cmd_name": "CREATE NOTIFICATION INTEGRATION",
+    "summary": "Creates a new notification integration in the account or replaces an existing integration."
+},
+{
+    "cmd_name": "CREATE NOTIFICATION INTEGRATION (email)",
+    "summary": "Creates a new notification integration in the account or replaces an existing integration for sending email messages."
+},
+{
+    "cmd_name": "CREATE NOTIFICATION INTEGRATION (inbound from an Azure Event Grid topic)",
+    "summary": "Creates a new notification integration in the account or replaces an existing integration for receiving messages from an Azure Event Grid topic."
+},
+{
+    "cmd_name": "CREATE NOTIFICATION INTEGRATION (inbound from a Google Pub/Sub topic)",
+    "summary": "Creates a new notification integration in the account or replaces an existing integration for receiving messages from a Google Pub/Sub topic."
+},
+{
+    "cmd_name": "CREATE NOTIFICATION INTEGRATION (outbound to an Amazon SNS topic)",
+    "summary": "Creates a new notification integration in the account or replaces an existing integration for sending a message to an Amazon SNS topic."
+},
+{
+    "cmd_name": "CREATE NOTIFICATION INTEGRATION (outbound to an Azure Event Grid topic)",
+    "summary": "Creates a new notification integration in the account or replaces an existing integration for sending a message to an Azure Event Grid topic."
+},
+{
+    "cmd_name": "CREATE NOTIFICATION INTEGRATION (outbound to a Google Pub/Sub topic)",
+    "summary": "Creates a new notification integration in the account or replaces an existing integration for sending a message to a Google Pub/Sub topic."
+},
+{
+    "cmd_name": "CREATE NOTIFICATION INTEGRATION (webhooks)",
+    "summary": "Creates a new notification integration or replaces an existing integration for a webhook."
+},
+{
+    "cmd_name": "CREATE OR ALTER <object>",
+    "summary": "CREATE OR ALTER commands are DDL commands that combine the functionality of the CREATE command and the ALTER command, enabling you to define an object using the syntax supported by the CREATE <object> command with the limitations of the ALTER <object> command."
+},
+{
+    "cmd_name": "CREATE ORGANIZATION ACCOUNT",
+    "summary": "Creates a new organization account."
+},
+{
+    "cmd_name": "CREATE ORGANIZATION LISTING",
+    "summary": "Create an organization listing to share data products securely within your organization."
+},
+{
+    "cmd_name": "CREATE ORGANIZATION PROFILE",
+    "summary": "Create the organization profile that forms part of the Uniform Listing Locator (ULL) used to publish organizational listings or query organizational listing information without mounting the listing."
+},
+{
+    "cmd_name": "CREATE ORGANIZATION USER",
+    "summary": "Creates a new organization user."
+},
+{
+    "cmd_name": "CREATE ORGANIZATION USER GROUP",
+    "summary": "Creates a new organization user group."
+},
+{
+    "cmd_name": "CREATE PACKAGES POLICY",
+    "summary": "Creates a new packages policy or replaces an existing packages policy."
+},
+{
+    "cmd_name": "CREATE PASSWORD POLICY",
+    "summary": "Creates a new password policy or replaces an existing password policy."
+},
+{
+    "cmd_name": "CREATE PIPE",
+    "summary": "Creates a new pipe in the system for defining the COPY INTO <table> statement used by Snowpipe to load data from an ingestion queue into tables."
+},
+{
+    "cmd_name": "CREATE PRIVACY POLICY",
+    "summary": "Creates a new privacy policy or replaces an existing privacy policy."
+},
+{
+    "cmd_name": "CREATE PROCEDURE",
+    "summary": "Creates a new stored procedure."
+},
+{
+    "cmd_name": "CREATE PROJECTION POLICY",
+    "summary": "Creates a new projection policy in the current/specified schema or replaces an existing projection policy."
+},
+{
+    "cmd_name": "CREATE PROVISIONED THROUGHPUT",
+    "summary": "Creates a new Provisioned Throughput resource or replaces an existing one."
+},
+{
+    "cmd_name": "CREATE REPLICATION GROUP",
+    "summary": "Creates a new replication group of specified objects in the system."
+},
+{
+    "cmd_name": "CREATE RESOURCE MONITOR",
+    "summary": "Creates a new resource monitor."
+},
+{
+    "cmd_name": "CREATE ROLE",
+    "summary": "Create a new role or replace an existing role in the system."
+},
+{
+    "cmd_name": "CREATE ROW ACCESS POLICY",
+    "summary": "Creates a new row access policy in the current/specified schema or replaces an existing row access policy."
+},
+{
+    "cmd_name": "CREATE SCHEMA",
+    "summary": "Creates a new schema in the current database."
+},
+{
+    "cmd_name": "CREATE SECRET",
+    "summary": "Creates a new secret in the current or specified schema or replaces an existing secret."
+},
+{
+    "cmd_name": "CREATE SECURITY INTEGRATION",
+    "summary": "Creates a new security integration in the account or replaces an existing integration."
+},
+{
+    "cmd_name": "CREATE SECURITY INTEGRATION (External API Authentication)",
+    "summary": "Creates a new security integration for external API Authentication in the account or replaces an existing integration."
+},
+{
+    "cmd_name": "CREATE SECURITY INTEGRATION (AWS IAM Authentication)",
+    "summary": "Creates a new security integration for external authentication using Amazon Web Services (AWS) Identity and Access Management (IAM)."
+},
+{
+    "cmd_name": "CREATE SECURITY INTEGRATION (External OAuth)",
+    "summary": "Creates a new External OAuth security integration in the account or replaces an existing integration."
+},
+{
+    "cmd_name": "CREATE SECURITY INTEGRATION (Snowflake OAuth)",
+    "summary": "Creates a new Snowflake OAuth security integration in the account or replaces an existing integration."
+},
+{
+    "cmd_name": "CREATE SECURITY INTEGRATION (SAML2)",
+    "summary": "Creates a new SAML2 security integration in the account or replaces an existing integration."
+},
+{
+    "cmd_name": "CREATE SECURITY INTEGRATION (SCIM)",
+    "summary": "Creates a new SCIM security integration in the account or replaces an existing integration."
+},
+{
+    "cmd_name": "CREATE SEMANTIC VIEW",
+    "summary": "Creates a new semantic view in the current/specified schema."
+},
+{
+    "cmd_name": "CREATE SEQUENCE",
+    "summary": "Creates a new sequence, which can be used for generating sequential, unique numbers."
+},
+{
+    "cmd_name": "CREATE SERVICE",
+    "summary": "Creates a new Snowpark Container Services service in the current schema."
+},
+{
+    "cmd_name": "CREATE SESSION POLICY",
+    "summary": "Creates a new session policy or replaces an existing session policy."
+},
+{
+    "cmd_name": "CREATE SHARE",
+    "summary": "Creates a new, empty share."
+},
+{
+    "cmd_name": "CREATE SNAPSHOT",
+    "summary": "Creates or replaces a snapshot of a named volume from the specified service instance."
+},
+{
+    "cmd_name": "CREATE STAGE",
+    "summary": "Creates a new named internal or external stage to use for loading data from files into Snowflake tables and unloading data from tables into files."
+},
+{
+    "cmd_name": "CREATE STORAGE INTEGRATION",
+    "summary": "Creates a new storage integration in the account or replaces an existing integration."
+},
+{
+    "cmd_name": "CREATE STREAM",
+    "summary": "Creates a new stream in the current/specified schema or replaces an existing stream."
+},
+{
+    "cmd_name": "CREATE STREAMLIT",
+    "summary": "Creates a new Streamlit application object in Snowflake or replaces an existing Streamlit application object in the same schema."
+},
+{
+    "cmd_name": "CREATE TABLE",
+    "summary": "Creates a new table in the current/specified schema, replaces an existing table, or alters an existing table."
+},
+{
+    "cmd_name": "CREATE | ALTER TABLE … CONSTRAINT",
+    "summary": "This topic describes how to create constraints by specifying a CONSTRAINT clause in a CREATE TABLE, CREATE HYBRID TABLE, or ALTER TABLE statement."
+},
+{
+    "cmd_name": "CREATE TAG",
+    "summary": "Creates a new tag or replaces an existing tag in the system."
+},
+{
+    "cmd_name": "CREATE TASK",
+    "summary": "Creates a new task in the current/specified schema or replaces an existing task."
+},
+{
+    "cmd_name": "CREATE USER",
+    "summary": "Creates a new user or replaces an existing user in the system."
+},
+{
+    "cmd_name": "CREATE OR ALTER VERSIONED SCHEMA",
+    "summary": "Creates a new versioned schema or modifies an existing versioned schema."
+},
+{
+    "cmd_name": "CREATE VIEW",
+    "summary": "Creates a new view in the current/specified schema, based on a query of one or more existing tables (or any other valid query expression)."
+},
+{
+    "cmd_name": "CREATE WAREHOUSE",
+    "summary": "Creates a new virtual warehouse in the system."
+},
+{
+    "cmd_name": "DELETE",
+    "summary": "Remove rows from a table."
+},
+{
+    "cmd_name": "DESCRIBE <object>",
+    "summary": "Describes the details for the specified object."
+},
+{
+    "cmd_name": "DESCRIBE AGGREGATION POLICY",
+    "summary": "Describes the details about an aggregation policy, including the creation date, name, and the SQL expression."
+},
+{
+    "cmd_name": "DESCRIBE ALERT",
+    "summary": "Describes the properties of an alert."
+},
+{
+    "cmd_name": "DESCRIBE APPLICATION",
+    "summary": "Displays information about a"
+},
+{
+    "cmd_name": "DESCRIBE AUTHENTICATION POLICY",
+    "summary": "Describes the properties of an authentication policy."
+},
+{
+    "cmd_name": "DESCRIBE AVAILABLE LISTING",
+    "summary": "Describes the columns in the listings that are available to the user who runs the command."
+},
+{
+    "cmd_name": "DESCRIBE AVAILABLE ORGANIZATION PROFILE",
+    "summary": "Describes the active organization profile that can be associated with organizational listings."
+},
+{
+    "cmd_name": "DESCRIBE CATALOG INTEGRATION",
+    "summary": "Describes the properties of a catalog integration."
+},
+{
+    "cmd_name": "DESCRIBE COMPUTE POOL",
+    "summary": "Describes the properties of a compute pool."
+},
+{
+    "cmd_name": "DESCRIBE CORTEX SEARCH SERVICE",
+    "summary": "Describes the properties of a Cortex Search service."
+},
+{
+    "cmd_name": "DESCRIBE DATABASE",
+    "summary": "Describes the database."
+},
+{
+    "cmd_name": "DESCRIBE DBT PROJECT",
+    "summary": "Describes the properties of a dbt project object."
+},
+{
+    "cmd_name": "DESCRIBE DYNAMIC TABLE",
+    "summary": "Describes the columns in a dynamic table."
+},
+{
+    "cmd_name": "DESCRIBE EVENT TABLE",
+    "summary": "Describes the columns in an event table."
+},
+{
+    "cmd_name": "DESCRIBE EXTERNAL TABLE",
+    "summary": "Describes the VALUE column and virtual columns in an external table."
+},
+{
+    "cmd_name": "DESCRIBE EXTERNAL VOLUME",
+    "summary": "Describes the properties of an external volume."
+},
+{
+    "cmd_name": "DESCRIBE FEATURE POLICY",
+    "summary": "Describes the properties of a feature policy."
+},
+{
+    "cmd_name": "DESCRIBE FILE FORMAT",
+    "summary": "Describes the property type (for example, String or Integer), the defined value of the property, and the default value for each property in a file format object definition."
+},
+{
+    "cmd_name": "DESCRIBE FUNCTION",
+    "summary": "Describes the specified user-defined function (UDF) or external function, including the signature (i.e. arguments), return value, language, and body (i.e. definition)."
+},
+{
+    "cmd_name": "DESCRIBE FUNCTION (DMF)",
+    "summary": "Describes the specified data metric function (DMF), including the signature (arguments), return value, language, and body (definition)."
+},
+{
+    "cmd_name": "DESCRIBE FUNCTION (Snowpark Container Services)",
+    "summary": "Describes the specified service function, including the signature (arguments), return value, language, and body (path to the Snowpark Container Services service)."
+},
+{
+    "cmd_name": "DESCRIBE GIT REPOSITORY",
+    "summary": "Describes an existing Snowflake Git repository clone."
+},
+{
+    "cmd_name": "DESCRIBE ICEBERG TABLE",
+    "summary": "Describes either the columns in an Apache Iceberg™ table or the current values, as well as the default values, for the properties of an Iceberg table."
+},
+{
+    "cmd_name": "DESCRIBE INTEGRATION",
+    "summary": "Describes the properties of an integration."
+},
+{
+    "cmd_name": "DESCRIBE JOIN POLICY",
+    "summary": "Describes the details about a join policy, including the creation date, name, and the SQL expression."
+},
+{
+    "cmd_name": "DESCRIBE LISTING",
+    "summary": "Describes the columns in a listing."
+},
+{
+    "cmd_name": "DESCRIBE MASKING POLICY",
+    "summary": "Describes the details about a masking policy, including the creation date, name, data type, and SQL expression."
+},
+{
+    "cmd_name": "DESCRIBE MATERIALIZED VIEW",
+    "summary": "Describes the columns in a materialized view."
+},
+{
+    "cmd_name": "DESCRIBE MODEL MONITOR",
+    "summary": "Displays information about a specific model monitor."
+},
+{
+    "cmd_name": "DESCRIBE NETWORK POLICY",
+    "summary": "Describes the properties specified for a network policy."
+},
+{
+    "cmd_name": "DESCRIBE NETWORK RULE",
+    "summary": "Describes the properties specified for a network rule."
+},
+{
+    "cmd_name": "DESCRIBE NOTEBOOK",
+    "summary": "Describes the properties of a notebook."
+},
+{
+    "cmd_name": "DESCRIBE NOTIFICATION INTEGRATION",
+    "summary": "Describes the properties of a notification integration."
+},
+{
+    "cmd_name": "DESCRIBE ORGANIZATION PROFILE",
+    "summary": "Describes the properties of an organization profile."
+},
+{
+    "cmd_name": "DESCRIBE PACKAGES POLICY",
+    "summary": "Describes the details about a packages policy."
+},
+{
+    "cmd_name": "DESCRIBE PASSWORD POLICY",
+    "summary": "Describes the details about a password policy."
+},
+{
+    "cmd_name": "DESCRIBE PIPE",
+    "summary": "Describes the properties specified for a pipe, as well as the default values of the properties."
+},
+{
+    "cmd_name": "DESCRIBE PRIVACY POLICY",
+    "summary": "Describes the properties of a privacy policy."
+},
+{
+    "cmd_name": "DESCRIBE PROCEDURE",
+    "summary": "Describes the specified stored procedure, including the stored procedure’s signature (i.e. arguments), return value, language, and body (i.e. definition)."
+},
+{
+    "cmd_name": "DESCRIBE PROJECTION POLICY",
+    "summary": "Describes the details about a projection policy, including the creation date, name, and the SQL expression."
+},
+{
+    "cmd_name": "DESCRIBE RESULT",
+    "summary": "Describes the columns in the result of a query."
+},
+{
+    "cmd_name": "DESCRIBE ROW ACCESS POLICY",
+    "summary": "Describes a row access policy, including the creation date, name, data type, and SQL expression."
+},
+{
+    "cmd_name": "DESCRIBE SCHEMA",
+    "summary": "Describes the schema."
+},
+{
+    "cmd_name": "DESCRIBE SEARCH OPTIMIZATION",
+    "summary": "Describes the search optimization configuration for a specified table and its columns."
+},
+{
+    "cmd_name": "DESCRIBE SECRET",
+    "summary": "Describes the properties of a secret."
+},
+{
+    "cmd_name": "DESCRIBE SEMANTIC VIEW",
+    "summary": "Describes the properties of the logical tables, dimensions, facts, and metrics that make up a semantic view."
+},
+{
+    "cmd_name": "DESCRIBE SEQUENCE",
+    "summary": "Describes a sequence, including the sequence’s interval."
+},
+{
+    "cmd_name": "DESCRIBE SERVICE",
+    "summary": "Describes the properties of a Snowpark Container Services service (including job services)."
+},
+{
+    "cmd_name": "DESCRIBE SESSION POLICY",
+    "summary": "Describes the details about a session policy."
+},
+{
+    "cmd_name": "DESCRIBE SHARE",
+    "summary": "Describes the data objects that are included in a share."
+},
+{
+    "cmd_name": "DESCRIBE SNAPSHOT",
+    "summary": "Describes the properties of a snapshot."
+},
+{
+    "cmd_name": "DESCRIBE SPECIFICATION",
+    "summary": "Describes the details about an app specification."
+},
+{
+    "cmd_name": "DESCRIBE STAGE",
+    "summary": "Describes the values specified for the properties in a stage (file format, copy, and location), as well as the default values for each property."
+},
+{
+    "cmd_name": "DESCRIBE STREAM",
+    "summary": "Describes the properties specified for a stream."
+},
+{
+    "cmd_name": "DESCRIBE STREAMLIT",
+    "summary": "Describes the columns in a Streamlit object."
+},
+{
+    "cmd_name": "DESCRIBE TABLE",
+    "summary": "Describes either the columns in a table or the set of stage properties for the table (current values and default values)."
+},
+{
+    "cmd_name": "DESCRIBE TASK",
+    "summary": "Describes the columns in a task."
+},
+{
+    "cmd_name": "DESCRIBE TRANSACTION",
+    "summary": "Describes the transaction, including the start time and the state (running, committed, rolled back)."
+},
+{
+    "cmd_name": "DESCRIBE USER",
+    "summary": "Describes a user, including the current and default values of the properties of the user."
+},
+{
+    "cmd_name": "DESCRIBE VIEW",
+    "summary": "Describes the columns in a view (or table)."
+},
+{
+    "cmd_name": "DESCRIBE WAREHOUSE",
+    "summary": "Describes a virtual warehouse."
+},
+{
+    "cmd_name": "DROP <object>",
+    "summary": "Removes the specified object from the system."
+},
+{
+    "cmd_name": "DROP ACCOUNT",
+    "summary": "Drops an account, which initiates the process of deleting the account."
+},
+{
+    "cmd_name": "DROP AGGREGATION POLICY",
+    "summary": "Removes an aggregation policy from the current/specified schema."
+},
+{
+    "cmd_name": "DROP ALERT",
+    "summary": "Drops an existing alert."
+},
+{
+    "cmd_name": "DROP APPLICATION",
+    "summary": "Removes an application from the system in the Native Apps Framework."
+},
+{
+    "cmd_name": "DROP APPLICATION PACKAGE",
+    "summary": "Removes an application package from the system in the Native Apps Framework."
+},
+{
+    "cmd_name": "DROP APPLICATION ROLE",
+    "summary": "Removes the specified application role from the system."
+},
+{
+    "cmd_name": "DROP AUTHENTICATION POLICY",
+    "summary": "Removes an authentication policy from the system."
+},
+{
+    "cmd_name": "DROP CATALOG INTEGRATION",
+    "summary": "Removes a catalog integration from the account."
+},
+{
+    "cmd_name": "DROP COMPUTE POOL",
+    "summary": "Removes the specified compute pool from the account."
+},
+{
+    "cmd_name": "DROP CONNECTION",
+    "summary": "Removes a connection from the account."
+},
+{
+    "cmd_name": "DROP CONTACT",
+    "summary": "Removes the specified contact from the current schema."
+},
+{
+    "cmd_name": "DROP CORTEX SEARCH SERVICE",
+    "summary": "Removes the specified Cortex Search service from the current schema."
+},
+{
+    "cmd_name": "DROP DATABASE",
+    "summary": "Removes a database from the system."
+},
+{
+    "cmd_name": "DROP DATABASE ROLE",
+    "summary": "Removes the specified database role from the system."
+},
+{
+    "cmd_name": "DROP DBT PROJECT",
+    "summary": "Removes the specified dbt project object from the current or specified schema."
+},
+{
+    "cmd_name": "DROP DYNAMIC TABLE",
+    "summary": "Removes a dynamic table from the current/specified schema."
+},
+{
+    "cmd_name": "DROP EXTERNAL TABLE",
+    "summary": "Removes an external table from the current/specified schema."
+},
+{
+    "cmd_name": "DROP EXTERNAL VOLUME",
+    "summary": "Removes an external volume from the account, but retains a version of the external volume so that it can be recovered using UNDROP EXTERNAL VOLUME."
+},
+{
+    "cmd_name": "DROP FAILOVER GROUP",
+    "summary": "Removes a failover group from the account."
+},
+{
+    "cmd_name": "DROP FEATURE POLICY",
+    "summary": "Removes the specified feature policy."
+},
+{
+    "cmd_name": "DROP FILE FORMAT",
+    "summary": "Removes the specified file format from the current/specified schema."
+},
+{
+    "cmd_name": "DROP FUNCTION",
+    "summary": "Removes the specified user-defined function (UDF) or external function from the current/specified schema."
+},
+{
+    "cmd_name": "DROP FUNCTION (DMF)",
+    "summary": "Removes the specified data metric function (DMF) from the current or specified schema."
+},
+{
+    "cmd_name": "DROP FUNCTION (Snowpark Container Services)",
+    "summary": "Removes the specified service function."
+},
+{
+    "cmd_name": "DROP GIT REPOSITORY",
+    "summary": "Removes the specified Snowflake Git repository clone from the current/specified schema."
+},
+{
+    "cmd_name": "DROP ICEBERG TABLE",
+    "summary": "Removes an Apache Iceberg™ table from the current/specified schema, but retains a version of the Iceberg table so that it can be recovered using UNDROP ICEBERG TABLE."
+},
+{
+    "cmd_name": "DROP IMAGE REPOSITORY",
+    "summary": "Removes the specified image repository from the current or specified schema."
+},
+{
+    "cmd_name": "DROP INDEX",
+    "summary": "Drops a secondary index."
+},
+{
+    "cmd_name": "DROP INTEGRATION",
+    "summary": "Removes an integration from the account."
+},
+{
+    "cmd_name": "DROP JOIN POLICY",
+    "summary": "Removes a join policy from the current/specified schema."
+},
+{
+    "cmd_name": "DROP LISTING",
+    "summary": "Removes the specified listing from the system and immediately revokes access for all consumers."
+},
+{
+    "cmd_name": "DROP MANAGED ACCOUNT",
+    "summary": "Removes a managed account, including all objects created in the account, and immediately restricts access to the account."
+},
+{
+    "cmd_name": "DROP MASKING POLICY",
+    "summary": "Removes a masking policy from the system."
+},
+{
+    "cmd_name": "DROP MATERIALIZED VIEW",
+    "summary": "Removes the specified materialized view from the current/specified schema."
+},
+{
+    "cmd_name": "DROP MODEL",
+    "summary": "Removes a machine learning model from the current/specified schema."
+},
+{
+    "cmd_name": "DROP MODEL MONITOR",
+    "summary": "Removes the specified model monitor from the current or specified schema."
+},
+{
+    "cmd_name": "DROP NETWORK POLICY",
+    "summary": "Removes the specified network policy from the system."
+},
+{
+    "cmd_name": "DROP NETWORK RULE",
+    "summary": "Removes the specified network rule from the system."
+},
+{
+    "cmd_name": "DROP NOTEBOOK",
+    "summary": "Removes the specified notebook from the current/specified schema, but retains a version of the notebook so that it can be recovered using UNDROP NOTEBOOK."
+},
+{
+    "cmd_name": "DROP ORGANIZATION PROFILE",
+    "summary": "Removes an organization profile."
+},
+{
+    "cmd_name": "DROP ORGANIZATION USER",
+    "summary": "Removes an organization user from the organization."
+},
+{
+    "cmd_name": "DROP ORGANIZATION USER GROUP",
+    "summary": "Removes an organization user group from the organization."
+},
+{
+    "cmd_name": "DROP PACKAGES POLICY",
+    "summary": "Removes a packages policy from the system."
+},
+{
+    "cmd_name": "DROP PASSWORD POLICY",
+    "summary": "Removes a password policy from the system."
+},
+{
+    "cmd_name": "DROP PIPE",
+    "summary": "Removes the specified pipe from the current/specified schema."
+},
+{
+    "cmd_name": "DROP PRIVACY POLICY",
+    "summary": "Removes the specified privacy policy from the current/specified schema."
+},
+{
+    "cmd_name": "DROP PROCEDURE",
+    "summary": "Removes the specified stored procedure from the current/specified schema."
+},
+{
+    "cmd_name": "DROP PROJECTION POLICY",
+    "summary": "Removes a projection policy from the current/specified schema."
+},
+{
+    "cmd_name": "DROP REPLICATION GROUP",
+    "summary": "Removes a replication group from the account."
+},
+{
+    "cmd_name": "DROP RESOURCE MONITOR",
+    "summary": "Removes the specified resource monitor from the system."
+},
+{
+    "cmd_name": "DROP ROLE",
+    "summary": "Removes the specified role from the system."
+},
+{
+    "cmd_name": "DROP ROW ACCESS POLICY",
+    "summary": "Removes a row access policy from the system."
+},
+{
+    "cmd_name": "DROP SCHEMA",
+    "summary": "Removes a schema from the current/specified database."
+},
+{
+    "cmd_name": "DROP SECRET",
+    "summary": "Removes a secret from the system."
+},
+{
+    "cmd_name": "DROP SEMANTIC VIEW",
+    "summary": "Removes the specified semantic view from the current/specified schema."
+},
+{
+    "cmd_name": "DROP SEQUENCE",
+    "summary": "Removes a sequence from the current/specified schema."
+},
+{
+    "cmd_name": "DROP SERVICE",
+    "summary": "Removes the specified Snowpark Container Services service from the current or specified schema."
+},
+{
+    "cmd_name": "DROP SESSION POLICY",
+    "summary": "Removes a session policy from the system."
+},
+{
+    "cmd_name": "DROP SHARE",
+    "summary": "Removes the specified share from the system and immediately revokes access for all consumers (i.e. accounts who have created a database from the share)."
+},
+{
+    "cmd_name": "DROP SNAPSHOT",
+    "summary": "Removes a snapshot."
+},
+{
+    "cmd_name": "DROP STAGE",
+    "summary": "Removes the specified named internal or external stage from the current/specified schema."
+},
+{
+    "cmd_name": "DROP STREAM",
+    "summary": "Removes a stream from the current/specified schema."
+},
+{
+    "cmd_name": "DROP STREAMLIT",
+    "summary": "Removes the specified Streamlit object from the current/specified schema."
+},
+{
+    "cmd_name": "DROP TABLE",
+    "summary": "Removes a table from the current or specified schema, but retains a version of the table so that it can be recovered by using UNDROP TABLE."
+},
+{
+    "cmd_name": "DROP TAG",
+    "summary": "Removes a tag from the system."
+},
+{
+    "cmd_name": "DROP TASK",
+    "summary": "Removes a task from the current/specified schema."
+},
+{
+    "cmd_name": "DROP USER",
+    "summary": "Removes the specified user from the system."
+},
+{
+    "cmd_name": "DROP VIEW",
+    "summary": "Removes the specified view from the current/specified schema."
+},
+{
+    "cmd_name": "DROP WAREHOUSE",
+    "summary": "Removes the specified virtual warehouse from the system."
+},
+{
+    "cmd_name": "EXECUTE ALERT",
+    "summary": "Manually executes an alert independent of the schedule for the alert."
+},
+{
+    "cmd_name": "EXECUTE DBT PROJECT",
+    "summary": "Executes the specified dbt project object or the dbt project in a Snowflake workspace using the dbt command and command line options specified."
+},
+{
+    "cmd_name": "EXECUTE IMMEDIATE",
+    "summary": "Executes a string that contains a SQL statement or a Snowflake Scripting statement."
+},
+{
+    "cmd_name": "EXECUTE IMMEDIATE FROM",
+    "summary": "EXECUTE IMMEDIATE FROM executes the SQL statements specified in a file in a stage."
+},
+{
+    "cmd_name": "EXECUTE JOB SERVICE",
+    "summary": "Executes a Snowpark Container Services service as a job."
+},
+{
+    "cmd_name": "EXECUTE NOTEBOOK",
+    "summary": "Executes the notebook outside the Notebook Editor."
+},
+{
+    "cmd_name": "EXECUTE TASK",
+    "summary": "Manually triggers an asynchronous single run of a task (either a standalone task or the root task in a task graph) independent of the schedule defined for the task."
+},
+{
+    "cmd_name": "EXPLAIN",
+    "summary": "Returns the logical execution plan for the specified SQL statement."
+},
+{
+    "cmd_name": "GET",
+    "summary": "Downloads data files from one of the following internal stage types to a local directory or folder on a client machine."
+},
+{
+    "cmd_name": "GRANT APPLICATION ROLE",
+    "summary": "Assigns an application role to an account role, another application role, an application, or a user."
+},
+{
+    "cmd_name": "GRANT CALLER",
+    "summary": "Grants caller grants to a role."
+},
+{
+    "cmd_name": "GRANT DATABASE ROLE",
+    "summary": "Assigns a database role to an account role, another database role, or a user."
+},
+{
+    "cmd_name": "GRANT DATABASE ROLE … TO SHARE",
+    "summary": "Grants a database role to a share."
+},
+{
+    "cmd_name": "GRANT OWNERSHIP",
+    "summary": "Transfers ownership of an object or all objects of a specified type in a schema from one role to another role."
+},
+{
+    "cmd_name": "GRANT <privileges> … TO ROLE",
+    "summary": "Grants one or more access privileges on a securable object to a role or database role."
+},
+{
+    "cmd_name": "GRANT <privileges> … TO APPLICATION",
+    "summary": "Grants one or more access privileges on a securable object to an application."
+},
+{
+    "cmd_name": "GRANT <privileges> … TO APPLICATION ROLE",
+    "summary": "Grants one or more access privileges on a securable schema-level object to an application role."
+},
+{
+    "cmd_name": "GRANT <privilege> … TO SHARE",
+    "summary": "Grants access privileges for databases and other supported database objects (schemas, UDFs, tables, and views) to a share."
+},
+{
+    "cmd_name": "GRANT <privileges> … TO USER",
+    "summary": "Grants one or more access privileges on a securable object to a user."
+},
+{
+    "cmd_name": "GRANT ROLE",
+    "summary": "Assigns a role to a user or another role."
+},
+{
+    "cmd_name": "GRANT SERVICE ROLE",
+    "summary": "Assigns a service role to an account role, application role, or database role."
+},
+{
+    "cmd_name": "INSERT",
+    "summary": "Updates a table by inserting one or more rows into the table."
+},
+{
+    "cmd_name": "INSERT (multi-table)",
+    "summary": "Updates multiple tables by inserting one or more rows with column values (from a query) into the tables."
+},
+{
+    "cmd_name": "LIST",
+    "summary": "Returns a list of files that have been staged (files that have been uploaded from a local file system or unloaded from a table) in one of the following Snowflake stages."
+},
+{
+    "cmd_name": "MERGE",
+    "summary": "Inserts, updates, and deletes values in a table based on values in a second table or a subquery."
+},
+{
+    "cmd_name": "PUT",
+    "summary": "Uploads one or more data files from a local file system onto an internal stage."
+},
+{
+    "cmd_name": "REMOVE",
+    "summary": "Removes files from either an external (external cloud storage) or internal (i.e. Snowflake) stage."
+},
+{
+    "cmd_name": "REVOKE APPLICATION ROLE",
+    "summary": "Revokes an application role from an account role or another application role."
+},
+{
+    "cmd_name": "REVOKE CALLER",
+    "summary": "Revokes privileges that were previously granted to an executable owner using a caller grant."
+},
+{
+    "cmd_name": "REVOKE DATABASE ROLE",
+    "summary": "Revokes a database role from an account role or another database role."
+},
+{
+    "cmd_name": "REVOKE DATABASE ROLE … FROM SHARE",
+    "summary": "Revokes a database role from a share."
+},
+{
+    "cmd_name": "REVOKE <privileges> … FROM ROLE",
+    "summary": "Removes one or more privileges on a securable object from a role or database role."
+},
+{
+    "cmd_name": "REVOKE <privileges> … FROM APPLICATION",
+    "summary": "Revokes one or more access privileges on a securable object from an application."
+},
+{
+    "cmd_name": "REVOKE <privileges> … FROM APPLICATION ROLE",
+    "summary": "Revokes one or more access privileges on a securable schema-level object from an application role."
+},
+{
+    "cmd_name": "REVOKE <privilege> … FROM SHARE",
+    "summary": "Revokes access privileges for databases and other supported database objects (schemas, tables, and views) from a share."
+},
+{
+    "cmd_name": "REVOKE <privileges> … FROM USER",
+    "summary": "Removes one or more privileges on a securable object from a user."
+},
+{
+    "cmd_name": "REVOKE ROLE",
+    "summary": "Removes a role from another role or a user."
+},
+{
+    "cmd_name": "REVOKE SERVICE ROLE",
+    "summary": "Revokes a service role from an account role, application role, or database role."
+},
+{
+    "cmd_name": "ROLLBACK",
+    "summary": "Rolls back an open transaction in the current session."
+},
+{
+    "cmd_name": "SELECT",
+    "summary": "SELECT can be used as either a statement or as a clause within other statements."
+},
+{
+    "cmd_name": "SET",
+    "summary": "Initializes the value of a session variable to the result of a SQL expression."
+},
+{
+    "cmd_name": "SHOW <objects>",
+    "summary": "Lists the existing objects for the specified object type."
+},
+{
+    "cmd_name": "SHOW ACCOUNTS",
+    "summary": "Lists all the accounts in your organization, excluding managed accounts."
+},
+{
+    "cmd_name": "SHOW AGGREGATION POLICIES",
+    "summary": "Lists information about existing aggregation policies, including the creation date, database and schema names, owner, and any available comments."
+},
+{
+    "cmd_name": "SHOW ALERTS",
+    "summary": "Lists the alerts for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW APPLICATION PACKAGES",
+    "summary": "Lists the application packages for which you have access privileges across your entire account in the Native Apps Framework."
+},
+{
+    "cmd_name": "SHOW APPLICATION ROLES",
+    "summary": "Lists the application roles in the specified app for which for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW APPLICATIONS",
+    "summary": "Lists the application objects for which you have access privileges across your entire account in the"
+},
+{
+    "cmd_name": "SHOW AUTHENTICATION POLICIES",
+    "summary": "Lists authentication policy information, including the creation date, database and schema names, owner, and any available comments."
+},
+{
+    "cmd_name": "SHOW AVAILABLE LISTINGS",
+    "summary": "Lists the listings that are available to the user who runs the command."
+},
+{
+    "cmd_name": "SHOW AVAILABLE ORGANIZATION PROFILES",
+    "summary": "Lists the organization profiles available in the user’s organization."
+},
+{
+    "cmd_name": "SHOW CALLER GRANTS",
+    "summary": "Lists the caller grants being used to implement restricted caller’s rights."
+},
+{
+    "cmd_name": "SHOW CATALOG INTEGRATIONS",
+    "summary": "Lists the catalog integrations in your account."
+},
+{
+    "cmd_name": "SHOW CHANNELS",
+    "summary": "Lists the Snowpipe Streaming channels for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW CLASSES",
+    "summary": "Lists all available classes."
+},
+{
+    "cmd_name": "SHOW COLUMNS",
+    "summary": "Lists the columns in the tables or views for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW COMPUTE POOLS",
+    "summary": "Lists the compute pools in your account for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW CONNECTIONS",
+    "summary": "Lists the connections for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW CONTACTS",
+    "summary": "Lists the contacts for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW CORTEX SEARCH SERVICES",
+    "summary": "Lists the Cortex Search services for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW DATA METRIC FUNCTIONS",
+    "summary": "Lists the data metric functions (DMFs) for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW DATABASE ROLES",
+    "summary": "Lists all the database roles in the specified database."
+},
+{
+    "cmd_name": "SHOW DATABASES",
+    "summary": "Lists the databases for which you have access privileges across your entire account, including dropped databases that are still within the Time Travel retention period and, therefore, can be undropped."
+},
+{
+    "cmd_name": "SHOW DATABASES IN FAILOVER GROUP",
+    "summary": "Lists databases in a failover group."
+},
+{
+    "cmd_name": "SHOW DATABASES IN REPLICATION GROUP",
+    "summary": "Lists databases in a replication group."
+},
+{
+    "cmd_name": "SHOW DATASETS",
+    "summary": "Displays information about the datasets in your account."
+},
+{
+    "cmd_name": "SHOW DBT PROJECTS",
+    "summary": "Lists the dbt project objects for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW DELEGATED AUTHORIZATIONS",
+    "summary": "Lists the active delegated authorizations for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW DYNAMIC TABLES",
+    "summary": "Lists the dynamic tables for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW ENDPOINTS",
+    "summary": "Lists the endpoints in a Snowpark Container Services service (or a job service)."
+},
+{
+    "cmd_name": "SHOW EVENT TABLES",
+    "summary": "Lists the event tables for which you have access privileges, including dropped tables that are still within the Time Travel retention period and, therefore, can be undropped."
+},
+{
+    "cmd_name": "SHOW EXTERNAL FUNCTIONS",
+    "summary": "Lists all the external functions created for your account."
+},
+{
+    "cmd_name": "SHOW EXTERNAL TABLES",
+    "summary": "Lists the external tables for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW EXTERNAL VOLUMES",
+    "summary": "Lists the external volumes in your account for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW FAILOVER GROUPS",
+    "summary": "Lists the primary and secondary failover groups in your account, as well as the failover groups in other accounts that are associated with your account."
+},
+{
+    "cmd_name": "SHOW FEATURE POLICIES",
+    "summary": "Lists the feature policies for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW FILE FORMATS",
+    "summary": "Lists the file formats for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW FUNCTIONS",
+    "summary": "Lists all functions that you have privileges to access, including built-in, user-defined, and external functions."
+},
+{
+    "cmd_name": "SHOW FUNCTIONS IN MODEL",
+    "summary": "Lists functions defined in machine learning models."
+},
+{
+    "cmd_name": "SHOW GIT BRANCHES",
+    "summary": "Lists the branches in the specified Snowflake Git repository clone."
+},
+{
+    "cmd_name": "SHOW GIT REPOSITORIES",
+    "summary": "Lists the Git repository clones that you have privileges to access."
+},
+{
+    "cmd_name": "SHOW GIT TAGS",
+    "summary": "Lists the tags in the specified Snowflake Git repository clone."
+},
+{
+    "cmd_name": "SHOW GLOBAL ACCOUNTS",
+    "summary": "Lists all the accounts in your organization that are enabled for replication and indicates the Snowflake Region in which each account is located."
+},
+{
+    "cmd_name": "SHOW GRANTS",
+    "summary": "Lists all access control privileges that have been explicitly granted to roles, users, and shares."
+},
+{
+    "cmd_name": "SHOW HYBRID TABLES",
+    "summary": "Lists the hybrid tables for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW ICEBERG TABLES",
+    "summary": "Lists the Apache Iceberg™ tables for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW IMAGE REPOSITORIES",
+    "summary": "Lists the image repositories for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW IMAGES IN IMAGE REPOSITORY",
+    "summary": "Lists the images in an image repository."
+},
+{
+    "cmd_name": "SHOW INDEXES",
+    "summary": "Lists all the indexes in your account for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW INTEGRATIONS",
+    "summary": "Lists the integrations in your account."
+},
+{
+    "cmd_name": "SHOW JOIN POLICIES",
+    "summary": "Lists information about existing join policies, including the creation date, database and schema names, owner, and any available comments."
+},
+{
+    "cmd_name": "SHOW LISTINGS",
+    "summary": "Lists the listings that you have privileges to access."
+},
+{
+    "cmd_name": "SHOW LOCKS",
+    "summary": "Lists all running transactions that have locks on resources."
+},
+{
+    "cmd_name": "SHOW MANAGED ACCOUNTS",
+    "summary": "Lists the managed accounts created for your account."
+},
+{
+    "cmd_name": "SHOW MASKING POLICIES",
+    "summary": "Lists masking policy information, including the creation date, database and schema names, owner, and any available comments."
+},
+{
+    "cmd_name": "SHOW MATERIALIZED VIEWS",
+    "summary": "Lists the materialized views that you have privileges to access."
+},
+{
+    "cmd_name": "SHOW MFA METHODS",
+    "summary": "Lists the second factors of authentication that a user enrolled in multi-factor authentication uses to sign in to Snowflake."
+},
+{
+    "cmd_name": "SHOW MODEL MONITORS",
+    "summary": "Lists all model monitor that you can access in the current or specified schema and displays information about each one."
+},
+{
+    "cmd_name": "SHOW MODELS",
+    "summary": "Lists the machine learning models that you have privileges to access."
+},
+{
+    "cmd_name": "SHOW NETWORK POLICIES",
+    "summary": "Lists all network policies defined in the system."
+},
+{
+    "cmd_name": "SHOW NETWORK RULES",
+    "summary": "Lists all network rules defined in the system."
+},
+{
+    "cmd_name": "SHOW NOTEBOOKS",
+    "summary": "Lists the notebooks for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW NOTIFICATION INTEGRATIONS",
+    "summary": "Lists the notification integrations in your account."
+},
+{
+    "cmd_name": "SHOW OBJECTS",
+    "summary": "Lists the tables and views for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW OBJECTS OWNED BY APPLICATION",
+    "summary": "Lists the objects owned by an app that exists outside the app."
+},
+{
+    "cmd_name": "SHOW ORGANIZATION ACCOUNTS",
+    "summary": "Lists the organization account of the organization."
+},
+{
+    "cmd_name": "SHOW ORGANIZATION PROFILES",
+    "summary": "Lists the organization profiles for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW ORGANIZATION USER GROUPS",
+    "summary": "Lists organization user groups."
+},
+{
+    "cmd_name": "SHOW ORGANIZATION USERS",
+    "summary": "Lists organization users."
+},
+{
+    "cmd_name": "SHOW PACKAGES POLICIES",
+    "summary": "Lists packages policy information."
+},
+{
+    "cmd_name": "SHOW PARAMETERS",
+    "summary": "Lists all the account, session, and object parameters that can be set, as well as the current and default values for each parameter."
+},
+{
+    "cmd_name": "SHOW PASSWORD POLICIES",
+    "summary": "Lists password policy information, including the creation date, database and schema names, owner, and any available comments."
+},
+{
+    "cmd_name": "SHOW PIPES",
+    "summary": "Lists the pipes for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW PRIMARY KEYS",
+    "summary": "Lists primary keys for one or more tables."
+},
+{
+    "cmd_name": "SHOW PRIVACY POLICIES",
+    "summary": "Lists the privacy policies for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW PRIVILEGES",
+    "summary": "Lists the privileges granted to an application."
+},
+{
+    "cmd_name": "SHOW PROCEDURES",
+    "summary": "Lists all stored procedures that you have privileges to access, including built-in and user-defined procedures."
+},
+{
+    "cmd_name": "SHOW PROJECTION POLICIES",
+    "summary": "Lists projection policy information, including the creation date, database and schema names, owner, and any available comments."
+},
+{
+    "cmd_name": "SHOW REFERENCES",
+    "summary": "Lists the references defined for an application in the manifest file and the references the consumer has associated to the application."
+},
+{
+    "cmd_name": "SHOW REGIONS",
+    "summary": "Lists all the regions in which accounts can be created."
+},
+{
+    "cmd_name": "SHOW RELEASE DIRECTIVES",
+    "summary": "Lists the release directives defined for an application package in the Native Apps Framework."
+},
+{
+    "cmd_name": "SHOW REPLICATION ACCOUNTS",
+    "summary": "Lists all the accounts in your organization that are enabled for replication and indicates the region in which each account is located."
+},
+{
+    "cmd_name": "SHOW REPLICATION DATABASES",
+    "summary": "Lists all the primary and secondary databases (that is to say, all the databases for which replication has been enabled) in your account and indicates the region in which each account is located."
+},
+{
+    "cmd_name": "SHOW REPLICATION GROUPS",
+    "summary": "Displays information about replication groups and failover groups."
+},
+{
+    "cmd_name": "SHOW RESOURCE MONITORS",
+    "summary": "Lists all the resource monitors in your account for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW ROLES",
+    "summary": "Lists all the roles which you can view across your entire account, including the system-defined roles and any custom roles that exist."
+},
+{
+    "cmd_name": "SHOW ROLES IN SERVICE",
+    "summary": "Lists all the service roles associated with a service."
+},
+{
+    "cmd_name": "SHOW ROW ACCESS POLICIES",
+    "summary": "Lists the row access policies for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW SCHEMAS",
+    "summary": "Lists the schemas for which you have access privileges, including dropped schemas that are still within the Time Travel retention period and, therefore, can be undropped."
+},
+{
+    "cmd_name": "SHOW SECRETS",
+    "summary": "Lists the secrets for which you have rights to see."
+},
+{
+    "cmd_name": "SHOW SEMANTIC VIEWS",
+    "summary": "Lists the semantic views for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW SEQUENCES",
+    "summary": "Lists all the sequences for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW SERVICE CONTAINERS IN SERVICE",
+    "summary": "Lists the containers in all instances of a service."
+},
+{
+    "cmd_name": "SHOW SERVICE INSTANCES IN SERVICE",
+    "summary": "Lists instances of a service."
+},
+{
+    "cmd_name": "SHOW SERVICES",
+    "summary": "Lists the Snowpark Container Services services (including job services) for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW SESSION POLICIES",
+    "summary": "Lists session policy information, including the creation date, database and schema names, owner, and any available comments."
+},
+{
+    "cmd_name": "SHOW SHARES",
+    "summary": "Lists all shares available in the system."
+},
+{
+    "cmd_name": "SHOW SHARES IN FAILOVER GROUP",
+    "summary": "Lists shares in a failover group."
+},
+{
+    "cmd_name": "SHOW SHARES IN REPLICATION GROUP",
+    "summary": "Lists shares in a replication group."
+},
+{
+    "cmd_name": "SHOW SNAPSHOTS",
+    "summary": "Lists the snapshots for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW SPECIFICATIONS",
+    "summary": "Lists the app specifications that have been defined for an app."
+},
+{
+    "cmd_name": "SHOW STAGES",
+    "summary": "Lists all the stages for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW STREAMLITS",
+    "summary": "Lists the Streamlit objects for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW STREAMS",
+    "summary": "Lists the streams for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW TABLES",
+    "summary": "Lists the tables for which you have access privileges, including dropped tables that are still within the Time Travel retention period and, therefore, can be undropped."
+},
+{
+    "cmd_name": "SHOW TAGS",
+    "summary": "Lists the tag information."
+},
+{
+    "cmd_name": "SHOW TASKS",
+    "summary": "Lists the tasks for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW TELEMETRY EVENT DEFINITIONS",
+    "summary": "Lists the event definitions for the specified app."
+},
+{
+    "cmd_name": "SHOW TRANSACTIONS",
+    "summary": "List all running transactions."
+},
+{
+    "cmd_name": "SHOW USER FUNCTIONS",
+    "summary": "Lists all user-defined functions (UDFs) for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW USER PROCEDURES",
+    "summary": "Lists all user-defined procedures for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW USER PROGRAMMATIC ACCESS TOKENS",
+    "summary": "Lists the programmatic access tokens associated with a user."
+},
+{
+    "cmd_name": "SHOW USERS",
+    "summary": "Lists all users in the system."
+},
+{
+    "cmd_name": "SHOW VARIABLES",
+    "summary": "Lists all variables defined in the current session."
+},
+{
+    "cmd_name": "SHOW VERSIONS IN APPLICATION PACKAGE",
+    "summary": "Lists the versions defined in the specified application package."
+},
+{
+    "cmd_name": "SHOW VERSIONS IN DATASET",
+    "summary": "Displays information about the datasets in your account at either the schema or database level."
+},
+{
+    "cmd_name": "SHOW VERSIONS IN LISTING",
+    "summary": "Lists and provides details of all listing versions."
+},
+{
+    "cmd_name": "SHOW VERSIONS IN MODEL",
+    "summary": "Lists the versions in a machine learning model."
+},
+{
+    "cmd_name": "SHOW VERSIONS IN ORGANIZATION PROFILE",
+    "summary": "Lists the organization profile versions for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW VIEWS",
+    "summary": "Lists the views, including secure views, for which you have access privileges."
+},
+{
+    "cmd_name": "SHOW WAREHOUSES",
+    "summary": "Lists all the virtual warehouses in your account for which you have access privileges."
+},
+{
+    "cmd_name": "TRUNCATE MATERIALIZED VIEW",
+    "summary": "Removes all rows from a materialized view, but leaves the view intact (including all privileges and constraints on the materialized view)."
+},
+{
+    "cmd_name": "TRUNCATE TABLE",
+    "summary": "Removes all rows from a table but leaves the table intact (including all privileges and constraints on the table)."
+},
+{
+    "cmd_name": "UNDROP <object>",
+    "summary": "Restores the specified object to the system."
+},
+{
+    "cmd_name": "UNDROP ACCOUNT",
+    "summary": "Restores a dropped account that has not yet been permanently deleted (a dropped account that is within its grace period)."
+},
+{
+    "cmd_name": "UNDROP DATABASE",
+    "summary": "Restores the most recent version of a dropped database."
+},
+{
+    "cmd_name": "UNDROP DYNAMIC TABLE",
+    "summary": "Restores the most recent version of a dropped dynamic table."
+},
+{
+    "cmd_name": "UNDROP EXTERNAL VOLUME",
+    "summary": "Restores the most recent version of a dropped external volume."
+},
+{
+    "cmd_name": "UNDROP ICEBERG TABLE",
+    "summary": "Restores the most recent version of a dropped Apache Iceberg™ table."
+},
+{
+    "cmd_name": "UNDROP NOTEBOOK",
+    "summary": "Restores the most recent version of a dropped notebook."
+},
+{
+    "cmd_name": "UNDROP SCHEMA",
+    "summary": "Restore the most recent version of a dropped schema."
+},
+{
+    "cmd_name": "UNDROP STREAMLIT",
+    "summary": "Restores the most recent version of a dropped Streamlit object."
+},
+{
+    "cmd_name": "UNDROP TABLE",
+    "summary": "Restores the most recent version of a dropped table."
+},
+{
+    "cmd_name": "UNDROP TAG",
+    "summary": "Restores the most recent version of a tag to the system."
+},
+{
+    "cmd_name": "UNSET",
+    "summary": "Drops a session variable."
+},
+{
+    "cmd_name": "UPDATE",
+    "summary": "Updates specified rows in the target table with new values."
+},
+{
+    "cmd_name": "USE <object>",
+    "summary": "Specifies the role, warehouse, database, or schema to use for the current session."
+},
+{
+    "cmd_name": "USE DATABASE",
+    "summary": "Specifies the active/current database for the session."
+},
+{
+    "cmd_name": "USE ROLE",
+    "summary": "Specifies the active/current primary role for the session."
+},
+{
+    "cmd_name": "USE SCHEMA",
+    "summary": "Specifies the active/current schema for the session."
+},
+{
+    "cmd_name": "USE SECONDARY ROLES",
+    "summary": "Specifies the active/current secondary roles for the session."
+},
+{
+    "cmd_name": "USE WAREHOUSE",
+    "summary": "Specifies the active/current virtual warehouse for the session."
+}
+]
