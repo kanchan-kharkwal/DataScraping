@@ -1,0 +1,80 @@
+[
+{
+    "category": "Numeric data types",
+    "url": "https://docs.snowflake.com/en/sql-reference/data-types-numeric",
+    "title": "Numeric data types",
+    "description": "This topic describes the numeric data types supported in Snowflake, along with the supported formats for numeric constants/literals."
+},
+{
+    "category": "Structured data types",
+    "url": "https://docs.snowflake.com/en/sql-reference/data-types-structured",
+    "title": "Structured data types"
+},
+{
+    "category": "Unstructured data types",
+    "url": "https://docs.snowflake.com/en/sql-reference/data-types-unstructured",
+    "title": "Unstructured data types",
+    "description": "Snowflake supports three different kinds of data:"
+},
+{
+    "category": "Vector data types",
+    "url": "https://docs.snowflake.com/en/sql-reference/data-types-vector",
+    "title": "Vector data types",
+    "description": "This topic describes the vector data types.",
+    "examples": [
+        "SELECT [1, 2, 3]::VECTOR(FLOAT, 3) AS vec;",
+        "ALTER TABLE myissues ADD COLUMN issue_vec VECTOR(FLOAT, 768);\n\nUPDATE TABLE myissues\n  SET issue_vec = SNOWFLAKE.CORTEX.EMBED_TEXT_768('e5-base-v2', issue_text);"
+    ]
+},
+{
+    "category": "Geospatial data types",
+    "url": "https://docs.snowflake.com/en/sql-reference/data-types-geospatial",
+    "title": "Geospatial data types",
+    "description": "Snowflake offers native support for geospatial features such as points, lines, and polygons on the Earth’s surface."
+},
+{
+    "category": "Semi-structured data types",
+    "url": "https://docs.snowflake.com/en/sql-reference/data-types-semistructured",
+    "title": "Semi-structured data types",
+    "description": "The following Snowflake data types can contain other data types:",
+    "examples": [
+        "CREATE OR REPLACE TABLE test_semi_structured(\n  var VARIANT,\n  arr ARRAY,\n  obj OBJECT);\n\nDESC TABLE test_semi_structured;",
+        "+------+---------+--------+-------+---------+-------------+------------+-------+------------+---------+-------------+----------------+\n| name | type    | kind   | null? | default | primary key | unique key | check | expression | comment | policy name | privacy domain |\n|------+---------+--------+-------+---------+-------------+------------+-------+------------+---------+-------------+----------------|\n| VAR  | VARIANT | COLUMN | Y     | NULL    | N           | N          | NULL  | NULL       | NULL    | NULL        | NULL           |\n| ARR  | ARRAY   | COLUMN | Y     | NULL    | N           | N          | NULL  | NULL       | NULL    | NULL        | NULL           |\n| OBJ  | OBJECT  | COLUMN | Y     | NULL    | N           | N          | NULL  | NULL       | NULL    | NULL        | NULL           |\n+------+---------+--------+-------+---------+-------------+------------+-------+------------+---------+-------------+----------------+",
+        "CREATE OR REPLACE TABLE demonstration1 (\n  ID INTEGER,\n  array1 ARRAY,\n  variant1 VARIANT,\n  object1 OBJECT);\n\nINSERT INTO demonstration1 (id, array1, variant1, object1)\n  SELECT\n    1,\n    ARRAY_CONSTRUCT(1, 2, 3),\n    PARSE_JSON(' { \"key1\": \"value1\", \"key2\": \"value2\" } '),\n    PARSE_JSON(' { \"outer_key1\": { \"inner_key1A\": \"1a\", \"inner_key1B\": \"1b\" }, '\n              ||\n               '   \"outer_key2\": { \"inner_key2\": 2 } } ');\n\nINSERT INTO demonstration1 (id, array1, variant1, object1)\n  SELECT\n    2,\n    ARRAY_CONSTRUCT(1, 2, 3, NULL),\n    PARSE_JSON(' { \"key1\": \"value1\", \"key2\": NULL } '),\n    PARSE_JSON(' { \"outer_key1\": { \"inner_key1A\": \"1a\", \"inner_key1B\": NULL }, '\n              ||\n                '   \"outer_key2\": { \"inner_key2\": 2 } '\n              ||\n               ' } ');",
+        "SELECT *\n  FROM demonstration1\n  ORDER BY id;",
+        "+----+-------------+---------------------+--------------------------+\n| ID | ARRAY1      | VARIANT1            | OBJECT1                  |\n|----+-------------+---------------------+--------------------------|\n|  1 | [           | {                   | {                        |\n|    |   1,        |   \"key1\": \"value1\", |   \"outer_key1\": {        |\n|    |   2,        |   \"key2\": \"value2\"  |     \"inner_key1A\": \"1a\", |\n|    |   3         | }                   |     \"inner_key1B\": \"1b\"  |\n|    | ]           |                     |   },                     |\n|    |             |                     |   \"outer_key2\": {        |\n|    |             |                     |     \"inner_key2\": 2      |\n|    |             |                     |   }                      |\n|    |             |                     | }                        |\n|  2 | [           | {                   | {                        |\n|    |   1,        |   \"key1\": \"value1\", |   \"outer_key1\": {        |\n|    |   2,        |   \"key2\": null      |     \"inner_key1A\": \"1a\", |\n|    |   3,        | }                   |     \"inner_key1B\": null  |\n|    |   undefined |                     |   },                     |\n|    | ]           |                     |   \"outer_key2\": {        |\n|    |             |                     |     \"inner_key2\": 2      |\n|    |             |                     |   }                      |\n|    |             |                     | }                        |\n+----+-------------+---------------------+--------------------------+"
+    ]
+},
+{
+    "category": "String & binary data types",
+    "url": "https://docs.snowflake.com/en/sql-reference/data-types-text",
+    "title": "String & binary data types",
+    "description": "This topic describes the string/text data types, including binary strings, supported in Snowflake, along with the supported formats for string constants/literals."
+},
+{
+    "category": "Logical data types",
+    "url": "https://docs.snowflake.com/en/sql-reference/data-types-logical",
+    "title": "Logical data types",
+    "description": "This topic describes the logical data types supported in Snowflake.",
+    "examples": [
+        "CREATE OR REPLACE TABLE test_boolean(\n  b BOOLEAN,\n  n NUMBER,\n  s STRING);\n\nINSERT INTO test_boolean VALUES\n  (true, 1, 'yes'),\n  (false, 0, 'no'),\n  (NULL, NULL, NULL);\n\nSELECT * FROM test_boolean;",
+        "+-------+------+------+\n| B     |    N | S    |\n|-------+------+------|\n| True  |    1 | yes  |\n| False |    0 | no   |\n| NULL  | NULL | NULL |\n+-------+------+------+",
+        "SELECT b, n, NOT b AND (n < 1) FROM test_boolean;",
+        "+-------+------+-------------------+\n| B     |    N | NOT B AND (N < 1) |\n|-------+------+-------------------|\n| True  |    1 | False             |\n| False |    0 | True              |\n| NULL  | NULL | NULL              |\n+-------+------+-------------------+",
+        "SELECT * FROM test_boolean WHERE NOT b AND (n < 1);",
+        "+-------+---+----+\n| B     | N | S  |\n|-------+---+----|\n| False | 0 | no |\n+-------+---+----+",
+        "SELECT s,\n       TO_BOOLEAN(s),\n       SYSTEM$TYPEOF(TO_BOOLEAN(s))\n  FROM test_boolean;",
+        "+------+---------------+------------------------------+\n| S    | TO_BOOLEAN(S) | SYSTEM$TYPEOF(TO_BOOLEAN(S)) |\n|------+---------------+------------------------------|\n| yes  | True          | BOOLEAN[SB1]                 |\n| no   | False         | BOOLEAN[SB1]                 |\n| NULL | NULL          | BOOLEAN[SB1]                 |\n+------+---------------+------------------------------+",
+        "SELECT n,\n       TO_BOOLEAN(n),\n       SYSTEM$TYPEOF(TO_BOOLEAN(n))\n  FROM test_boolean;",
+        "+------+---------------+------------------------------+\n| N    | TO_BOOLEAN(N) | SYSTEM$TYPEOF(TO_BOOLEAN(N)) |\n|------+---------------+------------------------------|\n| 1    | True          | BOOLEAN[SB1]                 |\n| 0    | False         | BOOLEAN[SB1]                 |\n| NULL | NULL          | BOOLEAN[SB1]                 |\n+------+---------------+------------------------------+",
+        "SELECT 'Text for ' || s || ' is ' || b AS result,\n       SYSTEM$TYPEOF('Text for ' || s || ' is ' || b) AS type_of_result\n  FROM test_boolean;",
+        "+----------------------+-------------------------+\n| RESULT               | TYPE_OF_RESULT          |\n|----------------------+-------------------------|\n| Text for yes is true | VARCHAR(134217728)[LOB] |\n| Text for no is false | VARCHAR(134217728)[LOB] |\n| NULL                 | VARCHAR(134217728)[LOB] |\n+----------------------+-------------------------+"
+    ]
+},
+{
+    "category": "Date & time data types",
+    "url": "https://docs.snowflake.com/en/sql-reference/data-types-datetime",
+    "title": "Date & time data types",
+    "description": "Snowflake supports data types for managing dates, times, and timestamps (combined date + time). Snowflake also supports formats for\nstring constants used in manipulating dates, times, and timestamps."
+}
+]

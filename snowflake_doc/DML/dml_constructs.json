@@ -1,0 +1,308 @@
+[
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/delete",
+    "title": "DELETE",
+    "description": "Remove rows from a table. You can use a WHERE clause to specify which rows should be removed. If you need to use a subquery(s) or\nadditional table(s) to identify the rows to be removed, specify the subquery(s) or table(s) in a USING clause.",
+    "syntax": "DELETE FROM <table_name>\n            [ USING <additional_table_or_query> [, <additional_table_or_query> ] ]\n            [ WHERE <condition> ]",
+    "examples": [
+        {
+            "title": "Examples",
+            "code": "CREATE TABLE leased_bicycles (bicycle_id INTEGER, customer_id INTEGER);\nCREATE TABLE returned_bicycles (bicycle_id INTEGER);"
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/merge",
+    "title": "MERGE",
+    "description": "Inserts, updates, and deletes values in a table based on values in a second table or a subquery. This can be useful if the second table\nis a change log that contains new rows (to be inserted), modified rows (to be updated), and/or marked rows (to be deleted) in the target\ntable.",
+    "syntax": "MERGE INTO <target_table> USING <source> ON <join_expr> { matchedClause | notMatchedClause } [ ... ]\n\nmatchedClause ::=\n  WHEN MATCHED [ AND <case_predicate> ] THEN { UPDATE SET <col_name> = <expr> [ , <col_name2> = <expr2> ... ] | DELETE } [ ... ]\n\nnotMatchedClause ::=\n   WHEN NOT MATCHED [ AND <case_predicate> ] THEN INSERT [ ( <col_name> [ , ... ] ) ] VALUES ( <expr> [ , ... ] )",
+    "examples": [
+        {
+            "title": "Examples",
+            "code": "CREATE TABLE target_table (ID INTEGER, description VARCHAR);\n\nCREATE TABLE source_table (ID INTEGER, description VARCHAR);"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "target_table",
+            "description": "Specifies the table to merge."
+        },
+        {
+            "name": "source",
+            "description": "Specifies the table or subquery to join with the target table."
+        },
+        {
+            "name": "join_expr",
+            "description": "Specifies the expression on which to join the target table and source."
+        },
+        {
+            "name": "WHEN MATCHED ... THEN UPDATE <col_name> = <expr> | DELETE",
+            "description": "Specifies the action to perform when the values match."
+        },
+        {
+            "name": "AND case_predicate",
+            "description": "Optionally specifies an expression which, when true, causes the matching case to be executed. Default: No value (matching case is always executed)"
+        },
+        {
+            "name": "SET col_name = expr [ … ]",
+            "description": "Specifies the column within the target table to be updated or inserted and the corresponding expression for the new column value\n(can refer to both the target and source relations). In a single SET subclause, you can specify multiple columns to update/delete."
+        },
+        {
+            "name": "WHEN NOT MATCHED ... THEN INSERT",
+            "description": "Specifies the action to perform when the values do not match."
+        },
+        {
+            "name": "AND case_predicate",
+            "description": "Optionally specifies an expression which, when true, causes the not-matching case to be executed. Default: No value (not-matching case is always executed)"
+        },
+        {
+            "name": "( col_name [ , ... ] )",
+            "description": "Optionally specifies one or more columns within the target table to be updated or inserted. Default: No value (all columns within the target table are updated or inserted)"
+        },
+        {
+            "name": "VALUES ( expr [ , ... ] )",
+            "description": "Specifies the corresponding expressions for the inserted column values (must refer to the source relations)."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/put",
+    "title": "PUT",
+    "description": "Uploads one or more data files from a local file system onto an internal stage.",
+    "syntax": "PUT file://<absolute_path_to_file>/<filename> internalStage\n    [ PARALLEL = <integer> ]\n    [ AUTO_COMPRESS = TRUE | FALSE ]\n    [ SOURCE_COMPRESSION = AUTO_DETECT | GZIP | BZ2 | BROTLI | ZSTD | DEFLATE | RAW_DEFLATE | NONE ]\n    [ OVERWRITE = TRUE | FALSE ]\n\ninternalStage ::=\n    @[<namespace>.]<int_stage_name>[/<path>]\n  | @[<namespace>.]%<table_name>[/<path>]\n  | @~[/<path>]",
+    "examples": [
+        {
+            "title": "Linux and macOS",
+            "code": "PUT file:///tmp/data/mydata.csv @my_int_stage;"
+        },
+        {
+            "title": "Windows",
+            "code": "PUT file://C:\\temp\\data\\mydata.csv @~\n  AUTO_COMPRESS = TRUE;"
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/copy-into-table",
+    "title": "COPY INTO",
+    "description": "Loads data from files to an existing table. The files must already be in one of the following locations:",
+    "syntax": "/* Standard data load */\nCOPY INTO [<namespace>.]<table_name>\n     FROM { internalStage | externalStage | externalLocation }\n[ FILES = ( '<file_name>' [ , '<file_name>' ] [ , ... ] ) ]\n[ PATTERN = '<regex_pattern>' ]\n[ FILE_FORMAT = ( { FORMAT_NAME = '[<namespace>.]<file_format_name>' |\n                    TYPE = { CSV | JSON | AVRO | ORC | PARQUET | XML } [ formatTypeOptions ] } ) ]\n[ copyOptions ]\n[ VALIDATION_MODE = RETURN_<n>_ROWS | RETURN_ERRORS | RETURN_ALL_ERRORS ]\n\n/* Data load with transformation */\nCOPY INTO [<namespace>.]<table_name> [ ( <col_name> [ , <col_name> ... ] ) ]\n     FROM ( SELECT [<alias>.]$<file_col_num>[.<element>] [ , [<alias>.]$<file_col_num>[.<element>] ... ]\n            FROM { internalStage | externalStage } )\n[ FILES = ( '<file_name>' [ , '<file_name>' ] [ , ... ] ) ]\n[ PATTERN = '<regex_pattern>' ]\n[ FILE_FORMAT = ( { FORMAT_NAME = '[<namespace>.]<file_format_name>' |\n                    TYPE = { CSV | JSON | AVRO | ORC | PARQUET | XML } [ formatTypeOptions ] } ) ]\n[ copyOptions ]\n\ninternalStage ::=\n    @[<namespace>.]<int_stage_name>[/<path>]\n  | @[<namespace>.]%<table_name>[/<path>]\n  | @~[/<path>]\n\nexternalStage ::=\n  @[<namespace>.]<ext_stage_name>[/<path>]\n\nexternalLocation (for Amazon S3) ::=\n  '<protocol>://<bucket>[/<path>]'\n  [ { STORAGE_INTEGRATION = <integration_name> } | { CREDENTIALS = ( {  { AWS_KEY_ID = '<string>' AWS_SECRET_KEY = '<string>' [ AWS_TOKEN = '<string>' ] } } ) } ]\n  [ ENCRYPTION = ( [ TYPE = 'AWS_CSE' ] [ MASTER_KEY = '<string>' ] |\n                   [ TYPE = 'AWS_SSE_S3' ] |\n                   [ TYPE = 'AWS_SSE_KMS' [ KMS_KEY_ID = '<string>' ] ] |\n                   [ TYPE = 'NONE' ] ) ]\n\nexternalLocation (for Google Cloud Storage) ::=\n  'gcs://<bucket>[/<path>]'\n  [ STORAGE_INTEGRATION = <integration_name> ]\n  [ ENCRYPTION = ( [ TYPE = 'GCS_SSE_KMS' ] [ KMS_KEY_ID = '<string>' ] | [ TYPE = 'NONE' ] ) ]\n\nexternalLocation (for Microsoft Azure) ::=\n  'azure://<account>.blob.core.windows.net/<container>[/<path>]'\n  [ { STORAGE_INTEGRATION = <integration_name> } | { CREDENTIALS = ( [ AZURE_SAS_TOKEN = '<string>' ] ) } ]\n  [ ENCRYPTION = ( [ TYPE = { 'AZURE_CSE' | 'NONE' } ] [ MASTER_KEY = '<string>' ] ) ]\n\nformatTypeOptions ::=\n-- If FILE_FORMAT = ( TYPE = CSV ... )\n     COMPRESSION = AUTO | GZIP | BZ2 | BROTLI | ZSTD | DEFLATE | RAW_DEFLATE | NONE\n     RECORD_DELIMITER = '<string>' | NONE\n     FIELD_DELIMITER = '<string>' | NONE\n     MULTI_LINE = TRUE | FALSE\n     PARSE_HEADER = TRUE | FALSE\n     SKIP_HEADER = <integer>\n     SKIP_BLANK_LINES = TRUE | FALSE\n     DATE_FORMAT = '<string>' | AUTO\n     TIME_FORMAT = '<string>' | AUTO\n     TIMESTAMP_FORMAT = '<string>' | AUTO\n     BINARY_FORMAT = HEX | BASE64 | UTF8\n     ESCAPE = '<character>' | NONE\n     ESCAPE_UNENCLOSED_FIELD = '<character>' | NONE\n     TRIM_SPACE = TRUE | FALSE\n     FIELD_OPTIONALLY_ENCLOSED_BY = '<character>' | NONE\n     NULL_IF = ( [ '<string>' [ , '<string>' ... ] ] )\n     ERROR_ON_COLUMN_COUNT_MISMATCH = TRUE | FALSE\n     REPLACE_INVALID_CHARACTERS = TRUE | FALSE\n     EMPTY_FIELD_AS_NULL = TRUE | FALSE\n     SKIP_BYTE_ORDER_MARK = TRUE | FALSE\n     ENCODING = '<string>' | UTF8\n-- If FILE_FORMAT = ( TYPE = JSON ... )\n     COMPRESSION = AUTO | GZIP | BZ2 | BROTLI | ZSTD | DEFLATE | RAW_DEFLATE | NONE\n     DATE_FORMAT = '<string>' | AUTO\n     TIME_FORMAT = '<string>' | AUTO\n     TIMESTAMP_FORMAT = '<string>' | AUTO\n     BINARY_FORMAT = HEX | BASE64 | UTF8\n     TRIM_SPACE = TRUE | FALSE\n     MULTI_LINE = TRUE | FALSE\n     NULL_IF = ( [ '<string>' [ , '<string>' ... ] ] )\n     ENABLE_OCTAL = TRUE | FALSE\n     ALLOW_DUPLICATE = TRUE | FALSE\n     STRIP_OUTER_ARRAY = TRUE | FALSE\n     STRIP_NULL_VALUES = TRUE | FALSE\n     REPLACE_INVALID_CHARACTERS = TRUE | FALSE\n     IGNORE_UTF8_ERRORS = TRUE | FALSE\n     SKIP_BYTE_ORDER_MARK = TRUE | FALSE\n-- If FILE_FORMAT = ( TYPE = AVRO ... )\n     COMPRESSION = AUTO | GZIP | BROTLI | ZSTD | DEFLATE | RAW_DEFLATE | NONE\n     TRIM_SPACE = TRUE | FALSE\n     REPLACE_INVALID_CHARACTERS = TRUE | FALSE\n     NULL_IF = ( [ '<string>' [ , '<string>' ... ] ] )\n-- If FILE_FORMAT = ( TYPE = ORC ... )\n     TRIM_SPACE = TRUE | FALSE\n     REPLACE_INVALID_CHARACTERS = TRUE | FALSE\n     NULL_IF = ( [ '<string>' [ , '<string>' ... ] ] )\n-- If FILE_FORMAT = ( TYPE = PARQUET ... )\n     COMPRESSION = AUTO | SNAPPY | NONE\n     BINARY_AS_TEXT = TRUE | FALSE\n     USE_LOGICAL_TYPE = TRUE | FALSE\n     TRIM_SPACE = TRUE | FALSE\n     USE_VECTORIZED_SCANNER = TRUE | FALSE\n     REPLACE_INVALID_CHARACTERS = TRUE | FALSE\n     NULL_IF = ( [ '<string>' [ , '<string>' ... ] ] )\n-- If FILE_FORMAT = ( TYPE = XML ... )\n     COMPRESSION = AUTO | GZIP | BZ2 | BROTLI | ZSTD | DEFLATE | RAW_DEFLATE | NONE\n     IGNORE_UTF8_ERRORS = TRUE | FALSE\n     PRESERVE_SPACE = TRUE | FALSE\n     STRIP_OUTER_ELEMENT = TRUE | FALSE\n     DISABLE_AUTO_CONVERT = TRUE | FALSE\n     REPLACE_INVALID_CHARACTERS = TRUE | FALSE\n     SKIP_BYTE_ORDER_MARK = TRUE | FALSE\n\ncopyOptions ::=\n     ON_ERROR = { CONTINUE | SKIP_FILE | SKIP_FILE_<num> | 'SKIP_FILE_<num>%' | ABORT_STATEMENT }\n     SIZE_LIMIT = <num>\n     PURGE = TRUE | FALSE\n     RETURN_FAILED_ONLY = TRUE | FALSE\n     MATCH_BY_COLUMN_NAME = CASE_SENSITIVE | CASE_INSENSITIVE | NONE\n     INCLUDE_METADATA = ( <column_name> = METADATA$<field> [ , <column_name> = METADATA${field} ... ] )\n     ENFORCE_LENGTH = TRUE | FALSE\n     TRUNCATECOLUMNS = TRUE | FALSE\n     FORCE = TRUE | FALSE\n     LOAD_UNCERTAIN_FILES = TRUE | FALSE\n     FILE_PROCESSOR = (SCANNER = <custom_scanner_type> SCANNER_OPTIONS = (<scanner_options>))\n     LOAD_MODE = { FULL_INGEST | ADD_FILES_COPY }",
+    "examples": [
+        {
+            "title": "Loading files from an internal stage",
+            "code": "COPY INTO mytable\nFROM @my_int_stage;"
+        },
+        {
+            "title": "Loading files from a named external stage",
+            "code": "COPY INTO mycsvtable\n  FROM @my_ext_stage/tutorials/dataloading/contacts1.csv;"
+        },
+        {
+            "title": "Loading files using column matching",
+            "code": "COPY INTO mytable\n  FROM @my_ext_stage/tutorials/dataloading/sales.json.gz\n  FILE_FORMAT = (TYPE = 'JSON')\n  MATCH_BY_COLUMN_NAME='CASE_INSENSITIVE';"
+        },
+        {
+            "title": "Loading files directly from an external location",
+            "code": "COPY INTO mytable\n  FROM s3://mybucket/data/files\n  STORAGE_INTEGRATION = myint\n  ENCRYPTION=(MASTER_KEY = 'eSx...')\n  FILE_FORMAT = (FORMAT_NAME = my_csv_format);"
+        },
+        {
+            "title": "Loading using pattern matching",
+            "code": "COPY INTO mytable\n  FILE_FORMAT = (TYPE = 'CSV')\n  PATTERN='.*/.*/.*[.]csv[.]gz';"
+        },
+        {
+            "title": "Loading JSON data into a VARIANT column",
+            "code": "[{\n    \"location\": {\n      \"city\": \"Lexington\",\n      \"zip\": \"40503\",\n      },\n      \"sq__ft\": \"1000\",\n      \"sale_date\": \"4-25-16\",\n      \"price\": \"75836\"\n},\n{\n    \"location\": {\n      \"city\": \"Belmont\",\n      \"zip\": \"02478\",\n      },\n      \"sq__ft\": \"1103\",\n      \"sale_date\": \"6-18-16\",\n      \"price\": \"92567\"\n}\n{\n    \"location\": {\n      \"city\": \"Winchester\",\n      \"zip\": \"01890\",\n      },\n      \"sq__ft\": \"1122\",\n      \"sale_date\": \"1-31-16\",\n      \"price\": \"89921\"\n}]"
+        },
+        {
+            "title": "Reloading files",
+            "code": "COPY INTO load1 FROM @%load1/data1/\n    FILES=('test1.csv', 'test2.csv');\n\nCOPY INTO load1 FROM @%load1/data1/\n    FILES=('test1.csv', 'test2.csv')\n    FORCE=TRUE;"
+        },
+        {
+            "title": "Purging files after loading",
+            "code": "ALTER TABLE mytable SET STAGE_COPY_OPTIONS = (PURGE = TRUE);\n\nCOPY INTO mytable;"
+        },
+        {
+            "title": "Validating staged files",
+            "code": "COPY INTO mytable VALIDATION_MODE = 'RETURN_ERRORS';\n\n+-------------------------------------------------------------------------------------------------------------------------------+------------------------+------+-----------+-------------+----------+--------+-----------+----------------------+------------+----------------+\n|                                                         ERROR                                                                 |            FILE        | LINE | CHARACTER | BYTE_OFFSET | CATEGORY |  CODE  | SQL_STATE |   COLUMN_NAME        | ROW_NUMBER | ROW_START_LINE |\n+-------------------------------------------------------------------------------------------------------------------------------+------------------------+------+-----------+-------------+----------+--------+-----------+----------------------+------------+----------------+\n| Field delimiter ',' found while expecting record delimiter '\\n'                                                               | @MYTABLE/data1.csv.gz  | 3    | 21        | 76          | parsing  | 100016 | 22000     | \"MYTABLE\"[\"QUOTA\":3] | 3          | 3              |\n| NULL result in a non-nullable column. Use quotes if an empty field should be interpreted as an empty string instead of a null | @MYTABLE/data3.csv.gz  | 3    | 2         | 62          | parsing  | 100088 | 22000     | \"MYTABLE\"[\"NAME\":1]  | 3          | 3              |\n| End of record reached while expected to parse column '\"MYTABLE\"[\"QUOTA\":3]'                                                   | @MYTABLE/data3.csv.gz  | 4    | 20        | 96          | parsing  | 100068 | 22000     | \"MYTABLE\"[\"QUOTA\":3] | 4          | 4              |\n+-------------------------------------------------------------------------------------------------------------------------------+------------------------+------+-----------+-------------+----------+--------+-----------+----------------------+------------+----------------+"
+        },
+        {
+            "title": "Loading Iceberg-compatible Parquet data into an Iceberg table",
+            "code": "CREATE OR REPLACE FILE FORMAT my_parquet_format\n  TYPE = PARQUET\n  USE_VECTORIZED_SCANNER = TRUE;"
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/list",
+    "title": "LIST",
+    "description": "Returns a list of files that have been staged (files that have been uploaded from a local file system or unloaded from a table) in one of the following\nSnowflake stages:",
+    "syntax": "LIST { internalStage | externalStage } [ PATTERN = '<regex_pattern>' ]\n\ninternalStage ::=\n    @[<namespace>.]<int_stage_name>[/<path>]\n  | @[<namespace>.]%<table_name>[/<path>]\n  | @~[/<path>]\n\nexternalStage ::=\n    @[<namespace>.]<ext_stage_name>[/<path>]",
+    "examples": [
+        {
+            "title": "Examples",
+            "code": "LIST @%mytable;"
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/copy-into-location",
+    "title": "COPY INTO",
+    "description": "Unloads data from a table (or query) into one or more files in one of the following locations:",
+    "syntax": "COPY INTO { internalStage | externalStage | externalLocation }\n     FROM { [<namespace>.]<table_name> | ( <query> ) }\n[ PARTITION BY <expr> ]\n[ FILE_FORMAT = ( { FORMAT_NAME = '[<namespace>.]<file_format_name>' |\n                    TYPE = { CSV | JSON | PARQUET } [ formatTypeOptions ] } ) ]\n[ copyOptions ]\n[ VALIDATION_MODE = RETURN_ROWS ]\n[ HEADER ]\n\ninternalStage ::=\n    @[<namespace>.]<int_stage_name>[/<path>]\n  | @[<namespace>.]%<table_name>[/<path>]\n  | @~[/<path>]\n\nexternalStage ::=\n  @[<namespace>.]<ext_stage_name>[/<path>]\n\nexternalLocation (for Amazon S3) ::=\n  '<protocol>://<bucket>[/<path>]'\n  [ { STORAGE_INTEGRATION = <integration_name> } | { CREDENTIALS = ( {  { AWS_KEY_ID = '<string>' AWS_SECRET_KEY = '<string>' [ AWS_TOKEN = '<string>' ] } } ) } ]\n  [ ENCRYPTION = ( [ TYPE = 'AWS_CSE' ] [ MASTER_KEY = '<string>' ] |\n                   [ TYPE = 'AWS_SSE_S3' ] |\n                   [ TYPE = 'AWS_SSE_KMS' [ KMS_KEY_ID = '<string>' ] ] |\n                   [ TYPE = 'NONE' ] ) ]\n\nexternalLocation (for Google Cloud Storage) ::=\n  'gcs://<bucket>[/<path>]'\n  [ STORAGE_INTEGRATION = <integration_name> ]\n  [ ENCRYPTION = ( [ TYPE = 'GCS_SSE_KMS' ] [ KMS_KEY_ID = '<string>' ] | [ TYPE = 'NONE' ] ) ]\n\nexternalLocation (for Microsoft Azure) ::=\n  'azure://<account>.blob.core.windows.net/<container>[/<path>]'\n  [ { STORAGE_INTEGRATION = <integration_name> } | { CREDENTIALS = ( [ AZURE_SAS_TOKEN = '<string>' ] ) } ]\n  [ ENCRYPTION = ( [ TYPE = { 'AZURE_CSE' | 'NONE' } ] [ MASTER_KEY = '<string>' ] ) ]\n\nformatTypeOptions ::=\n-- If FILE_FORMAT = ( TYPE = CSV ... )\n     COMPRESSION = AUTO | GZIP | BZ2 | BROTLI | ZSTD | DEFLATE | RAW_DEFLATE | NONE\n     RECORD_DELIMITER = '<string>' | NONE\n     FIELD_DELIMITER = '<string>' | NONE\n     FILE_EXTENSION = '<string>'\n     ESCAPE = '<character>' | NONE\n     ESCAPE_UNENCLOSED_FIELD = '<character>' | NONE\n     DATE_FORMAT = '<string>' | AUTO\n     TIME_FORMAT = '<string>' | AUTO\n     TIMESTAMP_FORMAT = '<string>' | AUTO\n     BINARY_FORMAT = HEX | BASE64 | UTF8\n     FIELD_OPTIONALLY_ENCLOSED_BY = '<character>' | NONE\n     NULL_IF = ( '<string1>' [ , '<string2>' , ... ] )\n     EMPTY_FIELD_AS_NULL = TRUE | FALSE\n-- If FILE_FORMAT = ( TYPE = JSON ... )\n     COMPRESSION = AUTO | GZIP | BZ2 | BROTLI | ZSTD | DEFLATE | RAW_DEFLATE | NONE\n     FILE_EXTENSION = '<string>'\n-- If FILE_FORMAT = ( TYPE = PARQUET ... )\n     COMPRESSION = AUTO | LZO | SNAPPY | NONE\n     SNAPPY_COMPRESSION = TRUE | FALSE\n\ncopyOptions ::=\n     OVERWRITE = TRUE | FALSE\n     SINGLE = TRUE | FALSE\n     MAX_FILE_SIZE = <num>\n     INCLUDE_QUERY_ID = TRUE | FALSE\n     DETAILED_OUTPUT = TRUE | FALSE",
+    "examples": [
+        {
+            "title": "Unloading data from a table to files in a table stage",
+            "code": "COPY INTO @%orderstiny/result/data_\n  FROM orderstiny FILE_FORMAT = (FORMAT_NAME ='myformat' COMPRESSION='GZIP');"
+        },
+        {
+            "title": "Unloading data from a query to files in a named internal stage",
+            "code": "COPY INTO @my_stage/result/data_ FROM (SELECT * FROM orderstiny)\n   file_format=(format_name='myformat' compression='gzip');"
+        },
+        {
+            "title": "Unloading data from a table directly to files in an external location",
+            "code": "COPY INTO 's3://mybucket/unload/'\n  FROM mytable\n  STORAGE_INTEGRATION = myint\n  FILE_FORMAT = (FORMAT_NAME = my_csv_format);"
+        },
+        {
+            "title": "Partitioning unloaded rows to Parquet files",
+            "code": "CREATE or replace TABLE t1 (\n  dt date,\n  ts time\n  )\nAS\n  SELECT TO_DATE($1)\n        ,TO_TIME($2)\n    FROM VALUES\n           ('2020-01-28', '18:05')\n          ,('2020-01-28', '22:57')\n          ,('2020-01-28', NULL)\n          ,('2020-01-29', '02:15')\n;\n\nSELECT * FROM t1;\n\n+------------+----------+\n| DT         | TS       |\n|------------+----------|\n| 2020-01-28 | 18:05:00 |\n| 2020-01-28 | 22:57:00 |\n| 2020-01-28 | 22:32:00 |\n| 2020-01-29 | 02:15:00 |\n+------------+----------+\n\n-- Partition the unloaded data by date and hour. Set ``32000000`` (32 MB) as the upper size limit of each file to be generated in parallel per thread.\nCOPY INTO @%t1\n  FROM t1\n  PARTITION BY ('date=' || to_varchar(dt, 'YYYY-MM-DD') || '/hour=' || to_varchar(date_part(hour, ts))) -- Concatenate labels and column values to output meaningful filenames\n  FILE_FORMAT = (TYPE=parquet)\n  MAX_FILE_SIZE = 32000000\n  HEADER=true;\n\nLIST @%t1;\n\n+------------------------------------------------------------------------------------------+------+----------------------------------+------------------------------+\n| name                                                                                     | size | md5                              | last_modified                |\n|------------------------------------------------------------------------------------------+------+----------------------------------+------------------------------|\n| __NULL__/data_019c059d-0502-d90c-0000-438300ad6596_006_4_0.snappy.parquet                |  512 | 1c9cb460d59903005ee0758d42511669 | Wed, 5 Aug 2020 16:58:16 GMT |\n| date=2020-01-28/hour=18/data_019c059d-0502-d90c-0000-438300ad6596_006_4_0.snappy.parquet |  592 | d3c6985ebb36df1f693b52c4a3241cc4 | Wed, 5 Aug 2020 16:58:16 GMT |\n| date=2020-01-28/hour=22/data_019c059d-0502-d90c-0000-438300ad6596_006_6_0.snappy.parquet |  592 | a7ea4dc1a8d189aabf1768ed006f7fb4 | Wed, 5 Aug 2020 16:58:16 GMT |\n| date=2020-01-29/hour=2/data_019c059d-0502-d90c-0000-438300ad6596_006_0_0.snappy.parquet  |  592 | 2d40ccbb0d8224991a16195e2e7e5a95 | Wed, 5 Aug 2020 16:58:16 GMT |\n+------------------------------------------------------------------------------------------+------+----------------------------------+------------------------------+"
+        },
+        {
+            "title": "Retaining NULL/empty field data in unloaded files",
+            "code": "-- View the table column values\nSELECT * FROM HOME_SALES;\n\n+------------+-------+-------+-------------+--------+------------+\n| CITY       | STATE | ZIP   | TYPE        | PRICE  | SALE_DATE  |\n|------------+-------+-------+-------------+--------+------------|\n| Lexington  | MA    | 95815 | Residential | 268880 | 2017-03-28 |\n| Belmont    | MA    | 95815 | Residential |        | 2017-02-21 |\n| Winchester | MA    | NULL  | Residential |        | 2017-01-31 |\n+------------+-------+-------+-------------+--------+------------+\n\n-- Unload the table data into the current user's personal stage. The file format options retain both the NULL value and the empty values in the output file\nCOPY INTO @~ FROM HOME_SALES\n  FILE_FORMAT = (TYPE = csv NULL_IF = ('NULL', 'null') EMPTY_FIELD_AS_NULL = false);\n\n-- Contents of the output file\nLexington,MA,95815,Residential,268880,2017-03-28\nBelmont,MA,95815,Residential,,2017-02-21\nWinchester,MA,NULL,Residential,,2017-01-31"
+        },
+        {
+            "title": "Unloading data to a single file",
+            "code": "copy into @~ from HOME_SALES\nsingle = true;"
+        },
+        {
+            "title": "Including the UUID in the unloaded filenames",
+            "code": "-- Unload rows from the T1 table into the T1 table stage:\nCOPY INTO @%t1\n  FROM t1\n  FILE_FORMAT=(TYPE=parquet)\n  INCLUDE_QUERY_ID=true;\n\n-- Retrieve the query ID for the COPY INTO location statement.\n-- This optional step enables you to see that the query ID for the COPY INTO location statement\n-- is identical to the UUID in the unloaded files.\nSELECT last_query_id();\n+--------------------------------------+\n| LAST_QUERY_ID()                      |\n|--------------------------------------|\n| 019260c2-00c0-f2f2-0000-4383001cf046 |\n+--------------------------------------+\n\nLS @%t1;\n+----------------------------------------------------------------+------+----------------------------------+-------------------------------+\n| name                                                           | size | md5                              | last_modified                 |\n|----------------------------------------------------------------+------+----------------------------------+-------------------------------|\n| data_019260c2-00c0-f2f2-0000-4383001cf046_0_0_0.snappy.parquet |  544 | eb2215ec3ccce61ffa3f5121918d602e | Thu, 20 Feb 2020 16:02:17 GMT |\n+----------------------------------------------------------------+------+----------------------------------+-------------------------------+"
+        },
+        {
+            "title": "Validating data to be unloaded (from a query)",
+            "code": "COPY INTO @my_stage\n  FROM (SELECT * FROM orderstiny LIMIT 5)\n  VALIDATION_MODE='RETURN_ROWS';"
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/functions/validate",
+    "title": "VALIDATE",
+    "description": "Validates the files loaded in a past execution of the COPY INTO <table> command and returns all the errors encountered during the load, rather than just the first error.",
+    "syntax": "VALIDATE( [<namespace>.]<table_name> , JOB_ID => { '<query_id>' | '_last' } )",
+    "examples": [
+        {
+            "title": "Examples",
+            "code": "SELECT * FROM TABLE(VALIDATE(t1, JOB_ID => '_last'));"
+        }
+    ],
+    "arguments": [
+        {
+            "name": "[ namespace .] table_name",
+            "description": "Specifies the fully-qualified name of the table that was the target of the load. Namespace is the database and/or schema in which the table resides, in the form of database_name . schema_name or schema_name . It is optional if a database and schema\nare currently in use within the user session; otherwise, it is required."
+        },
+        {
+            "name": "JOB_ID => query_id | _last",
+            "description": "The ID for the COPY INTO <table> command to be validated: The ID can be obtained from the Query ID column in the History page in the Classic Console. The specified query ID must have been for the specified target table. If _last is specified instead of query_id , the function validates the last load executed during the current session, regardless of the specified target table."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/insert",
+    "title": "INSERT",
+    "description": "Updates a table by inserting one or more rows into the table. The values inserted into each column in the table can be explicitly-specified\nor the results of a query.",
+    "syntax": "INSERT [ OVERWRITE ] INTO <target_table> [ ( <target_col_name> [ , ... ] ) ]\n       {\n         VALUES ( { <value> | DEFAULT | NULL } [ , ... ] ) [ , ( ... ) ]  |\n         <query>\n       }",
+    "examples": [
+        {
+            "title": "Single row insert using a query",
+            "code": "CREATE OR REPLACE TABLE mytable (\n  col1 DATE,\n  col2 TIMESTAMP_NTZ,\n  col3 TIMESTAMP_NTZ);\n\nDESC TABLE mytable;"
+        },
+        {
+            "title": "Multi-row insert using explicitly-specified values",
+            "code": "CREATE TABLE employees (\n  first_name VARCHAR,\n  last_name VARCHAR,\n  workphone VARCHAR,\n  city VARCHAR,\n  postal_code VARCHAR);\n\nINSERT INTO employees\n  VALUES\n    ('May', 'Franklin', '1-650-249-5198', 'San Francisco', 94115),\n    ('Gillian', 'Patterson', '1-650-859-3954', 'San Francisco', 94115),\n    ('Lysandra', 'Reeves', '1-212-759-3751', 'New York', 10018),\n    ('Michael', 'Arnett', '1-650-230-8467', 'San Francisco', 94116);\n\nSELECT * FROM employees;"
+        },
+        {
+            "title": "Multi-row insert using query",
+            "code": "SELECT * FROM employees;"
+        },
+        {
+            "title": "Multi-row insert for JSON data",
+            "code": "CREATE TABLE prospects (column1 VARIANT);\n\nINSERT INTO prospects\n  SELECT PARSE_JSON(column1)\n  FROM VALUES\n  ('{\n    \"_id\": \"57a37f7d9e2b478c2d8a608b\",\n    \"name\": {\n      \"first\": \"Lydia\",\n      \"last\": \"Williamson\"\n    },\n    \"company\": \"Miralinz\",\n    \"email\": \"lydia.williamson@miralinz.info\",\n    \"phone\": \"+1 (914) 486-2525\",\n    \"address\": \"268 Havens Place, Dunbar, Rhode Island, 02801\"\n  }')\n  , ('{\n    \"_id\": \"57a37f7d622a2b1f90698c01\",\n    \"name\": {\n      \"first\": \"Denise\",\n      \"last\": \"Holloway\"\n    },\n    \"company\": \"DIGIGEN\",\n    \"email\": \"denise.holloway@digigen.net\",\n    \"phone\": \"+1 (979) 587-3021\",\n    \"address\": \"441 Dover Street, Ada, New Mexico, 87105\"\n  }');"
+        },
+        {
+            "title": "Insert using OVERWRITE",
+            "code": "SELECT * FROM employees;"
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/truncate-table",
+    "title": "TRUNCATE TABLE",
+    "description": "Removes all rows from a table but leaves the table intact (including all privileges and constraints on the table). Also deletes the load\nmetadata for the table, which allows the same files to be loaded into the table again after the command completes.",
+    "syntax": "TRUNCATE [ TABLE ] [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "title": "Examples",
+            "code": "-- create a basic table\nCREATE OR REPLACE TABLE temp (i number);\n\n-- populate it with some rows\nINSERT INTO temp SELECT seq8() FROM table(generator(rowcount=>20)) v;\n\n-- verify that the rows exist\nSELECT COUNT (*) FROM temp;\n\n----------+\n count(*) |\n----------+\n 20       |\n----------+\n\n-- truncate the table\nTRUNCATE TABLE IF EXISTS temp;\n\n-- verify that the table is now empty\nSELECT COUNT (*) FROM temp;\n\n----------+\n count(*) |\n----------+\n 0        |\n----------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the table to truncate. If the identifier contains spaces or special characters, the entire string must be\nenclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive (e.g. \"My Object\" ). If the table identifier is not fully-qualified (in the form of db_name . schema_name . table_name or schema_name . table_name ), the command looks for the table in the current schema for the session."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/get",
+    "title": "GET",
+    "description": "Downloads data files from one of the following internal stage\ntypes to a local directory or folder on a client machine:",
+    "syntax": "GET internalStage file://<local_directory_path>\n    [ PARALLEL = <integer> ]\n    [ PATTERN = '<regex_pattern>'' ]\n\ninternalStage ::=\n    @[<namespace>.]<int_stage_name>[/<path>]\n  | @[<namespace>.]%<table_name>[/<path>]\n  | @~[/<path>]",
+    "examples": [
+        {
+            "title": "Examples",
+            "code": "GET @%mytable file:///tmp/data/;"
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/remove",
+    "title": "REMOVE",
+    "description": "Removes files from either an external (external cloud storage) or internal (i.e. Snowflake) stage.",
+    "syntax": "REMOVE { internalStage | externalStage } [ PATTERN = '<regex_pattern>' ]\n\ninternalStage ::=\n    @[<namespace>.]<int_stage_name>[/<path>]\n  | @[<namespace>.]%<table_name>[/<path>]\n  | @~[/<path>]\n\nexternalStage ::=\n    @[<namespace>.]<ext_stage_name>[/<path>]",
+    "examples": [
+        {
+            "title": "Examples",
+            "code": "REMOVE @mystage/path1/subpath2;"
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/insert-multi-table",
+    "title": "INSERT (multi-table)",
+    "description": "Updates multiple tables by inserting one or more rows with column values (from a query) into the tables. Supports both unconditional and\nconditional inserts.",
+    "syntax": "-- Unconditional multi-table insert\nINSERT [ OVERWRITE ] ALL\n  intoClause [ ... ]\n<subquery>\n\n-- Conditional multi-table insert\nINSERT [ OVERWRITE ] { FIRST | ALL }\n  { WHEN <condition> THEN intoClause [ ... ] }\n  [ ... ]\n  [ ELSE intoClause ]\n<subquery>\n\nintoClause ::=\n  INTO <target_table> [ ( <target_col_name> [ , ... ] ) ] [ VALUES ( { <source_col_name> | DEFAULT | NULL } [ , ... ] ) ]",
+    "examples": [
+        {
+            "title": "Unconditional multi-table inserts",
+            "code": "INSERT ALL\n  INTO t1\n  INTO t1 (c1, c2, c3) VALUES (n2, n1, DEFAULT)\n  INTO t2 (c1, c2, c3)\n  INTO t2 VALUES (n3, n2, n1)\nSELECT n1, n2, n3 from src;\n\n-- If t1 and t2 need to be truncated before inserting, OVERWRITE must be specified\nINSERT OVERWRITE ALL\n  INTO t1\n  INTO t1 (c1, c2, c3) VALUES (n2, n1, DEFAULT)\n  INTO t2 (c1, c2, c3)\n  INTO t2 VALUES (n3, n2, n1)\nSELECT n1, n2, n3 from src;"
+        },
+        {
+            "title": "Conditional multi-table inserts",
+            "code": "INSERT ALL\n  WHEN n1 > 100 THEN\n    INTO t1\n  WHEN n1 > 10 THEN\n    INTO t1\n    INTO t2\n  ELSE\n    INTO t2\nSELECT n1 from src;"
+        },
+        {
+            "title": "Multi-table inserts with aliases and references",
+            "code": "INSERT ALL\n  INTO t1 VALUES ($1, an_alias, \"10 + 20\")\nSELECT 1, 50 AS an_alias, 10 + 20;"
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/update",
+    "title": "UPDATE",
+    "description": "Updates specified rows in the target table with new values.",
+    "syntax": "UPDATE <target_table>\n       SET <col_name> = <value> [ , <col_name> = <value> , ... ]\n        [ FROM <additional_tables> ]\n        [ WHERE <condition> ]",
+    "examples": [
+        {
+            "title": "Examples",
+            "code": "UPDATE t1\n  SET number_column = t1.number_column + t2.number_column, t1.text_column = 'ASDF'\n  FROM t2\n  WHERE t1.key_column = t2.t1_key and t1.number_column < 10;"
+        }
+    ]
+}
+]

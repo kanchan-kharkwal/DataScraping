@@ -26,9 +26,6 @@ class SnowflakeFunctionsSpider(scrapy.Spider):
     }
 
     def parse(self, response):
-        """
-        Parses the function list page and follows links to function detail pages.
-        """
         table = response.css('main table')
         if not table:
             self.log("ERROR: No function table found.")

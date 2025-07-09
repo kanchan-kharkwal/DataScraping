@@ -1,0 +1,146 @@
+[
+{
+    "data_types": [
+        {
+            "category": "Numeric data types",
+            "data_type": "NUMBER",
+            "notes": "Default precision and scale are (38,0)."
+        },
+        {
+            "category": "DECIMAL, NUMERIC",
+            "data_type": "Synonymous with NUMBER.",
+            "notes": ""
+        },
+        {
+            "category": "INT, INTEGER, BIGINT, SMALLINT, TINYINT, BYTEINT",
+            "data_type": "Synonymous with NUMBER, except precision and scale can’t be specified.",
+            "notes": ""
+        },
+        {
+            "category": "FLOAT, FLOAT4, FLOAT8",
+            "data_type": "[1]",
+            "notes": ""
+        },
+        {
+            "category": "DOUBLE, DOUBLE PRECISION, REAL",
+            "data_type": "Synonymous with FLOAT. [1]",
+            "notes": ""
+        },
+        {
+            "category": "String & binary data types",
+            "data_type": "VARCHAR",
+            "notes": "Default length is 16777216 bytes. Maximum length is 134217728 bytes."
+        },
+        {
+            "category": "CHAR, CHARACTER",
+            "data_type": "Synonymous with VARCHAR, except the default length is VARCHAR(1).",
+            "notes": ""
+        },
+        {
+            "category": "STRING, TEXT",
+            "data_type": "Synonymous with VARCHAR.",
+            "notes": ""
+        },
+        {
+            "category": "BINARY",
+            "data_type": "",
+            "notes": ""
+        },
+        {
+            "category": "VARBINARY",
+            "data_type": "Synonymous with BINARY.",
+            "notes": ""
+        },
+        {
+            "category": "Logical data types",
+            "data_type": "BOOLEAN",
+            "notes": "Currently only supported for accounts provisioned after January 25, 2016."
+        },
+        {
+            "category": "Date & time data types",
+            "data_type": "DATE",
+            "notes": ""
+        },
+        {
+            "category": "DATETIME",
+            "data_type": "Alias for TIMESTAMP_NTZ",
+            "notes": ""
+        },
+        {
+            "category": "TIME",
+            "data_type": "",
+            "notes": ""
+        },
+        {
+            "category": "TIMESTAMP",
+            "data_type": "Alias for one of the TIMESTAMP variations (TIMESTAMP_NTZ by default).",
+            "notes": ""
+        },
+        {
+            "category": "TIMESTAMP_LTZ",
+            "data_type": "TIMESTAMP with local time zone; time zone, if provided, isn’t stored.",
+            "notes": ""
+        },
+        {
+            "category": "TIMESTAMP_NTZ",
+            "data_type": "TIMESTAMP with no time zone; time zone, if provided, isn’t stored.",
+            "notes": ""
+        },
+        {
+            "category": "TIMESTAMP_TZ",
+            "data_type": "TIMESTAMP with time zone.",
+            "notes": ""
+        },
+        {
+            "category": "Semi-structured data types",
+            "data_type": "VARIANT",
+            "notes": ""
+        },
+        {
+            "category": "OBJECT",
+            "data_type": "",
+            "notes": ""
+        },
+        {
+            "category": "ARRAY",
+            "data_type": "",
+            "notes": ""
+        },
+        {
+            "category": "Structured data types",
+            "data_type": "ARRAY",
+            "notes": "Currently only supported for Iceberg tables."
+        },
+        {
+            "category": "OBJECT",
+            "data_type": "Currently only supported for Iceberg tables.",
+            "notes": ""
+        },
+        {
+            "category": "MAP",
+            "data_type": "Currently only supported for Iceberg tables.",
+            "notes": ""
+        },
+        {
+            "category": "Unstructured data types",
+            "data_type": "FILE",
+            "notes": "See Introduction to unstructured data"
+        },
+        {
+            "category": "Geospatial data types",
+            "data_type": "GEOGRAPHY",
+            "notes": ""
+        },
+        {
+            "category": "GEOMETRY",
+            "data_type": "",
+            "notes": ""
+        },
+        {
+            "category": "Vector data types",
+            "data_type": "VECTOR",
+            "notes": ""
+        }
+    ]
+}
+]

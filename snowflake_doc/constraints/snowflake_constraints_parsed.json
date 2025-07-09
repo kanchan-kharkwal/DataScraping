@@ -1,0 +1,125 @@
+[
+{
+    "page_name": "constraints",
+    "url": "https://docs.snowflake.com/en/sql-reference/constraints",
+    "sections": [
+        {
+            "heading": "Introduction",
+            "content": [
+                {
+                    "type": "text",
+                    "value": "OverviewSQL data types referenceSQL command referenceFunction and stored procedure referenceClass referenceScripting referenceGeneral referenceParametersReferencesTernary logicCollation supportSQL format modelsObject identifiersConstraintsOverviewCreatingModifyingDroppingSQL variablesBind variablesTransactionsTable literalsSNOWFLAKE databaseSnowflake Information SchemaMetadata fieldsConventionsReserved keywordsAPI reference"
+                },
+                {
+                    "type": "text",
+                    "value": "ReferenceGeneral referenceConstraints\n\n\n  \n  \nConstraints¶\nConstraints define integrity and consistency rules for data stored in tables.\nSnowflake provides support for constraints as defined in the ANSI SQL standard,\nas well as some extensions for compatibility with other databases, such as Oracle.\n\nImportant\n\nFor standard tables, Snowflake supports defining and maintaining constraints, but\ndoes not enforce them, except for NOT NULL constraints, which are always enforced.\nViolations of constraints may cause unexpected downstream effects. If you decide to create a\nconstraint that must be relied upon, make sure your downstream processes can maintain data\nintegrity. For more information, see Constraint properties.\nConstraints on standard tables are provided primarily for data modeling purposes and compatibility\nwith other databases, as well as to support client tools that utilize constraints. For example,\nTableau supports using constraints to perform join culling (join elimination), which can improve the\nperformance of generated queries and cube refresh.\n\nFor hybrid tables, Snowflake both supports and enforces\nconstraints. Primary key constraints are required and enforced on all hybrid tables, and other\nconstraints are enforced when used.\n\n\nNext Topics:\n\n\nOverview of Constraints\nCreating Constraints\nModifying Constraints\nDropping Constraints\n\n\n\n\n\nWas this page helpful?YesNoVisit SnowflakeJoin the conversationDevelop with SnowflakeShare your feedbackRead the latest on our blogGet your own certificationPrivacy NoticeSite Terms© 2025 Snowflake, Inc. All Rights Reserved."
+                }
+            ]
+        }
+    ]
+},
+{
+    "page_name": "constraints-overview",
+    "url": "https://docs.snowflake.com/en/sql-reference/constraints-overview",
+    "sections": [
+        {
+            "heading": "Introduction",
+            "content": [
+                {
+                    "type": "text",
+                    "value": "OverviewSQL data types referenceSQL command referenceFunction and stored procedure referenceClass referenceScripting referenceGeneral referenceParametersReferencesTernary logicCollation supportSQL format modelsObject identifiersConstraintsOverviewCreatingModifyingDroppingSQL variablesBind variablesTransactionsTable literalsSNOWFLAKE databaseSnowflake Information SchemaMetadata fieldsConventionsReserved keywordsAPI reference"
+                },
+                {
+                    "type": "text",
+                    "value": "ReferenceGeneral referenceConstraintsOverview\n\n\n  \n  \nOverview of Constraints¶\nSnowflake provides the following constraint functionality:\n\nUnique, primary, and foreign keys, and NOT NULL columns.\nNamed constraints.\nSingle-column and multi-column constraints.\nCreation of constraints inline and out-of-line.\nCreation, modification, and deletion of constraints.\n\n\n\n\nSupported Constraint Types¶\nSnowflake supports the following constraint types from the ANSI SQL standard:\n\nPRIMARY KEY\nFOREIGN KEY\nUNIQUE\nNOT NULL\n\nA table can have multiple unique keys and foreign keys, but only one primary key. A PRIMARY KEY constraint implies that the\ncolumn is both NOT NULL and UNIQUE.\nAll foreign keys must reference a corresponding primary or unique key that matches the column types of each column in the foreign key.\nThe primary key for a foreign key can be on a different table or the same table as the foreign key. When you define foreign key constraints across hybrid tables, the tables must be in the same database.\nThe following table summarizes the differences in behavior between standard tables and hybrid tables,\nwith respect to the enforcement of constraints and whether constraints are required.\n\nA constraint is enforced when it protects a column from being updated in certain ways.\nFor example, a column that is declared NOT NULL cannot contain a NULL value. An attempt to copy or insert a NULL value into a NOT NULL column always results in an error.\nFor hybrid tables, you cannot set the NOT ENFORCED property on PRIMARY KEY, FOREIGN KEY, and UNIQUE constraints. Setting this property results in an “invalid constraint property” error.\nA constraint is required when one or more columns in a table must have such a constraint, which is only true for\nPRIMARY KEY constraints on hybrid tables.\n\n\n\n\n\n\n\n\nFeature\nHybrid tables\nStandard tables\n\n\n\nPRIMARY KEY constraints\nRequired, enforced\nOptional, not enforced\n\nFOREIGN KEY constraints\nOptional, enforced (referential integrity)\nOptional, not enforced\n\nUNIQUE constraints\nOptional, enforced\nOptional, not enforced\n\nNOT NULL constraints\nOptional, enforced\nOptional, enforced\n\n\n\nSee also CREATE | ALTER TABLE … CONSTRAINT.\n\n\nTable Constraints¶\nSnowflake supports constraints on permanent, transient, temporary, and hybrid\ntables. You can define constraints on columns of all data types, and you can\ninclude any number of columns in a single constraint.\n\nWhen you copy a table by using CREATE TABLE … LIKE or CREATE TABLE … CLONE,\nall existing constraints on the table, including foreign keys, are copied to the\nnew table. (CREATE TABLE … CLONE is not supported for hybrid tables.)\nAdditional commands and functions, such as DROP/UNDROP and GET_DDL are\nsupported for tables with constraints. They are also supported for schemas\nand databases.\nFor Snowflake Time Travel, when previous versions of a table are copied, the\ncurrent version of the constraints on the table are used because Snowflake\ndoes not store previous versions of constraints in table metadata.\n\n\n\n\nSingle-Column and Multi-Column Constraints¶\nConstraints can be defined on a single column or on multiple columns in the same\ntable.\nFor multi-column constraints (composite primary keys or unique keys), the\ncolumns are ordered, and each column has a corresponding key sequence.\n\n\nInline and Out-of-Line Constraints¶\nConstraints are defined either inline or out-of-line during table creation or\nmodification:\n\nInline constraints are created as part of the column definition and can only\nbe used for single-column constraints.\nOut-of-line constraints are defined using a separate clause that specifies the\ncolumn or columns on which the constraint is created. They can be used for creating\neither single-column or multi-column constraints, as well as for creating\nconstraints on existing columns.\n\n\n\nConstraints in GET_DDL¶\nThe SQL statements that GET_DDL returns includes the\nclauses that define constraints; however, note the following:\n\nSingle-column constraints, such as NOT NULL and DEFAULT, are\nreconstructed inline with the definition of the column.\nTable constraints, such as unique/primary/foreign keys, are always reconstructed as\nout-of-line constraints, even if they consist of a single column.\nFor unnamed constraints (that is, constraints with a system-generated name),\nGET_DDL does not return the system-generated name.\n\n\n\n\n\nWas this page helpful?YesNoVisit SnowflakeJoin the conversationDevelop with SnowflakeShare your feedbackRead the latest on our blogGet your own certificationPrivacy NoticeSite Terms© 2025 Snowflake, Inc. All Rights Reserved.On this pageSupported Constraint TypesTable ConstraintsSingle-Column and Multi-Column ConstraintsInline and Out-of-Line ConstraintsConstraints in GET_DDL"
+                }
+            ]
+        }
+    ]
+},
+{
+    "page_name": "constraints-alter",
+    "url": "https://docs.snowflake.com/en/sql-reference/constraints-alter",
+    "sections": [
+        {
+            "heading": "Introduction",
+            "content": [
+                {
+                    "type": "text",
+                    "value": "OverviewSQL data types referenceSQL command referenceFunction and stored procedure referenceClass referenceScripting referenceGeneral referenceParametersReferencesTernary logicCollation supportSQL format modelsObject identifiersConstraintsOverviewCreatingModifyingDroppingSQL variablesBind variablesTransactionsTable literalsSNOWFLAKE databaseSnowflake Information SchemaMetadata fieldsConventionsReserved keywordsAPI reference"
+                },
+                {
+                    "type": "syntax",
+                    "value": "ALTER TABLE <table_name> RENAME CONSTRAINT <old_name> TO <new_name>;"
+                },
+                {
+                    "type": "syntax",
+                    "value": "ALTER TABLE <table_name>\n    { ALTER | MODIFY } { CONSTRAINT <name> | PRIMARY KEY | { UNIQUE | FOREIGN KEY } (<column_name>, [ ... ] ) }\n    { [ [ NOT ] ENFORCED ] [ VALIDATE | NOVALIDATE ] [ RELY | NORELY ] };"
+                },
+                {
+                    "type": "text",
+                    "value": "ReferenceGeneral referenceConstraintsModifying\n\n\n  \n  \nModifying Constraints¶\nAfter a constraint is created:\n\nThe constraint can be renamed.\nSome properties can be modified, e.g. RELY.\nSome properties cannot be modified, e.g. such as DEFERRABLE. To modify these properties, the constraint must be dropped and recreated.\nThe column definition for a constraint cannot be modified, e.g. add new columns, drop existing columns, or change the order of columns. To make these types of changes, the constraint must be dropped\nand recreated.\n\nWhen modifying a constraint, the constraint can be identified using either the constraint name or the columns in the constraint definition along with the type of the constraint. Primary keys can also be\nidentified using the PRIMARY KEY keyword, because each table can have only a single primary key.\nIf a table with constraints is modified, e.g. rename table or swap table with another table, the constraints are updated to reflect the changes.\n\n\n\nRenaming a Constraint¶\nUse the following syntax for the ALTER TABLE command to rename a constraint:\n\nCopy\n\n\nModifying Properties of a Constraint¶\nUse the following syntax for the ALTER TABLE command to modify the properties of a constraint:\n\nCopy\nCurrently, Snowflake only supports setting the following constraint properties:\n\nNOT ENFORCED\nNOVALIDATE\nRELY and NORELY\n\nNote that Snowflake does not support setting ENFORCED and VALIDATE. See also Non-default values for ENABLE and VALIDATE properties.\nFor descriptions of the constraint properties, see Constraint properties.\n\n\nModifying a Table with Constraints¶\nIf a table with constraints is renamed, the constraints for the table, as well as any foreign key constraints that reference the table are updated to reference the new name.\nLikewise, if a table is swapped with another, existing table, all the constraints on the table are maintained on the swapped table.\nFor more details about renaming or swapping tables, see ALTER TABLE.\n\n\n\n\nWas this page helpful?YesNoVisit SnowflakeJoin the conversationDevelop with SnowflakeShare your feedbackRead the latest on our blogGet your own certificationPrivacy NoticeSite Terms© 2025 Snowflake, Inc. All Rights Reserved.On this pageRenaming a ConstraintModifying Properties of a ConstraintModifying a Table with Constraints"
+                }
+            ]
+        }
+    ]
+},
+{
+    "page_name": "constraints-drop",
+    "url": "https://docs.snowflake.com/en/sql-reference/constraints-drop",
+    "sections": [
+        {
+            "heading": "Introduction",
+            "content": [
+                {
+                    "type": "text",
+                    "value": "OverviewSQL data types referenceSQL command referenceFunction and stored procedure referenceClass referenceScripting referenceGeneral referenceParametersReferencesTernary logicCollation supportSQL format modelsObject identifiersConstraintsOverviewCreatingModifyingDroppingSQL variablesBind variablesTransactionsTable literalsSNOWFLAKE databaseSnowflake Information SchemaMetadata fieldsConventionsReserved keywordsAPI reference"
+                },
+                {
+                    "type": "syntax",
+                    "value": "ALTER TABLE <table_name> DROP { CONSTRAINT <name> | PRIMARY KEY | { UNIQUE | FOREIGN KEY } (<column>, [ ... ] ) } [ CASCADE | RESTRICT ]"
+                },
+                {
+                    "type": "syntax",
+                    "value": "ALTER TABLE <table_name> DROP COLUMN <name> [ CASCADE | RESTRICT ]"
+                },
+                {
+                    "type": "syntax",
+                    "value": "DROP { TABLE | SCHEMA | DATABASE } <name> [ CASCADE | RESTRICT ]"
+                },
+                {
+                    "type": "text",
+                    "value": "ReferenceGeneral referenceConstraintsDropping\n\n\n  \n  \nDropping Constraints¶\nConstraints are dropped using the ALTER TABLE command:\n\nALTER TABLE … DROP CONSTRAINT explicitly drops the specified constraint. Similar to modifying constraints, the constraint can be identified by the constraint name or column definition along with\nthe constraint type. For a primary key, they can also be identified using the PRIMARY KEY keyword.\nALTER TABLE … DROP COLUMN drops a column and its associated constraints.\n\nBy default, when a primary/unique key is dropped, all foreign keys referencing the key being dropped are also dropped, unless the RESTRICT drop option is specified.\nConstraints are also dropped when the associated tables/schemas/databases are dropped. The DROP commands support the CASCADE | RESTRICT drop options.\n\nNote\nDropped tables, schemas, and databases can be restored using the UNDROP command; dropped columns and constraints cannot be restored.\n\n\n\n\nDropping Constraints¶\nUnique/primary/foreign key constraints can be explicitly dropped (using ALTER TABLE … DROP CONSTRAINT):\n\n\nCopy\n\nFor these constraints, when dropping a foreign key constraint or a primary/unique key constraint with no foreign key references, the constraints are dropped directly.\nThe default drop option is CASCADE, which means that dropping a unique/primary key with foreign key references drops all the referencing foreign keys together with the unique/primary key.\n\nIf the RESTRICT drop option is specified, when dropping a primary/unique key, an error is returned if there exist foreign keys that reference the keys being dropped.\n\n\n\nDropping Columns¶\nDropping columns using ALTER TABLE … DROP COLUMN behaves similarly to dropping constraints:\n\n\nCopy\n\nThe default drop option is CASCADE, which means any constraint that contains the column being dropped is also dropped. If a primary/unique key involving the column is referenced by other foreign key\nconstraints, all referencing foreign keys are dropped.\n\nIf the RESTRICT option is specified, an error is returned if the column has primary/unique keys with foreign keys references. The drop command only succeeds if there are no constraints defined on or\nreferring to the column being dropped.\n\n\n\nDropping Tables/Schemas/Databases¶\nThe DROP command drops the specified table, schema, or database and can also be specified to drop all constraints associated with the object:\n\n\nCopy\n\nSimilar to dropping columns and constraints, CASCADE is the default drop option, and all constraints that belong to or references the object being dropped will also be dropped.\nFor example, when dropping a database, if the database contains a primary/unique key which is referenced by a foreign key from another database, the referencing foreign keys are also dropped.\nIf the object is later undropped, all relevant constraints previously dropped will be restored.\nIf the RESTRICT option is specified, an error is returned if any primary/unique constraints under the object has foreign key references.\n\n\n\n\nWas this page helpful?YesNoVisit SnowflakeJoin the conversationDevelop with SnowflakeShare your feedbackRead the latest on our blogGet your own certificationPrivacy NoticeSite Terms© 2025 Snowflake, Inc. All Rights Reserved.On this pageDropping ConstraintsDropping ColumnsDropping Tables/Schemas/Databases"
+                }
+            ]
+        }
+    ]
+},
+{
+    "page_name": "constraints-create",
+    "url": "https://docs.snowflake.com/en/sql-reference/constraints-create",
+    "sections": [
+        {
+            "heading": "Introduction",
+            "content": [
+                {
+                    "type": "text",
+                    "value": "OverviewSQL data types referenceSQL command referenceFunction and stored procedure referenceClass referenceScripting referenceGeneral referenceParametersReferencesTernary logicCollation supportSQL format modelsObject identifiersConstraintsOverviewCreatingModifyingDroppingSQL variablesBind variablesTransactionsTable literalsSNOWFLAKE databaseSnowflake Information SchemaMetadata fieldsConventionsReserved keywordsAPI reference"
+                },
+                {
+                    "type": "syntax",
+                    "value": "CREATE [ OR REPLACE ] TABLE <name> (<column_name> <column_type> [ <inline_constraint> ] , ... )\n\nALTER TABLE <name> ADD COLUMN <column_name> <column_type> [ <inline_constraint> ]"
+                },
+                {
+                    "type": "syntax",
+                    "value": "CREATE [ OR REPLACE ] TABLE <name> ( ... , [ <outofline_constraint> ], ... )\n\nALTER TABLE <name> ADD <outofline_constraint>"
+                },
+                {
+                    "type": "text",
+                    "value": "ReferenceGeneral referenceConstraintsCreating\n\n\n  \n  \nCreating Constraints¶\nA constraint can be created at table creation using CREATE TABLE, or added to a table later using ALTER TABLE:\n\nSingle-column constraints can be created inline as part of the column definition.\nMulti-column constraints must be created in a separate, i.e. out-of-line, clause that specifies the columns in the constraint.\n\nTo create a constraint, certain access control privileges must be granted on the role used to create the constraint. For more information, see Access control requirements.\n\nCreating Constraints Inline¶\nThe following inline syntax can only be used for single-column constraints:\n\nCopy\nFor inline_constraint syntax details, see CREATE | ALTER TABLE … CONSTRAINT.\n\n\nCreating Constraints Out-of-line¶\nThe following out-of-line syntax must be used for multi-column constraints, but can also be used for single-column constraints:\n\nCopy\nFor outofline_constraint syntax details, see CREATE | ALTER TABLE … CONSTRAINT.\n\n\nConstraints in CREATE TABLE … LIKE and CLONE¶\nSnowflake supports creating copies of tables using CREATE TABLE:\n\nTo create an empty copy, use CREATE TABLE … LIKE.\nTo create a clone, use CREATE TABLE … CLONE.\n\nIn addition, copies of tables are automatically created when a schema or database is cloned.\nRegardless of how a copy is created for a table, the constraints on the original table are also copied. When copying a foreign key with a referencing table (foreign key table) and a referenced table (primary key table), the following scenarios may occur:\n\nIf both tables are copied in the same command (such as during cloning of a schema or database), a new foreign key is created between the new referencing table and the referenced table.\nIf only the referencing table is copied, a new foreign key is created on the referencing table, which points to the original primary key table as the referenced table.\nIf only the referenced table is copied, no new foreign keys are created, although the primary/unique keys are copied.\n\nAs a result, if you copy a referencing and referenced table separately, you must manually create a new foreign key, or change the primary key table for the new foreign key manually.\n\n\n\n\nWas this page helpful?YesNoVisit SnowflakeJoin the conversationDevelop with SnowflakeShare your feedbackRead the latest on our blogGet your own certificationPrivacy NoticeSite Terms© 2025 Snowflake, Inc. All Rights Reserved.On this pageCreating Constraints InlineCreating Constraints Out-of-lineConstraints in CREATE TABLE … LIKE and CLONE"
+                }
+            ]
+        }
+    ]
+}
+]

@@ -14,7 +14,7 @@ class SnowflakeDDLSpider(scrapy.Spider):
 
     custom_settings = {
         'FEEDS': {
-            'D:/Ridgeant/POC\'s/DataScraping/snowflake_doc/commands/DDL/snowflake_ddl_commands.json': {
+            'D:/Ridgeant/POC\'s/DataScraping/snowflake_doc/commands/DDL/snowflake_ddl.json': {
                 'format': 'json',
                 'overwrite': True,
                 'encoding': 'utf8',
@@ -84,7 +84,6 @@ class SnowflakeDDLSpider(scrapy.Spider):
         add_if_not_empty(result, 'returns', returns)
 
         yield result
-
 
 if __name__ == '__main__':
     print("Starting full scraper for Snowflake DDL command documentation...")
