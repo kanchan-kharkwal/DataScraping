@@ -1,0 +1,230 @@
+[
+  {
+    "title": "Ternary logic | Snowflake Documentation",
+    "url": "https://docs.snowflake.com/en/sql-reference/ternary-logic",
+    "sections": [
+      {
+        "heading": "Truth tables",
+        "description": "This section describes the truth tables for thecomparisonandlogicaloperators."
+      },
+      {
+        "heading": "Comparison operators",
+        "description": "If any operand for a comparison operator is NULL, the result is NULL. The comparison operators and functions are:\n=,!=,<> <,<=,>,>= GREATEST,LEAST\n=,!=,<>\n<,<=,>,>=\nGREATEST,LEAST"
+      },
+      {
+        "heading": "Logical operators",
+        "description": "Given a BOOLEAN columnC:\nIfCis:\nCANDNULLevaluates to:\nCORNULLevaluates to:\nNOTCevaluates to:\nTRUE\nNULL\nTRUE\nFALSE\nFALSE\nFALSE\nNULL\nTRUE\nNULL\nNULL\nNULL\nNULL\nIn addition:\nIfCis:\nCAND(NOTC)evaluates to:\nCOR(NOTC)evaluates to:\nNOT(CORNULL)evaluates to:\nTRUE\nFALSE\nTRUE\nFALSE\nFALSE\nFALSE\nTRUE\nNULL\nNULL\nNULL\nNULL\nNULL"
+      },
+      {
+        "heading": "Usage notes for conditional expressions",
+        "description": "This section describes behavior specific to conditional expressions."
+      },
+      {
+        "heading": "IFF behavior",
+        "description": "IFFreturns the following results for ternary logic. Given a BOOLEAN columnC:\nIfCis:\nIFF(C,e1,e2)evaluates to:\nTRUE\ne1\nFALSE\ne2\nNULL\ne2"
+      },
+      {
+        "heading": "[ NOT ] IN behavior",
+        "description": "[ NOT ] INreturns the following results for ternary logic. Given 3 numeric columnsc1,c2, andc3:\nc1IN(c2,c3,...)is syntactically equivalent to(c1=c2ORc1=c3OR...).As a result, when the value ofc1is NULL, the expressionc1IN(c2,c3,NULL)always evaluates to NULL. c1NOTIN(c2,c3,...)is syntactically equivalent to(c1<>c2ANDc1<>c3AND...).Therefore, even ifc1NOTIN(c2,c3)is TRUE,c1NOTIN(c2,c3,NULL)evaluates to NULL.\nc1IN(c2,c3,...)is syntactically equivalent to(c1=c2ORc1=c3OR...).\nAs a result, when the value ofc1is NULL, the expressionc1IN(c2,c3,NULL)always evaluates to NULL.\nc1NOTIN(c2,c3,...)is syntactically equivalent to(c1<>c2ANDc1<>c3AND...).\nTherefore, even ifc1NOTIN(c2,c3)is TRUE,c1NOTIN(c2,c3,NULL)evaluates to NULL.\nOn this page\nTruth tables Usage notes for conditional expressions\nWe use cookies to improve your experience on our site. By accepting, you agree to ourprivacy policy.\nEnglish Franais Deutsch   Portugus"
+      }
+    ]
+  },
+  {
+    "title": "GREATEST | Snowflake Documentation",
+    "url": "https://docs.snowflake.com/en/sql-reference/functions/greatest",
+    "sections": [
+      {
+        "heading": "Syntax",
+        "syntax": [
+          "GREATEST( <expr1> [ , <expr2> ... ] )"
+        ]
+      },
+      {
+        "heading": "Arguments",
+        "description": "The arguments must include at least one expression. All the expressions\nshould be of the same type or compatible types."
+      },
+      {
+        "heading": "Returns",
+        "description": "The first argument determines the return type:\nIf the first type is numeric, then the return type is widened\naccording to the numeric types in the list of all arguments. If the first type is not numeric, then all other arguments must be\nconvertible to the first type.\nIf the first type is numeric, then the return type is widened\naccording to the numeric types in the list of all arguments.\nIf the first type is not numeric, then all other arguments must be\nconvertible to the first type.\nIf any argument is NULL, returns NULL."
+      },
+      {
+        "heading": "Collation details",
+        "description": "Thecollation specificationsof all input arguments must be compatible. The comparisons follow the collation based on the input arguments collations and precedences. The collation of the result of the function is the highest-precedencecollation of the inputs.\nThecollation specificationsof all input arguments must be compatible.\nThe comparisons follow the collation based on the input arguments collations and precedences.\nThe collation of the result of the function is the highest-precedencecollation of the inputs."
+      },
+      {
+        "heading": "Examples",
+        "description": "The following examples use the GREATEST function:\nOn this page\nSyntax Arguments Returns Collation details Examples\nWe use cookies to improve your experience on our site. By accepting, you agree to ourprivacy policy.\nEnglish Franais Deutsch   Portugus",
+        "syntax": [
+          "+-------+-------+-------+----------+\n| COL_1 | COL_2 | COL_3 | GREATEST |\n|-------+-------+-------+----------|\n|     1 |     2 |     3 |        3 |\n|     2 |     4 |    -1 |        4 |\n|     3 |     6 |  NULL |     NULL |\n+-------+-------+-------+----------+",
+          "+-------+-------+----------+\n| COL_1 | COL_4 | GREATEST |\n|-------+-------+----------|\n|     1 |  4    |     4    |\n|     2 | -2    |     2    |\n|     3 | 13.45 |    13.45 |\n+-------+-------+----------+"
+        ],
+        "examples": [
+          "CREATE TABLE test_table_1_greatest (\n  col_1 INTEGER, \n  col_2 INTEGER, \n  col_3 INTEGER, \n  col_4 FLOAT);\nINSERT INTO test_table_1_greatest (col_1, col_2, col_3, col_4) VALUES\n  (1, 2,    3,  4.00),\n  (2, 4,   -1, -2.00),\n  (3, 6, NULL, 13.45);",
+          "SELECT col_1,\n       col_2,\n       col_3,\n       GREATEST(col_1, col_2, col_3) AS greatest\n  FROM test_table_1_greatest\n  ORDER BY col_1;",
+          "SELECT col_1,\n       col_4,\n       GREATEST(col_1, col_4) AS greatest\n  FROM test_table_1_greatest\n  ORDER BY col_1;"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "LEAST | Snowflake Documentation",
+    "url": "https://docs.snowflake.com/en/sql-reference/functions/least",
+    "sections": [
+      {
+        "heading": "Syntax",
+        "syntax": [
+          "LEAST(( <expr1> [ , <expr2> ... ] )"
+        ]
+      },
+      {
+        "heading": "Arguments",
+        "description": "The arguments must include at least one expression. All the expressions\nshould be of the same type or compatible types."
+      },
+      {
+        "heading": "Returns",
+        "description": "The first argument determines the return type:\nIf the first type is numeric, then the return type is widened\naccording to the numeric types in the list of all arguments. If the first type is not numeric, then all other arguments must be\nconvertible to the first type.\nIf the first type is numeric, then the return type is widened\naccording to the numeric types in the list of all arguments.\nIf the first type is not numeric, then all other arguments must be\nconvertible to the first type.\nIf any argument is NULL, returns NULL."
+      },
+      {
+        "heading": "Collation details",
+        "description": "Thecollation specificationsof all input arguments must be compatible. The comparisons follow the collation based on the input arguments collations and precedences. The collation of the result of the function is the highest-precedencecollation of the inputs.\nThecollation specificationsof all input arguments must be compatible.\nThe comparisons follow the collation based on the input arguments collations and precedences.\nThe collation of the result of the function is the highest-precedencecollation of the inputs."
+      },
+      {
+        "heading": "Examples",
+        "description": "The following examples use the LEAST function:\nOn this page\nSyntax Arguments Returns Collation details Examples\nWe use cookies to improve your experience on our site. By accepting, you agree to ourprivacy policy.\nEnglish Franais Deutsch   Portugus",
+        "syntax": [
+          "+-------------------+\n| LEAST(1, 3, 0, 4) |\n|-------------------|\n|                 0 |\n+-------------------+",
+          "+-------+-------+-------+-------+\n| COL_1 | COL_2 | COL_3 | LEAST |\n|-------+-------+-------+-------|\n|     1 |     2 |     3 |     1 |\n|     2 |     4 |    -1 |    -1 |\n|     3 |     6 |  NULL |  NULL |\n+-------+-------+-------+-------+"
+        ],
+        "examples": [
+          "SELECT LEAST(1, 3, 0, 4);",
+          "SELECT col_1,\n       col_2,\n       col_3,\n       LEAST(col_1, col_2, col_3) AS least\n  FROM (SELECT 1 AS col_1, 2 AS col_2, 3 AS col_3\n    UNION ALL\n    SELECT 2, 4, -1\n    UNION ALL\n    SELECT 3, 6, NULL);"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "IFF | Snowflake Documentation",
+    "url": "https://docs.snowflake.com/en/sql-reference/functions/iff",
+    "sections": [
+      {
+        "heading": "Syntax",
+        "syntax": [
+          "IFF( <condition> , <expr1> , <expr2> )"
+        ]
+      },
+      {
+        "heading": "Arguments",
+        "description": "The condition is an expression that should evaluate to a BOOLEAN value\n(TRUE, FALSE, or NULL).\nIfconditionevaluates to TRUE, returnsexpr1, otherwise\nreturnsexpr2.\nA general expression. The function returns this value if theconditionis true.\nA general expression. The function returns this value if theconditionis not true (that is, if it is false or NULL)."
+      },
+      {
+        "heading": "Returns",
+        "description": "This function can return a value of any type. The function can return NULL if the value of the\nexpression that is returned is NULL."
+      },
+      {
+        "heading": "Usage notes",
+        "description": "Theconditioncan include a SELECT statement containing set\noperators, such as UNION, INTERSECT, and EXCEPT (MINUS). When using set operators,\nmake sure that data types are compatible. For details, see theGeneral usage notesin theSet operatorstopic."
+      },
+      {
+        "heading": "Collation details",
+        "description": "The value returned from the function retains the collation specification of the\nhighest-precedencecollation\nof theexpr1andexpr2arguments."
+      },
+      {
+        "heading": "Examples",
+        "description": "The following examples use theIFFfunction.\nReturnexpr1because the condition evaluates to true:\nReturnexpr2because the condition evaluates to false:\nReturnexpr2because the condition evaluates to NULL:\nReturn NULL because the value of the expression returned is NULL:\nReturnexpr1(integer) if the value is an integer, or returnexpr2(non-integer) if the value is not an integer:\nReturnexpr1(High) if the value is greater than 50, or returnexpr2(Low) if the value is 50 or lower (or NULL):\nOn this page\nSyntax Arguments Returns Usage notes Collation details Examples\nWe use cookies to improve your experience on our site. By accepting, you agree to ourprivacy policy.\nEnglish Franais Deutsch   Portugus",
+        "syntax": [
+          "+----------------------------+\n| IFF(TRUE, 'TRUE', 'FALSE') |\n|----------------------------|\n| true                       |\n+----------------------------+",
+          "+-----------------------------+\n| IFF(FALSE, 'TRUE', 'FALSE') |\n|-----------------------------|\n| false                       |\n+-----------------------------+",
+          "+----------------------------+\n| IFF(NULL, 'TRUE', 'FALSE') |\n|----------------------------|\n| false                      |\n+----------------------------+",
+          "+--------------------------+\n| IFF(TRUE, NULL, 'FALSE') |\n|--------------------------|\n| NULL                     |\n+--------------------------+",
+          "+---------+---------------------------------------------------+\n|   VALUE | IFF(VALUE::INT = VALUE, 'INTEGER', 'NON-INTEGER') |\n|---------+---------------------------------------------------|\n|    NULL | non-integer                                       |\n|  1.1000 | non-integer                                       |\n|  1.0000 | integer                                           |\n| -3.1415 | non-integer                                       |\n| -5.0000 | integer                                           |\n+---------+---------------------------------------------------+",
+          "+-------+--------------------------------+\n| VALUE | IFF(VALUE > 50, 'HIGH', 'LOW') |\n|-------+--------------------------------|\n|    22 | Low                            |\n|    63 | High                           |\n|     5 | Low                            |\n|    99 | High                           |\n|  NULL | Low                            |\n+-------+--------------------------------+"
+        ],
+        "examples": [
+          "SELECT IFF(TRUE, 'true', 'false');",
+          "SELECT IFF(FALSE, 'true', 'false');",
+          "SELECT IFF(NULL, 'true', 'false');",
+          "SELECT IFF(TRUE, NULL, 'false');",
+          "SELECT value, IFF(value::INT = value, 'integer', 'non-integer')\n  FROM ( SELECT column1 AS value\n           FROM VALUES(1.0), (1.1), (-3.1415), (-5.000), (NULL) )\n  ORDER BY value DESC;",
+          "SELECT value, IFF(value > 50, 'High', 'Low')\nFROM ( SELECT column1 AS value\n         FROM VALUES(22), (63), (5), (99), (NULL) );"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "[ NOT ] IN | Snowflake Documentation",
+    "url": "https://docs.snowflake.com/en/sql-reference/functions/in",
+    "sections": [
+      {
+        "heading": "Syntax",
+        "description": "To compare individual values:\nTo comparerow constructors(parenthesized lists of values):\nTo compare a value to the values returned by a subquery:",
+        "syntax": [
+          "<value> [ NOT ] IN ( <value_1> [ , <value_2> ...  ] )",
+          "( <value_A> [, <value_B> ... ] ) [ NOT ] IN (  ( <value_1> [ , <value_2> ... ] )  [ , ( <value_3> [ , <value_4> ... ] )  ...  ]  )",
+          "<value> [ NOT ] IN ( <subquery> )"
+        ]
+      },
+      {
+        "heading": "Parameters",
+        "description": "The value for which to search.\nThe elements of a row constructor for which to search.\nEnsure that each value on the right of IN (for example,(value3,value4)) has the same number of elements as the value on the\nleft of IN (for example,(value_A,value_B)).\nA value to whichvalueshould be compared.\nIf the values to compare to are row constructors, then eachvalue_#is an individual element of a row constructor.\nA subquery that returns a list of values to whichvaluecan be compared."
+      },
+      {
+        "heading": "Usage notes",
+        "description": "As in most contexts, NULL is not equal to NULL. Ifvalueis NULL, then the\nreturn value of the function is NULL, whether or not the list or subquery\ncontains NULL.For example, the following returns NULL, not TRUE:SELECTNULLIN(1,2,NULL)ASRESULT;Copy Syntactically, IN is treated as an operator rather than a function. This example shows the difference between\nusing IN as an operator and callingf()as a function:SELECTf(a,b),xIN(y,z)...CopyYoucantuse function syntax with IN. For example, you cant rewrite the preceding example as:SELECTf(a,b),IN(x,(y,z))...Copy IN is also considered asubquery operator. In a query that uses IN, you can expand anarrayinto\na list of individual values by using the spread operator (**). For more information and\nexamples, seeExpansion operators.\nAs in most contexts, NULL is not equal to NULL. Ifvalueis NULL, then the\nreturn value of the function is NULL, whether or not the list or subquery\ncontains NULL.\nFor example, the following returns NULL, not TRUE:\nSyntactically, IN is treated as an operator rather than a function. This example shows the difference between\nusing IN as an operator and callingf()as a function:\nYoucantuse function syntax with IN. For example, you cant rewrite the preceding example as:\nIN is also considered asubquery operator.\nIn a query that uses IN, you can expand anarrayinto\na list of individual values by using the spread operator (**). For more information and\nexamples, seeExpansion operators.",
+        "syntax": [
+          "SELECT NULL IN (1, 2, NULL) AS RESULT;",
+          "SELECT\n    f(a, b),\n    x IN (y, z) ...",
+          "SELECT\n    f(a, b),\n    IN(x, (y, z)) ..."
+        ]
+      },
+      {
+        "heading": "Collation details",
+        "description": "Arguments with collation specifications currently arent supported."
+      },
+      {
+        "heading": "Examples",
+        "description": "The following examples use the IN function."
+      },
+      {
+        "heading": "Using IN with simple literals",
+        "description": "The following examples show how to use IN and NOT IN with simple literals:",
+        "syntax": [
+          "SELECT 1 IN (1, 2, 3) AS RESULT;",
+          "+--------+\n| RESULT |\n|--------|\n| True   |\n+--------+",
+          "SELECT 4 NOT IN (1, 2, 3) AS RESULT;",
+          "+--------+\n| RESULT |\n|--------|\n| True   |\n+--------+"
+        ]
+      },
+      {
+        "heading": "Using IN with a subquery",
+        "description": "These example shows how to use IN in a subquery.",
+        "syntax": [
+          "SELECT 'a' IN (\n  SELECT column1 FROM VALUES ('b'), ('c'), ('d')\n  ) AS RESULT;",
+          "+--------+\n| RESULT |\n|--------|\n| False  |\n+--------+"
+        ]
+      },
+      {
+        "heading": "Using IN with a table",
+        "description": "These examples show how to use IN with a table. The statement below creates the table used in the examples.\nThis example shows how to use IN with a single column of a table:\nThis example shows how to use IN with multiple columns of a table:\nThis example shows how to use IN with a subquery that reads multiple columns of a table:",
+        "syntax": [
+          "CREATE OR REPLACE TABLE in_function_demo (\n  col_1 INTEGER,\n  col_2 INTEGER,\n  col_3 INTEGER);\n\nINSERT INTO in_function_demo (col_1, col_2, col_3) VALUES\n  (1, 1, 1),\n  (1, 2, 3),\n  (4, 5, NULL);",
+          "SELECT col_1, col_2, col_3\n  FROM in_function_demo\n  WHERE (col_1) IN (1, 10, 100, 1000)\n  ORDER BY col_1, col_2, col_3;",
+          "+-------+-------+-------+\n| COL_1 | COL_2 | COL_3 |\n|-------+-------+-------|\n|     1 |     1 |     1 |\n|     1 |     2 |     3 |\n+-------+-------+-------+",
+          "SELECT col_1, col_2, col_3\n  FROM in_function_demo\n  WHERE (col_1, col_2, col_3) IN (\n    (1,2,3),\n    (4,5,6));",
+          "+-------+-------+-------+\n| COL_1 | COL_2 | COL_3 |\n|-------+-------+-------|\n|     1 |     2 |     3 |\n+-------+-------+-------+",
+          "SELECT (1, 2, 3) IN (\n  SELECT col_1, col_2, col_3 FROM in_function_demo\n  ) AS RESULT;",
+          "+--------+\n| RESULT |\n|--------|\n| True   |\n+--------+"
+        ]
+      },
+      {
+        "heading": "Using NULL",
+        "description": "Remember that NULL != NULL. Neither of the following queries returns a match when the value on the left or right of the IN\ncontains a NULL:\nOn this page\nSyntax Parameters Usage notes Collation details Examples\nWe use cookies to improve your experience on our site. By accepting, you agree to ourprivacy policy.\nEnglish Franais Deutsch   Portugus",
+        "syntax": [
+          "SELECT NULL IN (1, 2, NULL) AS RESULT;",
+          "+--------+\n| RESULT |\n|--------|\n| NULL   |\n+--------+",
+          "SELECT (4, 5, NULL) IN ( (4, 5, NULL), (7, 8, 9) ) AS RESULT;",
+          "+--------+\n| RESULT |\n|--------|\n| NULL   |\n+--------+"
+        ]
+      }
+    ]
+  }
+]

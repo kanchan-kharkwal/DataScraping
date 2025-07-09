@@ -1,0 +1,163 @@
+[
+  {
+    "title": "SQL variables | Snowflake Documentation",
+    "url": "https://docs.snowflake.com/en/sql-reference/session-variables",
+    "sections": [
+      {
+        "heading": "Overview",
+        "description": "Snowflake supports SQL variables declared by the user. They have many uses, such as storing application-specific environment settings."
+      },
+      {
+        "heading": "Variable identifiers",
+        "description": "SQL variables are globally identified using case-insensitive names."
+      },
+      {
+        "heading": "Variable DDL",
+        "description": "Snowflake provides the following DDL commands for using SQL variables:\nSET UNSET SHOW VARIABLES\nSET\nUNSET\nSHOW VARIABLES"
+      },
+      {
+        "heading": "Initializing variables",
+        "description": "You can set variables by executing the SQL statementSETor by setting the variables in the connection\nstring when you connect to Snowflake.\nThe size of string or binary variables is limited to 256 bytes."
+      },
+      {
+        "heading": "Using SQL to initialize variables in a session",
+        "description": "Variables can be initialized in SQL using theSETcommand. The data type of the variable is derived from the\ndata type of the result of the evaluated expression.\nMultiple variables can be initialized in the same statement, thereby reducing the number of round-trip communications with the server.",
+        "syntax": [
+          "SET my_variable=10;\nSET my_variable='example';",
+          "SET (var1, var2, var3)=(10, 20, 30);\nSET (var1, var2, var3)=(SELECT 10, 20, 30);"
+        ]
+      },
+      {
+        "heading": "Setting variables on connection",
+        "description": "In addition to usingSETto set variables within a session, you can pass variables as arguments in the connection\nstring used to initialize a session in Snowflake. This option is especially useful when using tools where the specification of the connection string\nis the only customization possible.\nFor example, using the Snowflake JDBC driver, you can set additional connection properties that will be interpreted as parameters. Note that\nthe JDBC API requires SQL variables to be strings.",
+        "syntax": [
+          "// Build connection properties\nProperties properties = new Properties();\n\n// Required connection properties\nproperties.put(\"user\"    ,  \"jsmith\"      );\nproperties.put(\"password\",  \"mypassword\");\nproperties.put(\"account\" ,  \"myaccount\");\n\n// Set some additional variables.\nproperties.put(\"$variable_1\", \"some example\");\nproperties.put(\"$variable_2\", \"1\"           );\n\n// Create a new connection\nString connectStr = \"jdbc:snowflake://localhost:8080\";\n\n// Open a connection under the snowflake account and enable variable support\nConnection con = DriverManager.getConnection(connectStr, properties);"
+        ]
+      },
+      {
+        "heading": "Using variables in SQL",
+        "description": "Variables can be used in Snowflake anywhere a literal constant is allowed, except where noted in the documentation. To distinguish them\nfrom bind values and column names, all variables must be prefixed with a$sign.\nFor example:\nNote\nBecause the$sign is the prefix used to identify variables in SQL statements, it is treated as a special character when used\nin identifiers. Identifiers (database names, table names, column names, etc.) cannot start with special characters unless the entire\nname is enclosed in double quotes. For more information, seeObject identifiers.\nVariables can also contain identifier names, such as table names. To use a variable as an identifier, you must\nwrap it insideIDENTIFIER(), e.g.IDENTIFIER($my_variable). Some examples are below:\nIn the context of a FROM clause, you can wrap the variable name inTABLE(), as shown below:\nFor more information aboutIDENTIFIER(), seeLiterals and variables as identifiers with IDENTIFIER() syntax.",
+        "syntax": [
+          "SET (min, max)=(40, 70);\n\nSELECT $min;\n\nSELECT AVG(salary) FROM emp WHERE age BETWEEN $min AND $max;",
+          "SET my_table_name='table1';",
+          "CREATE TABLE IDENTIFIER($my_table_name) (i INTEGER);\nINSERT INTO IDENTIFIER($my_table_name) (i) VALUES (42);",
+          "SELECT * FROM IDENTIFIER($my_table_name);",
+          "+----+\n|  I |\n|----|\n| 42 |\n+----+",
+          "SELECT * FROM TABLE($my_table_name);",
+          "+----+\n|  I |\n|----|\n| 42 |\n+----+",
+          "DROP TABLE IDENTIFIER($my_table_name);"
+        ]
+      },
+      {
+        "heading": "Viewing variables for the session",
+        "description": "To see all the variables defined in the current session, use theSHOW VARIABLEScommand:",
+        "syntax": [
+          "SET (min, max)=(40, 70);",
+          "+----------------------------------+\n| status                           |\n|----------------------------------|\n| Statement executed successfully. |\n+----------------------------------+",
+          "SHOW VARIABLES;",
+          "+----------------+-------------------------------+-------------------------------+------+-------+-------+---------+\n|     session_id | created_on                    | updated_on                    | name | value | type  | comment |\n|----------------+-------------------------------+-------------------------------+------+-------+-------+---------|\n| 10363773891062 | 2024-06-28 10:09:57.990 -0700 | 2024-06-28 10:09:58.032 -0700 | MAX  | 70    | fixed |         |\n| 10363773891062 | 2024-06-28 10:09:57.990 -0700 | 2024-06-28 10:09:58.021 -0700 | MIN  | 40    | fixed |         |\n+----------------+-------------------------------+-------------------------------+------+-------+-------+---------+"
+        ]
+      },
+      {
+        "heading": "Session variable functions",
+        "description": "The following convenience functions are provided for manipulating session variables to support compatibility with other database systems\nand to issue SQL through tools that do not support the$syntax for accessing variables. Note that all these functions accept and\nreturn session variable values as strings:\nSYS_CONTEXT and SET_SYS_CONTEXT SESSION_CONTEXT and SET_SESSION_CONTEXT GETVARIABLEand SETVARIABLE\nSYS_CONTEXT and SET_SYS_CONTEXT\nSESSION_CONTEXT and SET_SESSION_CONTEXT\nGETVARIABLEand SETVARIABLE\nHere are examples of using GETVARIABLE. First, define a variable using SET:\nReturn the variable value:\nIn this example, the output is NULL because Snowflake stores variables with all uppercase letters.\nUpdate the casing:\nYou can use the variable name in a WHERE clause, for example:",
+        "syntax": [
+          "SET var_artist_name = 'Jackson Browne';",
+          "+----------------------------------+\n| status                           |\n+----------------------------------+\n| Statement executed successfully. |\n+----------------------------------+",
+          "SELECT GETVARIABLE('var_artist_name');",
+          "SELECT GETVARIABLE('VAR_ARTIST_NAME');",
+          "+--------------------------------+\n| GETVARIABLE('VAR_ARTIST_NAME') |\n+--------------------------------+\n| Jackson Browne                 |\n+--------------------------------+",
+          "SELECT album_title\n  FROM albums\n  WHERE artist = $var_artist_name;"
+        ]
+      },
+      {
+        "heading": "Removing variables",
+        "description": "SQL variables are private to a session. When a Snowflake session is closed, all variables created during the session are dropped. This\nmeans that no one can access user-defined variables that have been set in another session, and when the session is closed, these variables\nexpire.\nIn addition, variables always can be explicitly destroyed using theUNSETcommand.\nFor example:\nOn this page\nOverview Initializing variables Using variables in SQL Removing variables\nRelated content\nTable literals\nWe use cookies to improve your experience on our site. By accepting, you agree to ourprivacy policy.\nEnglish Franais Deutsch   Portugus",
+        "syntax": [
+          "UNSET my_variable;"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "SET | Snowflake Documentation",
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/set",
+    "sections": [
+      {
+        "heading": "Syntax",
+        "syntax": [
+          "SET <var> = <expr>\n\nSET ( <var> [ , <var> ... ] )  = ( <expr> [ , <expr> ... ] )"
+        ]
+      },
+      {
+        "heading": "Parameters",
+        "description": "Specifies the identifier for the variable to initialize.\nSpecifies the SQL expression for the variable."
+      },
+      {
+        "heading": "Usage notes",
+        "description": "You can set multiple variables in the same statement. If you specify complex expressions, a running virtual warehouse might be required in the session. The number of expressions must match the number of variables to initialize. The size of string or binary variables is limited to 256 bytes. The identifier (i.e. name) for a SQL variable is limited to 256 characters. Variable names such asCURRENTorPUBLICare reserved for future use by Snowflake and cannot be used.\nYou can set multiple variables in the same statement.\nIf you specify complex expressions, a running virtual warehouse might be required in the session.\nThe number of expressions must match the number of variables to initialize.\nThe size of string or binary variables is limited to 256 bytes.\nThe identifier (i.e. name) for a SQL variable is limited to 256 characters.\nVariable names such asCURRENTorPUBLICare reserved for future use by Snowflake and cannot be used."
+      },
+      {
+        "heading": "Examples",
+        "description": "These two examples use constants to set variables:\nThis example sets more than one variable at a time:\nThis example sets the variable to the value of a non-trivial expression that uses a SQL query:\nThe following example shows the result when a SET command evaluates all of the expressions on the right-hand side of the assignment operator\nbefore setting the first expression on the left-hand side of the operator. Note that the value of the variable namedmaxis set\nbased on the old value ofmin, not the new value.\nOn this page\nSyntax Parameters Usage notes Examples\nWe use cookies to improve your experience on our site. By accepting, you agree to ourprivacy policy.\nEnglish Franais Deutsch   Portugus",
+        "syntax": [
+          "+------+\n| $MAX |\n|------|\n|   80 |\n+------+"
+        ],
+        "examples": [
+          "SET V1 = 10;\n\nSET V2 = 'example';",
+          "SET (V1, V2) = (10, 'example');",
+          "SET id_threshold = (SELECT COUNT(*)/2 FROM table1);",
+          "SET (min, max) = (40, 70);",
+          "SET (min, max) = (50, 2 * $min);\n\nSELECT $max;"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "UNSET | Snowflake Documentation",
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/unset",
+    "sections": [
+      {
+        "heading": "Syntax",
+        "syntax": [
+          "UNSET <var>\n\nUNSET ( <var> [ , <var> ... ] )"
+        ]
+      },
+      {
+        "heading": "Parameters",
+        "description": "Specifies the identifier for the variable to drop."
+      },
+      {
+        "heading": "Usage notes",
+        "description": "The command supports dropping multiple variables in the same statement. The command does not require a running warehouse to execute.\nThe command supports dropping multiple variables in the same statement.\nThe command does not require a running warehouse to execute."
+      },
+      {
+        "heading": "Examples",
+        "description": "On this page\nSyntax Parameters Usage notes Examples\nWe use cookies to improve your experience on our site. By accepting, you agree to ourprivacy policy.\nEnglish Franais Deutsch   Portugus",
+        "examples": [
+          "UNSET V1;\n\nUNSET V2;\n\nUNSET (V1, V2);"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "SHOW VARIABLES | Snowflake Documentation",
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/show-variables",
+    "sections": [
+      {
+        "heading": "Syntax",
+        "syntax": [
+          "SHOW VARIABLES [ LIKE '<pattern>' ]"
+        ]
+      },
+      {
+        "heading": "Parameters",
+        "description": "Optionally filters the command output by object name. The filter usescase-insensitivepattern matching, with support for SQL\nwildcard characters (%and_).\nFor example, the following patterns return thesameresults:\n.Default: No value (no filtering is applied to the output)."
+      },
+      {
+        "heading": "Usage notes",
+        "description": "The command doesnt require a running warehouse to execute. The command only returns objects for which the current users current role has been granted at least one access privilege. The MANAGE GRANTS access privilege implicitly allows its holder to see every object in the account. By default, only the account\nadministrator (users with the ACCOUNTADMIN role) and security administrator (users with the SECURITYADMIN role) have the\nMANAGE GRANTS privilege.\nThe command doesnt require a running warehouse to execute.\nThe command only returns objects for which the current users current role has been granted at least one access privilege.\nThe MANAGE GRANTS access privilege implicitly allows its holder to see every object in the account. By default, only the account\nadministrator (users with the ACCOUNTADMIN role) and security administrator (users with the SECURITYADMIN role) have the\nMANAGE GRANTS privilege.\nTo post-process the output of this command, you can use thepipe operatoror theRESULT_SCANfunction. Both constructs treat the output as a result set that\nyou can query.\nTo post-process the output of this command, you can use thepipe operatoror theRESULT_SCANfunction. Both constructs treat the output as a result set that\nyou can query.\nThe command returns amaximumof ten thousand records for the specified object type, as dictated by the access privileges for the role\nused to execute the command. Any records above the ten thousand records limit arent returned, even with a filter applied.To view results for which more than ten thousand records exist, query the corresponding view (if one exists) in theSnowflake Information Schema.\nThe command returns amaximumof ten thousand records for the specified object type, as dictated by the access privileges for the role\nused to execute the command. Any records above the ten thousand records limit arent returned, even with a filter applied.\nTo view results for which more than ten thousand records exist, query the corresponding view (if one exists) in theSnowflake Information Schema.\nOn this page\nSyntax Parameters Usage notes\nWe use cookies to improve your experience on our site. By accepting, you agree to ourprivacy policy.\nEnglish Franais Deutsch   Portugus"
+      }
+    ]
+  }
+]
