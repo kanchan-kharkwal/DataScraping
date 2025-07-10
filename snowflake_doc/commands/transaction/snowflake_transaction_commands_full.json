@@ -1,0 +1,222 @@
+[
+  {
+    "title": "Transaction commands | Snowflake Documentation",
+    "url": "https://docs.snowflake.com/en/sql-reference/commands-transaction",
+    "sections": [
+      {
+        "heading": "Transaction commands",
+        "description": "Transaction commands enable you to manage your transactions.\nBEGIN COMMIT DESCRIBE TRANSACTION ROLLBACK SHOW LOCKS SHOW TRANSACTIONS\nBEGIN\nCOMMIT\nDESCRIBE TRANSACTION\nROLLBACK\nSHOW LOCKS\nSHOW TRANSACTIONS\nWe use cookies to improve your experience on our site. By accepting, you agree to ourprivacy policy.\nEnglish Franais Deutsch   Portugus"
+      }
+    ]
+  },
+  {
+    "title": "BEGIN | Snowflake Documentation",
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/begin",
+    "sections": [
+      {
+        "heading": "BEGIN",
+        "description": "Begins a transaction in the current session.\nSTART TRANSACTION is a synonym for BEGIN.\nCOMMIT,ROLLBACK,SHOW TRANSACTIONS,DESCRIBE TRANSACTION"
+      },
+      {
+        "heading": "Syntax",
+        "syntax": [
+          "BEGIN [ { WORK | TRANSACTION } ] [ NAME <name> ]\n\nSTART TRANSACTION [ NAME <name> ]"
+        ]
+      },
+      {
+        "heading": "Parameters",
+        "description": "Optional keywords that provide compatibility with other database systems.\nOptional string that assigns a name to the transaction. A name helps identify a transaction, but is not required and does not need to be unique."
+      },
+      {
+        "heading": "Usage notes",
+        "description": "All transactions have a system-generated internal ID. The transaction ID is a signed 64-bit (long) integer. The range of values is\n-9,223,372,036,854,775,808 (-263) to 9,223,372,036,854,775,807 (263- 1). If you specify a name for a transaction, the NAME keyword is required. If a name is not specified, a system-generated name is assigned to the transaction. To complete a transaction, a COMMIT or ROLLBACK command must be explicitly executed. Until one of these commands is executed, the transaction\nremains open. When a SQL statement queries a stream within an explicit transaction, the stream is queried at the stream advance point (i.e. the timestamp)\nwhen the transaction began rather than when the statement was run. This behavior pertains both to DML statements and\nCREATE TABLE  AS SELECT (CTAS) statements that populate a new table with rows from an existing stream. If two BEGIN statements in a row are executed (within the samescope), the second one is ignored. For\nexample, in the following code, the second and third BEGINs have no effect; the existing open transaction continues.BEGIN;BEGIN;-- Ignored!INSERTINTOtable1...;BEGIN;-- Ignored!INSERTINTOtable2...;COMMIT;CopyThe rules can be more complex if you are usingautonomous scoped transactions and stored procedures.\nAll transactions have a system-generated internal ID. The transaction ID is a signed 64-bit (long) integer. The range of values is\n-9,223,372,036,854,775,808 (-263) to 9,223,372,036,854,775,807 (263- 1).\nIf you specify a name for a transaction, the NAME keyword is required.\nIf a name is not specified, a system-generated name is assigned to the transaction.\nTo complete a transaction, a COMMIT or ROLLBACK command must be explicitly executed. Until one of these commands is executed, the transaction\nremains open.\nWhen a SQL statement queries a stream within an explicit transaction, the stream is queried at the stream advance point (i.e. the timestamp)\nwhen the transaction began rather than when the statement was run. This behavior pertains both to DML statements and\nCREATE TABLE  AS SELECT (CTAS) statements that populate a new table with rows from an existing stream.\nIf two BEGIN statements in a row are executed (within the samescope), the second one is ignored. For\nexample, in the following code, the second and third BEGINs have no effect; the existing open transaction continues.\nThe rules can be more complex if you are usingautonomous scoped transactions and stored procedures.",
+        "syntax": [
+          "BEGIN;\nBEGIN;    -- Ignored!\nINSERT INTO table1 ...;\nBEGIN;    -- Ignored!\nINSERT INTO table2 ...;\nCOMMIT;"
+        ]
+      },
+      {
+        "heading": "Examples",
+        "description": "Note\nThese examples do not include the necessary commands for completing the transactions. For examples of complete transactions, seeCOMMITorROLLBACK.\nBegin a transaction:\nNote the system-assigned name,56cb9163-77a3-4223-b3e0-aa24a20540a3, for the transaction.\nBegin a transaction with a specified name:\nThis example is the same as the previous example, but uses START TRANSACTION instead of BEGIN:\nOn this page\nSyntax Parameters Usage notes Examples\nWe use cookies to improve your experience on our site. By accepting, you agree to ourprivacy policy.\nEnglish Franais Deutsch   Portugus",
+        "syntax": [
+          "BEGIN;\n\nSHOW TRANSACTIONS;\n\n+---------------+--------+--------------+--------------------------------------+-------------------------------+---------+\n|            id | user   |      session | name                                 | started_on                    | state   |\n|---------------+--------+--------------+--------------------------------------+-------------------------------+---------|\n| 1530042321085 | USER1  | 223347060798 | 56cb9163-77a3-4223-b3e0-aa24a20540a3 | 2018-06-26 12:45:21.085 -0700 | running |\n+---------------+--------+--------------+--------------------------------------+-------------------------------+---------+\n\nSELECT CURRENT_TRANSACTION();\n\n+-----------------------+\n| CURRENT_TRANSACTION() |\n|-----------------------|\n| 1530042321085         |\n+-----------------------+",
+          "BEGIN NAME T1;\n\nSHOW TRANSACTIONS;\n\n+---------------+--------+--------------+------+-------------------------------+---------+\n|            id | user   |      session | name | started_on                    | state   |\n|---------------+--------+--------------+------+-------------------------------+---------|\n| 1530042377426 | USER1  | 223347060798 | T1   | 2018-06-26 12:46:17.426 -0700 | running |\n+---------------+--------+--------------+------+-------------------------------+---------+\n\nSELECT CURRENT_TRANSACTION();\n\n+-----------------------+\n| CURRENT_TRANSACTION() |\n|-----------------------|\n| 1530042377426         |\n+-----------------------+",
+          "START TRANSACTION NAME T2;\n\nSHOW TRANSACTIONS;\n\n+---------------+--------+--------------+------+-------------------------------+---------+\n|            id | user   |      session | name | started_on                    | state   |\n|---------------+--------+--------------+------+-------------------------------+---------|\n| 1530042467963 | USER1  | 223347060798 | T2   | 2018-06-26 12:47:47.963 -0700 | running |\n+---------------+--------+--------------+------+-------------------------------+---------+\n\nSELECT CURRENT_TRANSACTION();\n\n+-----------------------+\n| CURRENT_TRANSACTION() |\n|-----------------------|\n| 1530042467963         |\n+-----------------------+"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "COMMIT | Snowflake Documentation",
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/commit",
+    "sections": [
+      {
+        "heading": "COMMIT",
+        "description": "Commits an open transaction in the current session.\nBEGIN,ROLLBACK,SHOW TRANSACTIONS,DESCRIBE TRANSACTION"
+      },
+      {
+        "heading": "Syntax",
+        "syntax": [
+          "COMMIT [ WORK ]"
+        ]
+      },
+      {
+        "heading": "Parameters",
+        "description": "Optional keyword that provides compatibility with other database systems."
+      },
+      {
+        "heading": "Usage notes",
+        "description": "If two COMMIT statements in a row are executed (within the samescope), the\nsecond one is ignored. For example, in the following code, the second COMMIT has no effect; there is no open\ntransaction to commit.BEGIN;INSERTINTOtable1...;COMMIT;COMMIT;-- Ignored!CopyThe rules can be more complex if you are usingautonomous scoped transactions and stored procedures.\nIf two COMMIT statements in a row are executed (within the samescope), the\nsecond one is ignored. For example, in the following code, the second COMMIT has no effect; there is no open\ntransaction to commit.\nThe rules can be more complex if you are usingautonomous scoped transactions and stored procedures.",
+        "syntax": [
+          "BEGIN;\nINSERT INTO table1 ...;\nCOMMIT;\nCOMMIT;  -- Ignored!"
+        ]
+      },
+      {
+        "heading": "Examples",
+        "description": "Begin a transaction, insert some values into a table, then complete the transaction by committing it:\nOn this page\nSyntax Parameters Usage notes Examples\nWe use cookies to improve your experience on our site. By accepting, you agree to ourprivacy policy.\nEnglish Franais Deutsch   Portugus",
+        "syntax": [
+          "SELECT COUNT(*) FROM A1;\n\n+----------+\n| COUNT(*) |\n|----------+\n|        0 |\n+----------+\n\nBEGIN NAME T3;\n\nSELECT CURRENT_TRANSACTION();\n\n+-----------------------+\n| CURRENT_TRANSACTION() |\n|-----------------------+\n| 1432071497832         |\n+-----------------------+\n\nINSERT INTO A1 VALUES (1), (2);\n\n+-------------------------+\n| number of rows inserted |\n|-------------------------+\n|                       2 |\n+-------------------------+\n\nCOMMIT;\n\nSELECT CURRENT_TRANSACTION();\n\n+-----------------------+\n| CURRENT_TRANSACTION() |\n|-----------------------+\n| [NULL]                |\n+-----------------------+\n\nSELECT LAST_TRANSACTION();\n\n+--------------------+\n| LAST_TRANSACTION() |\n|--------------------+\n| 1432071497832      |\n+--------------------+\n\nSELECT COUNT(*) FROM A1;\n\n+----------+\n| COUNT(*) |\n|----------+\n|        2 |\n+----------+"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "DESCRIBE TRANSACTION | Snowflake Documentation",
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-transaction",
+    "sections": [
+      {
+        "heading": "DESCRIBE TRANSACTION",
+        "description": "Describes thetransaction, including the start time and the state (running, committed, rolled\nback).\nDESCRIBE can be abbreviated to DESC.\nCURRENT_TRANSACTION,LAST_TRANSACTION,BEGIN,COMMIT,ROLLBACK,SHOW TRANSACTIONS"
+      },
+      {
+        "heading": "Syntax",
+        "syntax": [
+          "{ DESC | DESCRIBE } TRANSACTION <transaction_id>"
+        ]
+      },
+      {
+        "heading": "Parameters",
+        "description": "Specifies the identifier of the transaction to describe.\ntransaction_idmust be a literal, not a session variable."
+      },
+      {
+        "heading": "Usage notes",
+        "description": "To post-process the output of this command, you can use thepipe operatoror theRESULT_SCANfunction. Both constructs treat the output as a result set that\nyou can query.\nTo post-process the output of this command, you can use thepipe operatoror theRESULT_SCANfunction. Both constructs treat the output as a result set that\nyou can query."
+      },
+      {
+        "heading": "Output",
+        "description": "The output of the command includes the following columns, which describe the properties and metadata of the object:\nColumn\nDescription\nid\nUnique identifier of the transaction.\nuser\nThe user ID of the user who ran the transaction.\nsessionname\nThe ID of the user session in which the transaction was executed.\nstarted_on\nDate and time that the transaction was created.\nstate\nThe transactions completion status, e.g. committed, rolled back, or still running.\nended_on\nDate and time that the transaction finished."
+      },
+      {
+        "heading": "Examples",
+        "description": "On this page\nSyntax Parameters Usage notes Output Examples\nWe use cookies to improve your experience on our site. By accepting, you agree to ourprivacy policy.\nEnglish Franais Deutsch   Portugus",
+        "examples": [
+          "DESC TRANSACTION 1651535571261000000;"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "ROLLBACK | Snowflake Documentation",
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/rollback",
+    "sections": [
+      {
+        "heading": "ROLLBACK",
+        "description": "Rolls back an open transaction in the current session.\nBEGIN,COMMIT,SHOW TRANSACTIONS,DESCRIBE TRANSACTION"
+      },
+      {
+        "heading": "Syntax",
+        "syntax": [
+          "ROLLBACK [ WORK ]"
+        ]
+      },
+      {
+        "heading": "Parameters",
+        "description": "Optional keyword that provides compatibility with other database systems."
+      },
+      {
+        "heading": "Examples",
+        "description": "Begin a transaction, insert some values into a table, and then complete the transaction by rolling back the changes made in the transaction:\nOn this page\nSyntax Parameters Examples\nWe use cookies to improve your experience on our site. By accepting, you agree to ourprivacy policy.\nEnglish Franais Deutsch   Portugus",
+        "syntax": [
+          "SELECT COUNT(*) FROM A1;\n\n+----------+\n| COUNT(*) |\n|----------+\n|        0 |\n+----------+\n\nBEGIN NAME T4;\n\nSELECT CURRENT_TRANSACTION();\n\n+-----------------------+\n| CURRENT_TRANSACTION() |\n|-----------------------+\n| 1432071523422         |\n+-----------------------+\n\nINSERT INTO A1 VALUES (1), (2);\n\n+-------------------------+\n| number of rows inserted |\n|-------------------------+\n| 2                       |\n+-------------------------+\n\nROLLBACK;\n\nSELECT COUNT(*) FROM A1;\n\n+----------+\n| COUNT(*) |\n|----------+\n|        0 |\n+----------+\n\nSELECT CURRENT_TRANSACTION();\n\n+-----------------------+\n| CURRENT_TRANSACTION() |\n|-----------------------+\n| [NULL]                |\n+-----------------------+\n\nSELECT LAST_TRANSACTION();\n\n+--------------------+\n| LAST_TRANSACTION() |\n|--------------------+\n| 1432071523422      |\n+--------------------+"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "SHOW LOCKS | Snowflake Documentation",
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/show-locks",
+    "sections": [
+      {
+        "heading": "SHOW LOCKS",
+        "description": "Lists all running transactions that have locks on resources. The command can be used to show locks for the current user in all the\nusers sessions or all users in the account.\nFor information about transactions and resource locking, seeTransactions.\nSHOW TRANSACTIONS"
+      },
+      {
+        "heading": "Syntax",
+        "syntax": [
+          "SHOW LOCKS [ IN ACCOUNT ]"
+        ]
+      },
+      {
+        "heading": "Parameters",
+        "description": "Returns all locks across all users in the account. This parameter only applies when executed by users with the ACCOUNTADMIN role\n(account administrators).\nFor all other roles, the function only shows locks across all sessions for the current user."
+      },
+      {
+        "heading": "Output",
+        "description": "The command output shows lock metadata in the following columns:\nColumn\nDescription\nresource\nA fully qualified table name or a transaction ID.\ntype\nPARTITIONS(for standard table locks) orROW(for hybrid table locks).\ntransaction\nTransaction ID (a signed 64-bit integer).\ntransaction_started_on\nTimestamp that specifies when the transaction started executing.\nstatus\nCurrent status of the transaction:HOLDINGorWAITING.\nacquired_on\nTimestamp that specifies when the lock was acquired.\nquery_id\nInternal/system-generated identifier for the SQL statement.\nsession\nSession ID (visible to users with the ACCOUNTADMIN role only)."
+      },
+      {
+        "heading": "Usage notes",
+        "description": "The command output includes the IDs for all running transactions that have locks on resources. These IDs can be used as input forSYSTEM$ABORT_TRANSACTIONto abort a specified transaction. For hybrid tables, this command displays a lock only if a transaction is blocked, or is blocking another transaction.\nThe command output includes the IDs for all running transactions that have locks on resources. These IDs can be used as input forSYSTEM$ABORT_TRANSACTIONto abort a specified transaction.\nFor hybrid tables, this command displays a lock only if a transaction is blocked, or is blocking another transaction.\nThe command doesnt require a running warehouse to execute. The command only returns objects for which the current users current role has been granted at least one access privilege. The MANAGE GRANTS access privilege implicitly allows its holder to see every object in the account. By default, only the account\nadministrator (users with the ACCOUNTADMIN role) and security administrator (users with the SECURITYADMIN role) have the\nMANAGE GRANTS privilege.\nThe command doesnt require a running warehouse to execute.\nThe command only returns objects for which the current users current role has been granted at least one access privilege.\nThe MANAGE GRANTS access privilege implicitly allows its holder to see every object in the account. By default, only the account\nadministrator (users with the ACCOUNTADMIN role) and security administrator (users with the SECURITYADMIN role) have the\nMANAGE GRANTS privilege.\nTo post-process the output of this command, you can use thepipe operatoror theRESULT_SCANfunction. Both constructs treat the output as a result set that\nyou can query.\nTo post-process the output of this command, you can use thepipe operatoror theRESULT_SCANfunction. Both constructs treat the output as a result set that\nyou can query.\nThe command returns amaximumof ten thousand records for the specified object type, as dictated by the access privileges for the role\nused to execute the command. Any records above the ten thousand records limit arent returned, even with a filter applied.To view results for which more than ten thousand records exist, query the corresponding view (if one exists) in theSnowflake Information Schema.\nThe command returns amaximumof ten thousand records for the specified object type, as dictated by the access privileges for the role\nused to execute the command. Any records above the ten thousand records limit arent returned, even with a filter applied.\nTo view results for which more than ten thousand records exist, query the corresponding view (if one exists) in theSnowflake Information Schema."
+      },
+      {
+        "heading": "Examples",
+        "description": "In this example, a transaction is holding a lock on the specified standard table (the table named in theresourcecolumn).\nIn this example, a transaction is holding a row-level lock on a hybrid table. Another transaction is waiting on\nthat lock.\nOn this page\nSyntax Parameters Output Usage notes Examples\nWe use cookies to improve your experience on our site. By accepting, you agree to ourprivacy policy.\nEnglish Franais Deutsch   Portugus",
+        "syntax": [
+          "+---------------------------+------------+---------------------+-------------------------------+---------+-------------------------------+--------------------------------------+\n| resource                  | type       |         transaction | transaction_started_on        | status  | acquired_on                   | query_id                             |\n|---------------------------+------------+---------------------+-------------------------------+---------+-------------------------------+--------------------------------------|\n| CALIBAN_DB.PUBLIC.WEATHER | PARTITIONS | 1721330303831000000 | 2024-07-18 12:18:23.831 -0700 | HOLDING | 2024-07-18 12:18:49.832 -0700 | 01b5c1c6-0002-8691-0000-a9950068a0c6 |\n+---------------------------+------------+---------------------+-------------------------------+---------+-------------------------------+--------------------------------------+",
+          "+---------------------+------+---------------------+-------------------------------+---------+-------------+--------------------------------------+\n| resource            | type |         transaction | transaction_started_on        | status  | acquired_on | query_id                             |\n|---------------------+------+---------------------+-------------------------------+---------+-------------+--------------------------------------|\n| 1721165584820000000 | ROW  | 1721165584820000000 | 2024-07-16 14:33:04.820 -0700 | HOLDING | NULL        |                                      |\n| 1721165584820000000 | ROW  | 1721165674582000000 | 2024-07-16 14:34:34.582 -0700 | WAITING | NULL        | 01b5b715-0002-852b-0000-a99500665352 |\n+---------------------+------+---------------------+-------------------------------+---------+-------------+--------------------------------------+"
+        ],
+        "examples": [
+          "SHOW LOCKS;",
+          "SHOW LOCKS;"
+        ]
+      }
+    ]
+  },
+  {
+    "title": "SHOW TRANSACTIONS | Snowflake Documentation",
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/show-transactions",
+    "sections": [
+      {
+        "heading": "SHOW TRANSACTIONS",
+        "description": "List all running transactions. The command can be used to show transactions for the current user or all users in the account.\nSHOW LOCKS"
+      },
+      {
+        "heading": "Syntax",
+        "syntax": [
+          "SHOW TRANSACTIONS [ IN ACCOUNT ]"
+        ]
+      },
+      {
+        "heading": "Parameters",
+        "description": "Shows all transactions across all users in the account. It can only be used by users with the ACCOUNTADMIN role (i.e. account administrators)."
+      },
+      {
+        "heading": "Output",
+        "description": "The command output shows transaction metadata in the following columns:\nColumn\nDescription\nid\nTransaction ID (a signed 64-bit integer).\nuser\nCurrent user.\nsession\nSession ID.\nname\nUser-defined name or system-generated name (UUID) for the transaction.\nstarted_on\nTimestamp that specifies when the transaction started executing.\nstate\nTransaction state:running.\nscope\nID of the operation that created a stored procedure in a scoped transaction.0for non-scoped transactions."
+      },
+      {
+        "heading": "Usage notes",
+        "description": "The command output includes the IDs for all running transactions. These IDs can be used as input forSYSTEM$ABORT_TRANSACTIONto abort a specified transaction. A stored procedure that contains a transaction can be called from within another transaction. These\ntransactions are separate but scoped. The values in thescopecolumn are useful for discovering whether two transactions are in the same scope.\nFor more information, seeScoped transactions.\nThe command output includes the IDs for all running transactions. These IDs can be used as input forSYSTEM$ABORT_TRANSACTIONto abort a specified transaction.\nA stored procedure that contains a transaction can be called from within another transaction. These\ntransactions are separate but scoped. The values in thescopecolumn are useful for discovering whether two transactions are in the same scope.\nFor more information, seeScoped transactions.\nThe command doesnt require a running warehouse to execute. The command only returns objects for which the current users current role has been granted at least one access privilege. The MANAGE GRANTS access privilege implicitly allows its holder to see every object in the account. By default, only the account\nadministrator (users with the ACCOUNTADMIN role) and security administrator (users with the SECURITYADMIN role) have the\nMANAGE GRANTS privilege.\nThe command doesnt require a running warehouse to execute.\nThe command only returns objects for which the current users current role has been granted at least one access privilege.\nThe MANAGE GRANTS access privilege implicitly allows its holder to see every object in the account. By default, only the account\nadministrator (users with the ACCOUNTADMIN role) and security administrator (users with the SECURITYADMIN role) have the\nMANAGE GRANTS privilege.\nTo post-process the output of this command, you can use thepipe operatoror theRESULT_SCANfunction. Both constructs treat the output as a result set that\nyou can query.\nTo post-process the output of this command, you can use thepipe operatoror theRESULT_SCANfunction. Both constructs treat the output as a result set that\nyou can query.\nThe command returns amaximumof ten thousand records for the specified object type, as dictated by the access privileges for the role\nused to execute the command. Any records above the ten thousand records limit arent returned, even with a filter applied.To view results for which more than ten thousand records exist, query the corresponding view (if one exists) in theSnowflake Information Schema.\nThe command returns amaximumof ten thousand records for the specified object type, as dictated by the access privileges for the role\nused to execute the command. Any records above the ten thousand records limit arent returned, even with a filter applied.\nTo view results for which more than ten thousand records exist, query the corresponding view (if one exists) in theSnowflake Information Schema."
+      },
+      {
+        "heading": "Example",
+        "description": "In this example, two sessions are being run by the same user, with one transaction in progress for each session.\nOn this page\nSyntax Parameters Output Usage notes Example\nWe use cookies to improve your experience on our site. By accepting, you agree to ourprivacy policy.\nEnglish Franais Deutsch   Portugus",
+        "syntax": [
+          "+---------------------+---------+-----------------+--------------------------------------+-------------------------------+---------+-------+\n|                  id | user    |         session | name                                 | started_on                    | state   | scope |\n|---------------------+---------+-----------------+--------------------------------------+-------------------------------+---------+-------|\n| 1721165674582000000 | CALIBAN | 186457423713330 | 551f494d-90ed-438d-b32b-1161396c3a22 | 2024-07-16 14:34:34.582 -0700 | running |     0 |\n| 1721165584820000000 | CALIBAN | 186457423749354 | a092aa44-9a0a-4955-9659-123b35c0efeb | 2024-07-16 14:33:04.820 -0700 | running |     0 |\n+---------------------+---------+-----------------+--------------------------------------+-------------------------------+---------+-------+"
+        ],
+        "examples": [
+          "SHOW TRANSACTIONS;"
+        ]
+      }
+    ]
+  }
+]
