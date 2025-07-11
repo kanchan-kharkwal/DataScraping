@@ -7,14 +7,17 @@ from urllib.parse import urljoin
 BASE_URL = "https://docs.snowflake.com"
 MAIN_PAGE = "/en/sql-reference/operators"
 
+
 def clean_html(html):
     soup = BeautifulSoup(html, "html.parser")
     for tag in soup(["script", "style", "footer", "nav", "header", "noscript"]):
         tag.decompose()
     return soup
 
+
 def strip_unicode(text):
     return re.sub(r"[^\x00-\x7F]+", "", text)
+
 
 def extract_operator_categories(soup):
     categories = []
@@ -37,6 +40,7 @@ def extract_operator_categories(soup):
         })
     return categories
 
+
 def parse_table(table_tag):
     headers = []
     rows = []
@@ -53,6 +57,7 @@ def parse_table(table_tag):
         return {"headers": headers, "rows": rows}
     return None
 
+
 def extract_examples(soup):
     examples = []
     example_blocks = soup.select("div.highlight-sqlexample pre, div.highlight-output pre")
@@ -61,6 +66,7 @@ def extract_examples(soup):
         if code:
             examples.append(code)
     return examples
+
 
 def extract_sections(soup):
     content = []
@@ -76,14 +82,18 @@ def extract_sections(soup):
                     current_section.pop("description", None)
                     current_section.pop("syntax", None)
                     current_section.pop("definitions", None)
+                else:
+                    current_section.pop("_definitions_text", None)
                 content.append(filter_non_empty_fields(current_section))
+
             current_section = {
                 "heading": strip_unicode(tag_text),
                 "description": "",
                 "syntax": [],
                 "examples": [],
                 "tables": [],
-                "definitions": []
+                "definitions": [],
+                "_definitions_text": set()
             }
             tables_present = False
 
@@ -100,41 +110,61 @@ def extract_sections(soup):
 
             elif tag.name in ["ul", "ol"]:
                 if not tables_present:
-                    current_section["description"] += "\n" + " ".join(li.get_text().strip() for li in tag.find_all("li"))
+                    for li in tag.find_all("li"):
+                        text = strip_unicode(li.get_text().strip())
+                        if not overlaps_definition(text, current_section["_definitions_text"]):
+                            current_section["description"] += "\n" + text
 
             elif tag.name == "p":
                 if not tables_present:
-                    current_section["description"] += "\n" + strip_unicode(tag_text)
+                    para = strip_unicode(tag.get_text().strip())
+                    if not overlaps_definition(para, current_section["_definitions_text"]):
+                        current_section["description"] += "\n" + para
 
             elif tag.name == "dl":
                 if not tables_present:
                     for dt_tag, dd_tag in zip(tag.find_all("dt"), tag.find_all("dd")):
-                        term = dt_tag.get_text().strip()
-                        definition = [p.get_text().strip() for p in dd_tag.find_all("p")]
-                        if not definition:
-                            definition = [dd_tag.get_text().strip()]
-                        definition = " ".join(definition)
+                        term = strip_unicode(dt_tag.get_text().strip())
+                        dd_texts = [p.get_text().strip() for p in dd_tag.find_all("p")] or [dd_tag.get_text().strip()]
+                        definition = strip_unicode(" ".join(dd_texts).strip())
                         if term and definition:
                             current_section["definitions"].append({
-                                "term": strip_unicode(term),
-                                "definition": strip_unicode(definition)
+                                "term": term,
+                                "definition": definition
                             })
+                            current_section["_definitions_text"].add(definition)
 
     if current_section:
         if tables_present:
             current_section.pop("description", None)
             current_section.pop("syntax", None)
             current_section.pop("definitions", None)
-        # Add examples from whole soup section (outside heading tags)
+        else:
+            current_section.pop("_definitions_text", None)
+
         examples = extract_examples(soup)
         if examples:
             current_section["examples"].extend(examples)
+
         content.append(filter_non_empty_fields(current_section))
 
     return content
 
+
+def overlaps_definition(text, definition_set):
+    """Check if the given text overlaps with any sentence in the definitions."""
+    text = re.sub(r"\s+", " ", text.strip())
+    for defn in definition_set:
+        defn_clean = re.sub(r"\s+", " ", defn.strip())
+        if defn_clean in text or text in defn_clean:
+            return True
+    return False
+
+
+
 def filter_non_empty_fields(section):
-    return {k: v for k, v in section.items() if v and (v if isinstance(v, list) else v.strip())}
+    return {k: v for k, v in section.items() if k != "_definitions_text" and v and (v if isinstance(v, list) else v.strip())}
+
 
 def scrape_page(playwright, url):
     print(f"Scraping: {url}")
@@ -153,6 +183,7 @@ def scrape_page(playwright, url):
         "url": url,
         "sections": sections
     }
+
 
 def scrape_all():
     with sync_playwright() as p:
@@ -185,5 +216,7 @@ def scrape_all():
         with open("snowflake_operator_categories.json", "w", encoding="utf-8") as f:
             json.dump(all_data, f, indent=2, ensure_ascii=False)
 
+
 if __name__ == "__main__":
     scrape_all()
+    print("Scraping completed. Data saved.")

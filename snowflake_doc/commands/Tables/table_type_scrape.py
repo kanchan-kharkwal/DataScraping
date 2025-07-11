@@ -5,7 +5,7 @@ from urllib.parse import urljoin
 import json
 
 BASE_URL = "https://docs.snowflake.com"
-MAIN_PAGE = "/en/sql-reference/intro-summary-data-types"
+MAIN_PAGE = "/en/sql-reference/commands-table"
 
 def clean_html(html):
     soup = BeautifulSoup(html, "html.parser")
@@ -16,17 +16,15 @@ def clean_html(html):
 def strip_unicode(text):
     return re.sub(r"[^\x00-\x7F]+", "", text)
 
-def extract_category_links(soup):
+def extract_category_links_commands(soup):
     links = []
-    table = soup.find("table")
-    if not table:
-        return links
-    for link in table.find_all("a", href=True):
-        href = urljoin(BASE_URL + MAIN_PAGE, link["href"])
-        category = link.get_text(strip=True)
+    for a in soup.select("ul li a[href]"):
+        href = a["href"]
+        full_url = urljoin(BASE_URL + MAIN_PAGE, href)
+        category = a.get_text(strip=True)
         links.append({
             "category": category,
-            "url": href
+            "url": full_url
         })
     return links
 
@@ -134,6 +132,7 @@ def overlaps_definition(text, definition_set):
     return False
 
 def scrape_page(playwright, url):
+    print(f"Starting to scrape: {url}")
     browser = playwright.chromium.launch(headless=True)
     page = browser.new_page()
     page.goto(url)
@@ -144,13 +143,15 @@ def scrape_page(playwright, url):
     soup = clean_html(html)
     sections = extract_sections(soup)
 
+    print(f"Finished scraping: {url}")
     return {
         "title": soup.title.string.strip() if soup.title else "No Title",
         "url": url,
         "sections": sections
     }
 
-def scrape_data_type_summary():
+def scrape_command_reference():
+    print("Started scraping ")
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page()
@@ -161,10 +162,12 @@ def scrape_data_type_summary():
         browser.close()
 
         soup = clean_html(html)
-        category_links = extract_category_links(soup)
+        category_links = extract_category_links_commands(soup)
+        print(f"Found {len(category_links)} sub-pages to scrape.\n")
 
         results = []
-        for category in category_links:
+        for i, category in enumerate(category_links, start=1):
+            print(f"({i}/{len(category_links)}) Scraping: {category['category']}")
             try:
                 data = scrape_page(p, category["url"])
                 results.append({
@@ -173,6 +176,7 @@ def scrape_data_type_summary():
                     "details": data["sections"]
                 })
             except Exception as e:
+                print(f"Error scraping {category['url']}: {e}")
                 results.append({
                     "category": category["category"],
                     "url": category["url"],
@@ -180,12 +184,10 @@ def scrape_data_type_summary():
                     "details": []
                 })
 
-        # Save to file
-        with open("snowflake_data_type_summary.json", "w", encoding="utf-8") as f:
+        with open("snowflake_commands_table.json", "w", encoding="utf-8") as f:
             json.dump(results, f, indent=2, ensure_ascii=False)
 
-        return results
+    print("\nScraping completed. Data saved ==========")
 
-# Run it
 if __name__ == "__main__":
-    scrape_data_type_summary()
+    scrape_command_reference()
