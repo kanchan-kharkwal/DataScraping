@@ -1,0 +1,61 @@
+[
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/comment",
+    "title": "COMMENT",
+    "description": "Adds a comment or overwrites an existing comment for an existing object.",
+    "syntax": "COMMENT [ IF EXISTS ] ON <object_type> <object_name> IS '<string_literal>';\n\nCOMMENT [ IF EXISTS ] ON COLUMN <table_name>.<column_name> IS '<string_literal>';",
+    "parameters": [
+        {
+            "name": "ON   object_type   object_name",
+            "description": "Adds a comment to the object of the specified type (for example, TABLE , SCHEMA , VIEW , and so on)\nwith the specified identifier. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        },
+        {
+            "name": "ON   COLUMN   table_name . column_name",
+            "description": "Adds a comment to the specified table column. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        },
+        {
+            "name": "IS   string_literal",
+            "description": "Specifies the comment to add. Default: NULL"
+        }
+    ],
+    "usage_notes": "You can also add or modify comments when you are creating or altering objects:\nTo add a comment, specify the COMMENT parameter in the CREATE <object> or ALTER <object> command.\nTo modify an existing comment, specify the COMMENT parameter in the ALTER <object> command.\nA slightly different syntax is used for adding or modifying comments on table columns:\nTo add a comment at creation, follow the column declaration with the COMMENT keyword (not property).\nTo modify a comment, use this command.\nTo add a comment to a constraint, use the CREATE TABLE or CREATE | ALTER TABLE … CONSTRAINT commands.\nThe DESCRIBE TABLE output doesn’t show comments for table constraints, such as multi-column primary keys. To see these comments,\nquery the TABLE_CONSTRAINTS view.\nRegarding metadata:\nAttention\nCustomers should ensure that no personal data (other than for a User object), sensitive data, export-controlled data, or other regulated data is entered as metadata when using the Snowflake service. For more information, see Metadata fields in Snowflake.",
+    "examples": [
+        {
+            "code": "CREATE SCHEMA my_schema COMMENT='this is comment1';\n\nSHOW SCHEMAS LIKE 'my_schema';"
+        },
+        {
+            "code": "+-------------------------------+-----------+------------+------------+---------------+---------+------------------+---------+----------------+------+\n| created_on                    | name      | is_default | is_current | database_name | owner   | comment          | options | retention_time | ...  |\n|-------------------------------+-----------+------------+------------+---------------+---------+------------------+---------+----------------+------|\n| 2025-02-26 12:08:52.363 -0800 | MY_SCHEMA | N          | Y          | MY_DB         | MY_ROLE | this is comment1 |         | 1              |  ... |\n+-------------------------------+-----------+------------+------------+---------------+---------+------------------+---------+----------------+------+"
+        },
+        {
+            "code": "COMMENT ON SCHEMA my_schema IS 'now comment2';\n\nSHOW SCHEMAS LIKE 'my_schema';"
+        },
+        {
+            "code": "+-------------------------------+-----------+------------+------------+---------------+---------+--------------+---------+----------------+-----+\n| created_on                    | name      | is_default | is_current | database_name | owner   | comment      | options | retention_time | ... |\n|-------------------------------+-----------+------------+------------+---------------+---------+--------------+---------+----------------+-----+\n| 2025-02-26 12:08:52.363 -0800 | MY_SCHEMA | N          | Y          | MY_DB         | MY_ROLE | now comment2 |         | 1              | ... |\n+-------------------------------+-----------+------------+------------+---------------+---------+--------------+---------+----------------+-----+"
+        },
+        {
+            "code": "CREATE OR REPLACE TABLE test_comment_table_column(my_column STRING COMMENT 'this is comment3');\n\nDESC TABLE test_comment_table_column;"
+        },
+        {
+            "code": "+-----------+-------------------+--------+-------+---------+-------------+------------+-------+------------+------------------+-------------+----------------+\n| name      | type              | kind   | null? | default | primary key | unique key | check | expression | comment          | policy name | privacy domain |\n|-----------+-------------------+--------+-------+---------+-------------+------------+-------+------------+------------------+-------------+----------------|\n| MY_COLUMN | VARCHAR(16777216) | COLUMN | Y     | NULL    | N           | N          | NULL  | NULL       | this is comment3 | NULL        | NULL           |\n+-----------+-------------------+--------+-------+---------+-------------+------------+-------+------------+------------------+-------------+----------------+"
+        },
+        {
+            "code": "COMMENT ON COLUMN test_comment_table_column.my_column IS 'now comment4';\n\nDESC TABLE test_comment_table_column;"
+        },
+        {
+            "code": "+-----------+-------------------+--------+-------+---------+-------------+------------+-------+------------+--------------+-------------+----------------+\n| name      | type              | kind   | null? | default | primary key | unique key | check | expression | comment      | policy name | privacy domain |\n|-----------+-------------------+--------+-------+---------+-------------+------------+-------+------------+--------------+-------------+----------------|\n| MY_COLUMN | VARCHAR(16777216) | COLUMN | Y     | NULL    | N           | N          | NULL  | NULL       | now comment4 | NULL        | NULL           |\n+-----------+-------------------+--------+-------+---------+-------------+------------+-------+------------+--------------+-------------+----------------+"
+        },
+        {
+            "code": "CREATE OR REPLACE VIEW test_comment_view COMMENT='this is comment5' AS (SELECT * FROM test_comment_table_column);\n\nSHOW VIEWS LIKE 'test_comment_view';"
+        },
+        {
+            "code": "+-------------------------------+-------------------+----------+---------------+-------------+---------+------------------+-----+\n| created_on                    | name              | reserved | database_name | schema_name | owner   | comment          | ... |\n|-------------------------------+-------------------+----------+---------------+-------------+---------+------------------+-----+\n| 2025-02-26 12:38:35.440 -0800 | TEST_COMMENT_VIEW |          | MY_DB         | MY_SCHEMA   | MY_ROLE | this is comment5 | ... |\n+-------------------------------+-------------------+----------+---------------+-------------+---------+------------------+-----+"
+        },
+        {
+            "code": "COMMENT ON VIEW test_comment_view IS 'now comment6';\n\nSHOW VIEWS LIKE 'test_comment_view';"
+        },
+        {
+            "code": "+-------------------------------+-------------------+----------+---------------+-------------+---------+--------------+-----+\n| created_on                    | name              | reserved | database_name | schema_name | owner   | comment      | ... |\n|-------------------------------+-------------------+----------+---------------+-------------+---------+--------------+-----+\n| 2025-02-26 12:38:35.440 -0800 | TEST_COMMENT_VIEW |          | MY_DB         | MY_SCHEMA   | MY_ROLE | now comment6 | ... |\n+-------------------------------+-------------------+----------+---------------+-------------+---------+--------------+-----+"
+        }
+    ]
+}
+]

@@ -1,0 +1,143 @@
+[
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/use-role",
+    "title": "USE ROLE",
+    "description": "Specifies the active/current primary role for the session. The currently active primary role sets the context that determines whether the\ncurrent user has the necessary privileges to execute CREATE <object> statements or perform any other SQL action.",
+    "syntax": "USE ROLE <name>",
+    "examples": [
+        {
+            "code": "USE ROLE myrole;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the role to use for the session. If the identifier contains spaces or special characters, the entire string\nmust be enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        }
+    ],
+    "usage_notes": "To use a role, the role must have been granted to the user.\nOnly a single primary role can be active at a time in a user session.\nSecondary roles enable you to perform SQL actions using\nthe combined privileges of the other roles granted to you."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/use-secondary-roles",
+    "title": "USE SECONDARY ROLES",
+    "description": "Specifies the active/current secondary roles for the session. The currently-active secondary roles set the context that determines whether\nthe current user has the necessary privileges to perform SQL actions.",
+    "syntax": "USE SECONDARY ROLES {\n      ALL\n    | NONE\n    | <role_name> [ , <role_name> ... ]\n  }",
+    "examples": [
+        {
+            "code": "USE SECONDARY ROLES ALL;"
+        },
+        {
+            "code": "USE SECONDARY ROLES test_role_1, test_role_2;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "ALL",
+            "description": "All roles that have been granted to the user in addition to the current active primary role. Note that the set of roles is reevaluated when each SQL statement executes. If additional roles are granted to the user, and that user\nexecutes a new SQL statement, the newly granted roles are active secondary roles for the new SQL statement.  The same logic applies to\nroles that are revoked from a user."
+        },
+        {
+            "name": "NONE",
+            "description": "Disables secondary roles. The authorization for all SQL actions is provided via the primary role."
+        },
+        {
+            "name": "role_name   [   ,   role_name   ...   ]",
+            "description": "Activates the specified roles as secondary roles. The secondary roles can be user-defined account roles or system roles. Specify the role\nname as it is stored in Snowflake. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "To use a role, the role must have been granted to the user."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/use-warehouse",
+    "title": "USE WAREHOUSE",
+    "description": "Specifies the active/current virtual warehouse for the session.\nYou must specify a warehouse for a session, and the warehouse must be running\nbefore you can execute queries and DML statements in the session.",
+    "syntax": "USE WAREHOUSE <name>",
+    "examples": [
+        {
+            "code": "USE WAREHOUSE mywarehouse;"
+        },
+        {
+            "code": "SELECT CURRENT_WAREHOUSE();\nSET original_warehouse = (SELECT CURRENT_WAREHOUSE());\nUSE WAREHOUSE warehouse_two;\nSELECT CURRENT_WAREHOUSE();\nUSE WAREHOUSE IDENTIFIER($original_warehouse);\nSELECT CURRENT_WAREHOUSE();"
+        },
+        {
+            "code": ">SELECT CURRENT_WAREHOUSE();\n+---------------------+\n| WAREHOUSE_ONE       |\n+---------------------+\n\n>SET original_warehouse = (SELECT CURRENT_WAREHOUSE());\n\n>USE WAREHOUSE warehouse_two;\n>SELECT CURRENT_WAREHOUSE();\n+---------------------+\n| WAREHOUSE_TWO       |\n+---------------------+\n\n>USE WAREHOUSE IDENTIFIER($original_warehouse);\n>SELECT CURRENT_WAREHOUSE();\n+---------------------+\n| WAREHOUSE_ONE       |\n+---------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the warehouse to use for the session. If the identifier contains spaces or special characters, the entire\nstring must be enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/use-schema",
+    "title": "USE SCHEMA",
+    "description": "Specifies the active/current schema for the session:",
+    "syntax": "USE [ SCHEMA ] [<db_name>.]<name>",
+    "examples": [
+        {
+            "code": "USE SCHEMA myschema;"
+        },
+        {
+            "code": "USE mydb.myschema;"
+        },
+        {
+            "code": "USE SCHEMA schema_one;\nSHOW TABLES ->> SELECT \"created_on\", \"name\" FROM $1 ORDER BY \"created_on\";"
+        },
+        {
+            "code": "+-------------------------------+-----------+\n| created_on                    | name      |\n|-------------------------------+-----------|\n| 2025-07-13 23:48:49.129 -0700 | TABLE_ABC |\n| 2025-07-13 23:49:50.329 -0700 | TABLE_DEF |\n+-------------------------------+-----------+"
+        },
+        {
+            "code": "USE SCHEMA schema_two;\nSHOW TABLES ->> SELECT \"created_on\", \"name\" FROM $1 ORDER BY \"created_on\";"
+        },
+        {
+            "code": "+-------------------------------+-----------+\n| created_on                    | name      |\n|-------------------------------+-----------|\n| 2025-07-13 23:52:06.144 -0700 | TABLE_IJK |\n| 2025-07-13 23:53:29.851 -0700 | TABLE_XYZ |\n+-------------------------------+-----------+"
+        },
+        {
+            "code": "SELECT CURRENT_SCHEMA();\nSET original_schema = (SELECT CURRENT_SCHEMA());\nUSE SCHEMA schema_two;\nSELECT CURRENT_SCHEMA();\nUSE SCHEMA IDENTIFIER($original_schema);\nSELECT CURRENT_SCHEMA();"
+        },
+        {
+            "code": ">SELECT CURRENT_SCHEMA();\n+------------+\n| SCHEMA_ONE |\n+------------+\n\n>SET original_schema = (SELECT CURRENT_SCHEMA());\n\n>USE SCHEMA schema_two;\n>SELECT CURRENT_SCHEMA();\n+------------+\n| SCHEMA_TWO |\n+------------+\n\n>USE SCHEMA IDENTIFIER($original_schema);\n>SELECT CURRENT_SCHEMA();\n+------------+\n| SCHEMA_ONE |\n+------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "[ db_name .] name",
+            "description": "Specifies the identifier for the schema to use for the session. If the identifier contains spaces or special characters, the entire\nstring must be enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive. The SCHEMA keyword is optional if the schema name is fully qualified (in the form of db_name . schema_name ). The database name ( db_name ) is optional if the database is specified in the user session and the SCHEMA keyword\nis included."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/use-database",
+    "title": "USE DATABASE",
+    "description": "Specifies the active/current database for the session:",
+    "syntax": "USE [ DATABASE ] <name>",
+    "examples": [
+        {
+            "code": "USE DATABASE mydb;"
+        },
+        {
+            "code": "USE DATABASE database_one;\nSHOW SCHEMAS ->> SELECT \"created_on\", \"name\" FROM $1 ORDER BY \"created_on\";\n\n+-------------------------------+--------------------+\n| 2025-07-11 14:34:24.386 -0700 | PUBLIC             |\n| 2025-07-11 14:42:23.509 -0700 | TEST_SCHEMA        |\n| 2025-07-11 14:42:29.158 -0700 | STAGING_SCHEMA     |\n| 2025-07-11 14:45:43.124 -0700 | INFORMATION_SCHEMA |\n+-------------------------------+--------------------+"
+        },
+        {
+            "code": "USE DATABASE database_two;\nSHOW SCHEMAS ->> SELECT \"created_on\", \"name\" FROM $1 ORDER BY \"created_on\";"
+        },
+        {
+            "code": "+-------------------------------+--------------------+\n| 2025-07-11 14:34:31.496 -0700 | PUBLIC             |\n| 2025-07-11 14:43:04.394 -0700 | PRODUCTION_SCHEMA  |\n| 2025-07-11 14:44:23.006 -0700 | DASHBOARDS_SCHEMA  |\n| 2025-07-11 14:45:54.372 -0700 | INFORMATION_SCHEMA |\n+-------------------------------+--------------------+"
+        },
+        {
+            "code": "SELECT CURRENT_DATABASE();\nSET original_database = (SELECT CURRENT_DATABASE());\nUSE DATABASE database_two;\nSELECT CURRENT_DATABASE();\nUSE DATABASE IDENTIFIER($original_database);\nSELECT CURRENT_DATABASE();"
+        },
+        {
+            "code": ">SELECT CURRENT_DATABASE();\n+--------------+\n| DATABASE_ONE |\n+--------------+\n\n>SET original_database = (SELECT CURRENT_DATABASE());\n\n>USE DATABASE database_two;\n>SELECT CURRENT_DATABASE();\n+--------------+\n| DATABASE_TWO |\n+--------------+\n\n>USE DATABASE IDENTIFIER($original_database);\n>SELECT CURRENT_DATABASE();\n+--------------+\n| DATABASE_ONE |\n+--------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the database to use for the session. If the identifier contains spaces or special characters, the\nentire string must be enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        }
+    ],
+    "usage_notes": "The DATABASE keyword does not need to be specified.\nUSE DATABASE automatically specifies PUBLIC as the current schema, unless the PUBLIC schema doesn’t exist (e.g. it has been dropped).\nTo specify a different schema for a session, use the USE SCHEMA command."
+}
+]

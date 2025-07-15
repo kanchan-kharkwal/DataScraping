@@ -1,0 +1,1391 @@
+[
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-application-package",
+    "title": "DROP APPLICATION PACKAGE",
+    "description": "Removes an application package from the system in the Native Apps Framework.",
+    "syntax": "DROP APPLICATION PACKAGE [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "DROP APPLICATION PACKAGE hello_snowflake_app;"
+        },
+        {
+            "code": "+-------------------------------------------+\n| status                                    |\n|-------------------------------------------|\n| hello_snowflake_app successfully dropped. |\n+-------------------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the application package to drop. If the identifier contains spaces, special characters, or mixed-case characters, the entire string must be enclosed in double quotes. Identifiers\nenclosed in double quotes are also case-sensitive."
+        }
+    ],
+    "usage_notes": "An application package can only be dropped if it is not currently associated with a listing.\nAfter you run this command, the application package is dropped and becomes unavailable within the\nprovider account.\nAny application created from the application package remains visible to the consumer, but is otherwise inaccessible.\nAny attempt to access the application results in an error indicating the application package has been removed.\nA consumer must explicitly run DROP APPLICATION to ensure that objects owned by the application\nhave been appropriately transferred to other roles or removed.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-notebook",
+    "title": "DROP NOTEBOOK",
+    "description": "Removes the specified notebook from the current/specified schema, but retains a version of the\nnotebook so that it can be recovered using UNDROP NOTEBOOK.",
+    "syntax": "DROP NOTEBOOK <name>",
+    "examples": [
+        {
+            "code": "DROP NOTEBOOK mynotebook;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the notebook to drop. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-share",
+    "title": "DROP SHARE",
+    "description": "Removes the specified share from the system and immediately revokes access for all consumers\n(i.e. accounts who have created a database from the share).",
+    "syntax": "DROP SHARE <name>",
+    "examples": [
+        {
+            "code": "DROP SHARE sales_s;\n\n+-------------------------------+\n| status                        |\n|-------------------------------|\n| SALES_S successfully dropped. |\n+-------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the share to drop. If the identifier contains spaces, special characters, or mixed-case characters, the\nentire string must be enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        }
+    ],
+    "usage_notes": "Only the share owner, the role with the OWNERSHIP privilege on the share, has the privileges to drop a share.\nExecuting this command with any other role returns an error.\nDropped shares cannot be recovered; they must be recreated.\nDropping a share does not affect the database in the share (or any of the objects in the database).\nImportant\nBefore dropping a share, consider the downstream impact of performing this operation:\nConsumer accounts that have created databases from the share will no longer be able to query these databases.\nRecreating a share with the same name as a previous share does not restore the databases created (by any consumers) from the share.\nEach consumer must create a new database from the new share.\nA dropped share can not be restored. The share must be created again using the CREATE SHARE command and then\nconfigured using GRANT <privilege> … TO SHARE and ALTER SHARE."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-git-repository",
+    "title": "DROP GIT REPOSITORY",
+    "description": "Removes the specified Snowflake Git repository clone from the current/specified schema.",
+    "syntax": "DROP GIT REPOSITORY [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "DROP GIT REPOSITORY my_repository;"
+        },
+        {
+            "code": "+-------------------------------------+\n|                status               |\n+-------------------------------------+\n| MY_REPOSITORY successfully dropped. |\n+-------------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the Git repository clone to drop. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "Dropped Git repositories can’t be recovered; they must be recreated.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-stream",
+    "title": "DROP STREAM",
+    "description": "Removes a stream from the current/specified schema.",
+    "syntax": "DROP STREAM [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "SHOW STREAMS LIKE 't2%';\n\n\nDROP STREAM t2;\n\n\nSHOW STREAMS LIKE 't2%';"
+        },
+        {
+            "code": "DROP STREAM IF EXISTS t2;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the stream to drop. If the identifier contains spaces, special characters, or mixed-case characters, the\nentire string must be enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive\n(e.g. \"My Object\" ). If the stream identifier is not fully-qualified (in the form of db_name . schema_name . stream_name or schema_name . stream_name ), the command looks for the stream in the current schema for the session."
+        }
+    ],
+    "usage_notes": "When the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-database-role",
+    "title": "DROP DATABASE ROLE",
+    "description": "Removes the specified database role from the system.",
+    "syntax": "DROP DATABASE ROLE [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "DROP DATABASE ROLE d1.dr1;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier (i.e. name) for the database role; must be unique in the database in which the role is created. The identifier must start with an alphabetic character and cannot contain spaces or special characters unless the entire identifier\nstring is enclosed in double quotes (e.g. \"My object\" ). Identifiers enclosed in double quotes are also case-sensitive. If the identifier is not fully qualified (in the form of db_name . database_role_name , the command looks for the database role\nin the current database for the session."
+        }
+    ],
+    "usage_notes": "Dropped database roles cannot be recovered; they must be recreated.\nOwnership of any objects owned by the dropped database role is transferred to the role that executes the DROP DATABASE ROLE\ncommand. To transfer ownership of each of these objects to a different database role, use\nGRANT OWNERSHIP … COPY CURRENT GRANTS.\nIf a database role has a future privilege as a grantor or grantee, the database role can only be dropped by a user with a role\nthat has the MANAGE GRANTS privilege.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error.\nAll current and future grants that name the database role as either the grantor or the grantee are removed when the database role is\ndropped.\nQuery the GRANTS_TO_ROLES Account Usage view to retrieve the privilege grants\nthat name a specified database role as the grantor or grantee:\nThe following example retrieves the grants where d1.dr1 is the grantor or grantee:"
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-organization-profile",
+    "title": "DROP ORGANIZATION PROFILE",
+    "description": "Removes an organization profile.",
+    "syntax": "DROP ORGANIZATION PROFILE <name>",
+    "examples": [
+        {
+            "code": "DROP ORGANIZATION PROFILE myorganizationprofile;"
+        },
+        {
+            "code": "+---------------------------------------------+\n| status                                      |\n|---------------------------------------------|\n| MYORGANIZATIONPROFILE successfully dropped. |\n+---------------------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the organization profile to drop. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes. Identifiers enclosed in double quotes are also case sensitive. For information about identifier syntax, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "Dropped organization profiles cannot be recovered; they must be recreated. An organization profile cannot be dropped if it is associated with an organizational listing."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-feature-policy",
+    "title": "DROP FEATURE POLICY",
+    "description": "Removes the specified feature policy.",
+    "syntax": "DROP FEATURE POLICY <name>",
+    "examples": [
+        {
+            "code": "DROP FEATURE POLICY block_db_policy;"
+        },
+        {
+            "code": "+---------------------------------------+\n| status                                |\n|---------------------------------------|\n| BLOCK_DB_POLICY successfully dropped. |\n+---------------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the feature policy to drop."
+        }
+    ],
+    "usage_notes": "A feature policy can’t be dropped if it is currently applied to an object. Use the\nALTER FEATURE POLICY command to un-apply the feature policy\nfrom the object, then drop the feature policy."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-function",
+    "title": "DROP FUNCTION",
+    "description": "Removes the specified user-defined function (UDF) or external function from the current/specified schema.",
+    "syntax": "DROP FUNCTION [ IF EXISTS ] <name> ( [ <arg_data_type> , ... ] )",
+    "examples": [
+        {
+            "code": "DROP FUNCTION multiply(number, number);\n\n--------------------------------+\n             status             |\n--------------------------------+\n MULTIPLY successfully dropped. |\n--------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the UDF to drop. If the identifier contains spaces or special characters, the entire string must be\nenclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        },
+        {
+            "name": "arg_data_type   [   ,   ...   ]",
+            "description": "Specifies the data type of the argument(s), if any, for the UDF. The argument types are necessary because UDFs support name\noverloading (i.e. two UDFs in the same schema can have the same name) and the argument types are used to identify the UDF you\nwish to drop."
+        }
+    ],
+    "usage_notes": "All Languages\nDropped functions can’t be recovered; they must be recreated.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error.\nJava, Python, and Scala\nFor UDFs that store code in a file (such as a .jar file or .py file) in a stage, the DROP FUNCTION command does not remove\nthe file. Different UDFs can use different functions/methods in the same file, so the file should not be removed while any UDF\nrefers to it. Snowflake does not store a count of the number of references to each staged file and does not remove that staged\nfile when there are no remaining references."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-snapshot",
+    "title": "DROP SNAPSHOT",
+    "description": "Removes a snapshot. A snapshot is persisted data that the customer pays for. DROP SNAPSHOT tells Snowflake to delete that data. The data is no longer available for use as a snapshot and the customer no longer pays for it.",
+    "syntax": "DROP SNAPSHOT [ IF EXISTS ] <name>;",
+    "examples": [
+        {
+            "code": "DROP SNAPSHOT example_snapshot;"
+        },
+        {
+            "code": "+----------------------------------------+\n| status                                 |\n|----------------------------------------|\n| EXAMPLE_SNAPSHOT successfully dropped. |\n+----------------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the snapshot to drop. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "When the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-image-repository",
+    "title": "DROP IMAGE REPOSITORY",
+    "description": "Removes the specified image repository from\nthe current or specified schema.",
+    "syntax": "DROP IMAGE REPOSITORY [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "DROP IMAGE REPOSITORY tutorial_repository;"
+        },
+        {
+            "code": "+-------------------------------------------+\n| status                                    |\n|-------------------------------------------|\n| TUTORIAL_REPOSITORY successfully dropped. |\n+-------------------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the repository to drop."
+        }
+    ],
+    "usage_notes": "Dropping an image repository while services are running that reference images in that repository can cause problems. Currently\nrunning service instances and jobs will continue to run, but any attempt to create a new service instance will fail.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-integration",
+    "title": "DROP INTEGRATION",
+    "description": "Removes an integration from the account.",
+    "syntax": "DROP [ { API | CATALOG | EXTERNAL ACCESS | NOTIFICATION | SECURITY | STORAGE } ] INTEGRATION [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "SHOW INTEGRATIONS LIKE 't2%';\n\nDROP INTEGRATION t2;\n\nSHOW INTEGRATIONS LIKE 't2%';"
+        },
+        {
+            "code": "DROP INTEGRATION IF EXISTS t2;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the integration to drop. If the identifier contains spaces, special characters, or mixed-case characters,\nthe entire string must be enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive\n(e.g. \"My Object\" )."
+        },
+        {
+            "name": "API   |   CATALOG   |   EXTERNAL   ACCESS   |   NOTIFICATION   |   SECURITY   |   STORAGE",
+            "description": "Specifies the integration type."
+        }
+    ],
+    "usage_notes": "Dropped integrations cannot be recovered; they must be recreated.\nDisabling or dropping the integrations may not take effect immediately, since integrations may be cached.\nIt is recommended to remove the integration privilege from the cloud provider to take effect sooner.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/classes/custom_classifier/commands/drop-custom-classifier",
+    "title": "DROP CUSTOM_CLASSIFIER",
+    "description": "Fully qualified name: SNOWFLAKE.DATA_PRIVACY.CUSTOM_CLASSIFIER",
+    "syntax": "DROP SNOWFLAKE.DATA_PRIVACY.CUSTOM_CLASSIFIER\n[ IF EXISTS ] <custom_classifier_name>",
+    "examples": [
+        {
+            "code": "DROP SNOWFLAKE.DATA_PRIVACY.CUSTOM_CLASSIFIER data.classifiers.medical_codes;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "custom_classifier_name",
+            "description": "Specifies the identifier (name) for the instance. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "Dropped instances cannot be recovered; they must be recreated."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-masking-policy",
+    "title": "DROP MASKING POLICY",
+    "description": "Removes a masking policy from the system.",
+    "syntax": "DROP MASKING POLICY <name>",
+    "examples": [
+        {
+            "code": "DROP MASKING POLICY <name>"
+        },
+        {
+            "code": "SELECT * from table(information_schema.policy_references(policy_name=>'<string>'));"
+        },
+        {
+            "code": "DROP MASKING POLICY ssn_mask;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Identifier for the masking policy; must be unique for your account. The identifier value must start with an alphabetic character and cannot contain spaces or special characters unless the entire\nidentifier string is enclosed in double quotes (e.g. \"My object\" ). Identifiers enclosed in double quotes are also case-sensitive. For more details, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "Prior to dropping a masking policy, execute the following statement to determine if any masking policies are applied to columns. For\nmore information, see POLICY_REFERENCES.\nA masking policy cannot be dropped successfully if it is currently assigned to a column or a tag.\nBefore executing a DROP statement, UNSET the masking policy from the column with an ALTER TABLE … ALTER COLUMN or ALTER VIEW\nstatement, and, if necessary, unset the masking policy from the tag using an ALTER TAG statement."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-join-policy",
+    "title": "DROP JOIN POLICY",
+    "description": "Removes a join policy from the current/specified schema.",
+    "syntax": "DROP JOIN POLICY <name>",
+    "examples": [
+        {
+            "code": "DROP JOIN POLICY <name>"
+        },
+        {
+            "code": "SELECT * FROM TABLE(mydb.INFORMATION_SCHEMA.POLICY_REFERENCES(POLICY_NAME=>'my_join_policy'));"
+        },
+        {
+            "code": "DROP JOIN POLICY my_join_policy;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the join policy to drop. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "Prior to dropping the join policy, execute the following statement to determine if the policy is set on any tables or\nviews.\nFor more information, see Getting information about tables and views attached to join policies.\nA join policy cannot be dropped successfully if it is currently assigned to a table or view.\nBefore executing a DROP statement, detach the join policy from the table or view with an ALTER TABLE or ALTER VIEW statement."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-resource-monitor",
+    "title": "DROP RESOURCE MONITOR",
+    "description": "Removes the specified resource monitor from the system.",
+    "syntax": "DROP RESOURCE MONITOR [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "DROP RESOURCE MONITOR IF EXISTS my_rm;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the resource monitor to drop. If the identifier contains spaces or special characters, the entire string\nmust be enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        }
+    ],
+    "usage_notes": "Dropped resource monitors cannot be recovered; they must be recreated.\nDropping a resource monitor immediately enables resuming any assigned warehouses that have been suspended due to the monitor reaching\nits monthly threshold.\nFor more information, see Working with resource monitors.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-secret",
+    "title": "DROP SECRET",
+    "description": "Removes a secret from the system.",
+    "syntax": "DROP SECRET [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "DROP SECRET service_now_creds;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the secret to drop. If the identifier contains spaces or special characters, the entire string\nmust be enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        }
+    ],
+    "usage_notes": "When the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-materialized-view",
+    "title": "DROP MATERIALIZED VIEW",
+    "description": "Removes the specified materialized view from the current/specified schema.",
+    "syntax": "DROP MATERIALIZED VIEW [ IF EXISTS ] <view_name>",
+    "examples": [
+        {
+            "code": "DROP MATERIALIZED VIEW mv1;\n\n---------------------------+\n           status          |\n---------------------------+\n MV1 successfully dropped. |\n---------------------------+"
+        }
+    ],
+    "usage_notes": "Dropping a materialized view does not update references to that view. For example, if you create a view named “V1” on top of a\nmaterialized view, and then you drop the materialized view, the definition of view “V1” will become out of date.\nDropped materialized views can’t be recovered; they must be recreated.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/classes/forecast/commands/drop-forecast.html#label-class-forecast-drop",
+    "title": "DROP SNOWFLAKE.ML.FORECAST",
+    "description": "Removes the specified model from the current or specified schema. Dropped models cannot be recovered; they must be recreated.",
+    "syntax": "DROP SNOWFLAKE.ML.FORECAST [ IF EXISTS ] <model_name>;",
+    "examples": [
+        {
+            "code": "DROP SNOWFLAKE.ML.FORECAST [ IF EXISTS ] <model_name>;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "model_name",
+            "description": "Specifies the identifier for the model to drop. If the identifier contains spaces, special characters, or mixed-case\ncharacters, the entire string must be enclosed in double quotes. Identifiers enclosed in double quotes are also\ncase-sensitive. If the model identifier is not fully qualified (in the form of db_name . schema_name . name or schema_name . name )), the command looks for the model in the current schema for the session."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-contact",
+    "title": "DROP CONTACT",
+    "description": "Removes the specified contact from the current schema.",
+    "syntax": "DROP CONTACT <name>",
+    "examples": [
+        {
+            "code": "DROP CONTACT mycontact;"
+        },
+        {
+            "code": "+---------------------------------+\n| status                          |\n|---------------------------------|\n| MYCONTACT successfully dropped. |\n+---------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier of the contact to drop. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-aggregation-policy",
+    "title": "DROP AGGREGATION POLICY",
+    "description": "Removes an aggregation policy from the current/specified schema.",
+    "syntax": "DROP AGGREGATION POLICY <name>",
+    "examples": [
+        {
+            "code": "DROP AGGREGATION POLICY <name>"
+        },
+        {
+            "code": "SELECT * FROM TABLE(mydb.INFORMATION_SCHEMA.POLICY_REFERENCES(POLICY_NAME=>'my_agg_policy'));"
+        },
+        {
+            "code": "DROP AGGREGATION POLICY my_aggpolicy;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the aggregation policy to drop. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "Prior to dropping the aggregation policy, execute the following statement to determine if the aggregation policy is set on any tables or\nviews.\nFor more information, see Identify aggregation policy references.\nAn aggregation policy cannot be dropped successfully if it is currently assigned to a table or view.\nBefore executing a DROP statement, detach the aggregation policy from the table or view with an\nALTER TABLE or ALTER VIEW statement."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-iceberg-table",
+    "title": "DROP ICEBERG TABLE",
+    "description": "Removes an Apache Iceberg™ table from the current/specified schema, but retains a version of the\nIceberg table so that it can be recovered using UNDROP ICEBERG TABLE. For more information, see Usage Notes (in this topic).",
+    "syntax": "DROP [ ICEBERG ] TABLE [ IF EXISTS ] <name> [ CASCADE | RESTRICT ]",
+    "examples": [
+        {
+            "code": "DROP ICEBERG TABLE t2;\n\n+--------------------------+\n| status                   |\n|--------------------------|\n| T2 successfully dropped. |\n+--------------------------+"
+        },
+        {
+            "code": "DROP ICEBERG TABLE IF EXISTS t2;\n\n+------------------------------------------------------------+\n| status                                                     |\n|------------------------------------------------------------|\n| Drop statement executed successfully (T2 already dropped). |\n+------------------------------------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the table to drop. If the identifier contains spaces, special characters, or mixed-case characters, the\nentire string must be enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive\n(for example, \"My Object\" ). If the table identifier is not fully qualified (in the form of db_name . schema_name . table_name or schema_name . table_name ), the command looks for the table in the current schema for the session."
+        },
+        {
+            "name": "CASCADE   |   RESTRICT",
+            "description": "Specifies whether the table can be dropped if foreign keys exist that reference the table: CASCADE drops the table even if the table has primary/unique keys that are referenced by foreign keys in other tables. RESTRICT returns a warning about existing foreign key references and does not drop the table. Default: CASCADE"
+        }
+    ],
+    "usage_notes": "Dropping a table does not permanently remove it from the system. Snowflake retains a version of the dropped table in\nTime Travel for the number of days specified by the DATA_RETENTION_TIME_IN_DAYS parameter for\nthe table. For more information, see Metadata and snapshots for Iceberg tables.\nWithin the Time Travel retention period, you can restore a dropped table by using the UNDROP ICEBERG TABLE command.\nAfter a dropped table has been purged, it cannot be recovered; it must be recreated.\nAfter dropping a table, creating a table with the same name creates a new version of the table. You can restore\nthe dropped version of the previous table with the following steps:\nRename the current version of the table to a different name.\nUse the UNDROP ICEBERG TABLE command to restore the previous version.\nBefore you drop a table, verify that no views reference the table. Dropping a table that is referenced by a view\ninvalidates the view (querying the view returns an “object does not exist” error).\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-authentication-policy",
+    "title": "DROP AUTHENTICATION POLICY",
+    "description": "Removes an authentication policy from the system.",
+    "syntax": "DROP AUTHENTICATION POLICY [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "DROP AUTHENTICATION POLICY my_auth_policy;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the authentication policy to drop. If the identifier contains spaces or special characters, you must enclose\nthe string in double quotation marks. Identifiers enclosed in double quotation marks are case-sensitive. The identifier must meet the identifier requirements ."
+        }
+    ],
+    "usage_notes": "You cannot recover dropped authentication policies. You must recreate them.\nYou cannot drop an authentication policy if it is set on an account or user.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-compute-pool",
+    "title": "DROP COMPUTE POOL",
+    "description": "Removes the specified compute pool from the\naccount.",
+    "syntax": "DROP COMPUTE POOL [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "DROP COMPUTE POOL tutorial_compute_pool;"
+        },
+        {
+            "code": "+---------------------------------------------+\n| status                                      |\n|---------------------------------------------|\n| TUTORIAL_COMPUTE_POOL successfully dropped. |\n+---------------------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the compute pool to be dropped. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "When dropping a compute pool, Snowflake automatically aborts any running jobs. However, Snowflake does not drop running services.\nIf services are running this command will fail. You need to explicitly drop all running services before dropping a compute pool.\nYou can run ALTER COMPUTE POOL … STOP ALL, which drops both services and jobs. You can also use\nthe DROP SERVICE command to drop individual services.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/show",
+    "title": "SHOW",
+    "description": "Lists the existing objects for the specified object type. The output includes metadata for the objects, including:"
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-schema",
+    "title": "DROP SCHEMA",
+    "description": "Removes a schema from the current/specified database.",
+    "syntax": "DROP SCHEMA [ IF EXISTS ] <name> [ CASCADE | RESTRICT ]",
+    "examples": [
+        {
+            "code": "DROP SCHEMA myschema;\n\n+--------------------------------+\n| status                         |\n|--------------------------------|\n| MYSCHEMA successfully dropped. |\n+--------------------------------+\n\nSHOW SCHEMAS;\n\n+---------------------------------+--------------------+------------+------------+---------------+--------+-----------------------------------------------------------+---------+----------------+\n| created_on                      | name               | is_default | is_current | database_name | owner  | comment                                                   | options | retention_time |\n|---------------------------------+--------------------+------------+------------+---------------+--------+-----------------------------------------------------------+---------+----------------|\n| Fri, 13 May 2016 17:26:07 -0700 | INFORMATION_SCHEMA | N          | N          | MYTESTDB      |        | Views describing the contents of schemas in this database |         |              1 |\n| Tue, 17 Mar 2015 16:57:04 -0700 | PUBLIC             | N          | Y          | MYTESTDB      | PUBLIC |                                                           |         |              1 |\n+---------------------------------+--------------------+------------+------------+---------------+--------+-----------------------------------------------------------+---------+----------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the schema to drop. If the identifier contains spaces, special characters, or mixed-case characters, the\nentire string must be enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive. If the schema identifier is not fully-qualified (in the form of db_name . schema_name ), the command looks for the schema\nin the current database for the session."
+        },
+        {
+            "name": "CASCADE   |   RESTRICT",
+            "description": "Specifies whether the schema can be dropped if foreign keys exist that reference any tables in the schema: CASCADE drops the schema and all objects in the schema, including tables with primary/unique keys that are referenced by\nforeign keys in other tables. RESTRICT returns a warning about existing foreign key references and does not drop the schema. Default: CASCADE"
+        }
+    ],
+    "usage_notes": "Dropping a schema does not permanently remove it from the system. A version of the dropped schema is retained in\nTime Travel for the number of days specified by the DATA_RETENTION_TIME_IN_DAYS\nparameter for the schema:\nWithin the Time Travel retention period, a dropped schema can be restored using the UNDROP SCHEMA command.\nWhen the Time Travel retention period ends, the next state for the dropped schema depends on whether it is permanent or transient:\nA permanent schema moves into Fail-safe. In Fail-safe (7 days), a dropped schema can be\nrecovered, but only by Snowflake. When the schema leaves Fail-safe, it is purged.\nA transient schema has no Fail-safe, so it is purged when it moves out of Time Travel.\nOnce a dropped schema has been purged, it cannot be recovered; it must be recreated.\nCurrently, when a schema is dropped, the data retention period for child tables, if explicitly set to be different from the retention\nof the schema, is not honored. The child tables are retained for the same period of time as the schema. To honor the data retention\nperiod for these tables, drop them explicitly before you drop the schema.\nAfter dropping a schema, creating a schema with the same name creates a new version of the schema. The dropped version of the previous\nschema can still be restored using the following method:\nRename the current version of the schema to a different name.\nUse the UNDROP SCHEMA command to restore the previous version.\nIf a policy or tag is attached a table or view column, dropping the schema successfully requires the policy or tag to be self-contained\nwithin the database and schema. For example, database_1 contains policy_1 and policy_1 is only used in database_1.\nOtherwise, a dangling reference occurs.\nThe DROP operation fails if a session policy or password policy is set on a user or the account.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-row-access-policy",
+    "title": "DROP ROW ACCESS POLICY",
+    "description": "Removes a row access policy from the system.",
+    "syntax": "DROP ROW ACCESS POLICY [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "DROP ROW ACCESS POLICY [ IF EXISTS ] <name>"
+        },
+        {
+            "code": "SELECT * from table(information_schema.policy_references(policy_name=>'<string>'));"
+        },
+        {
+            "code": "DROP ROW ACCESS POLICY rap_table_employee_info;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Identifier for the row access policy; must be unique for your account. The identifier value must start with an alphabetic character and cannot contain spaces or special characters unless the entire\nidentifier string is enclosed in double quotes (e.g. \"My object\" ). Identifiers enclosed in double quotes are also case-sensitive. For more details, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "Prior to dropping a row access policy, execute the following statement to determine if the row access policy is applied to any tables or\nviews. For more information, see POLICY_REFERENCES.\nA row access policy cannot be dropped successfully if it is currently attached to a resource. Before executing a DROP statement, detach\nthe row access policy from the table or view with an ALTER TABLE or ALTER VIEW statement as shown in\nALTER TABLE or ALTER VIEW.\nSnowflake does not support UNDROP with row access policy objects. Using UNDROP triggers an error message. For more information\non this error message, see Troubleshoot row access policies.\nIf a table column has a row access policy attached to it, the column cannot be dropped from the table.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-privacy-policy",
+    "title": "DROP PRIVACY POLICY",
+    "description": "Removes the specified privacy policy from the current/specified schema.",
+    "syntax": "DROP PRIVACY POLICY <name>",
+    "examples": [
+        {
+            "code": "DROP PRIVACY POLICY myprivpolicy;"
+        },
+        {
+            "code": "+------------------------------------+\n| status                             |\n|------------------------------------|\n| MYPRIVPOLICY successfully dropped. |\n+------------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the privacy policy to drop. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "A privacy policy cannot be dropped successfully if it is currently assigned to a table or view.\nBefore executing a DROP statement, execute the following statement to determine if the privacy policy is set on any tables or views.\nFor each table or view, use ALTER TABLE … DROP PRIVACY POLICY … or\nALTER VIEW … DROP PRIVACY POLICY … to detach the privacy policy from the\ntable or view."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-password-policy",
+    "title": "DROP PASSWORD POLICY",
+    "description": "Removes a password policy from the system.",
+    "syntax": "DROP PASSWORD POLICY [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "DROP PASSWORD POLICY [ IF EXISTS ] <name>"
+        },
+        {
+            "code": "SELECT * from table(information_schema.policy_references(policy_name=>'<string>'));"
+        },
+        {
+            "code": "DROP PASSWORD POLICY password_policy_production_1;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Identifier for the password policy; must be unique for your account. The identifier value must start with an alphabetic character and cannot contain spaces or special characters unless the entire identifier\nstring is enclosed in double quotes (e.g. \"My object\" ). Identifiers enclosed in double quotes are also case-sensitive. For more details, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "Prior to dropping a password policy, execute the following statement to determine if any password policies are applied to the account or\nusers in the account. For more information, see POLICY_REFERENCES.\nA password policy cannot be dropped successfully if it is currently attached to an account or user. Before executing a DROP statement,\nUNSET the password policy from the account with an ALTER ACCOUNT statement or unset the password policy from a\nuser with an ALTER USER statement.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-model-monitor",
+    "title": "DROP MODEL MONITOR",
+    "description": "Removes the specified model monitor from the\ncurrent or specified schema. Dropped monitors cannot be recovered; they must be recreated.",
+    "syntax": "DROP MODEL MONITOR [ IF EXISTS ] <monitor_name>;",
+    "examples": [
+        {
+            "code": "DROP MODEL MONITOR [ IF EXISTS ] <monitor_name>;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "monitor_name",
+            "description": "Specifies the identifier for the model monitor to drop. If the identifier contains spaces, special characters, or\nmixed-case characters, the entire string must be enclosed in double quotes. Identifiers enclosed in double quotes are\nalso case-sensitive. If the model identifier is not fully qualified (in the form of db_name . schema_name . monitor_name or schema_name . monitor_name )), the command looks for the model in the current schema for the session."
+        }
+    ],
+    "usage_notes": "When the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-alert",
+    "title": "DROP ALERT",
+    "description": "Drops an existing alert.",
+    "syntax": "DROP ALERT [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "DROP ALERT [ IF EXISTS ] <name>"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Identifier for the alert to drop. If the identifier contains spaces or special characters, the entire string must be enclosed\nin double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        }
+    ],
+    "usage_notes": "When an alert is dropped, any current evaluation of the condition of the alert (i.e. a run with an EXECUTING state in the\nALERT_HISTORY output) is completed.\nAn alert can be dropped by the alert owner (i.e. the role that has the OWNERSHIP privilege on the alert) or a higher role\nwithout first suspending the alert.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-replication-group",
+    "title": "DROP REPLICATION GROUP",
+    "description": "Removes a replication group from the account.",
+    "syntax": "DROP REPLICATION GROUP [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "DROP REPLICATION GROUP myrg;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the replication group."
+        }
+    ],
+    "usage_notes": "Only a user with a role with the OWNERSHIP privilege on the group can execute this SQL command.\nA primary replication group can only be successfully dropped if no linked secondary replication groups exist.\nA database that is included in a replication group is not dropped when the replication group is dropped.\nIf a secondary replication group is dropped, any database previously included in the group loses read-only protection and becomes writable.\nIf the secondary replication group is re-created from the same primary replication group as before, the databases in the group are\noverwritten by the databases in the primary replication group during the first refresh. These databases are read-only.\nTo retrieve the set of accounts in your organization that are enabled for replication, use\nSHOW REPLICATION ACCOUNTS.\nTo retrieve the list of replication groups in your organization, use SHOW REPLICATION GROUPS. The\nallowed_accounts column lists all target accounts enabled for object replication from a source account.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-catalog-integration",
+    "title": "DROP CATALOG INTEGRATION",
+    "description": "Removes a catalog integration from the account.",
+    "syntax": "DROP CATALOG INTEGRATION [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "DROP CATALOG INTEGRATION myInt;"
+        },
+        {
+            "code": "DROP CATALOG INTEGRATION IF EXISTS myInt;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the catalog integration to drop. If the identifier contains spaces, special characters,\nor mixed-case characters, the entire string must be enclosed in double quotes. Identifiers enclosed\nin double quotes are also case-sensitive (for example, \"My Catalog\" )."
+        }
+    ],
+    "usage_notes": "Dropped catalog integrations cannot be recovered; they must be recreated.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error.\nYou can’t drop or replace a catalog integration if one or more Apache Iceberg™ tables\nare associated with the catalog integration.\nTo view the tables that depend on a catalog integration,\nyou can use the SHOW ICEBERG TABLES command and\na query using the pipe operator that filters on the catalog_name column.\nNote\nThe column identifier (catalog_name) is case-sensitive.\nSpecify the column identifier exactly as it appears in the SHOW ICEBERG TABLES output.\nFor example:"
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-task",
+    "title": "DROP TASK",
+    "description": "Removes a task from the current/specified schema.",
+    "syntax": "DROP TASK [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "SHOW TASKS LIKE 't2%';\n\n\nDROP TASK t2;\n\n\nSHOW TASKS LIKE 't2%';"
+        },
+        {
+            "code": "DROP TASK IF EXISTS t2;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the task to drop. If the identifier contains spaces, special characters, or mixed-case characters, the\nentire string must be enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive\n(e.g. \"My Object\" ). If the task identifier is not fully-qualified (in the form of db_name . schema_name . task_name or schema_name . task_name ), the command looks for the task in the current schema for the session."
+        }
+    ],
+    "usage_notes": "When a task is dropped, any current run of the task (i.e. a run with an EXECUTING state in the\nTASK_HISTORY output) is completed. To abort the run of the specified task, execute the\nSYSTEM$USER_TASK_CANCEL_ONGOING_EXECUTIONS function.\nThe root task in a task graph must be suspended before any task in the task graph is dropped.\nA standalone task can be dropped by the task owner (i.e. the role that has the OWNERSHIP privilege on the task) or a higher role\nwithout first suspending the task.\nIf a predecessor task in a task graph is dropped, then all former child tasks that identified this task as the predecessor become either\nstandalone tasks or root tasks, depending on whether other tasks identify these former child tasks as their predecessor. These former\nchild tasks are suspended by default and must be resumed manually.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/classes/anomaly-detection/commands/drop-anomaly-detection.html#label-class-anomaly-detection-drop",
+    "title": "DROP SNOWFLAKE.ML.ANOMALY_DETECTION",
+    "description": "Removes the specified model from the current or specified schema. Dropped models cannot be recovered; they must be recreated.",
+    "syntax": "DROP SNOWFLAKE.ML.ANOMALY_DETECTION [IF EXISTS] <model_name>;",
+    "examples": [
+        {
+            "code": "DROP SNOWFLAKE.ML.ANOMALY_DETECTION [IF EXISTS] <model_name>;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "model_name",
+            "description": "Specifies the identifier for the model to drop. If the identifier contains spaces, special characters, or mixed-case\ncharacters, the entire string must be enclosed in double quotes. Identifiers enclosed in double quotes are also\ncase-sensitive. If the model identifier is not fully qualified (in the form of db_name . schema_name . name or schema_name . name )), the command looks for the model in the current schema for the session."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-user",
+    "title": "DROP USER",
+    "description": "Removes the specified user from the system.",
+    "syntax": "DROP USER [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "DROP USER user1;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the user to drop. If the identifier contains spaces, special characters, or mixed-case characters, the\nentire string must be enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        }
+    ],
+    "usage_notes": "Dropped users cannot be recovered; they must be recreated.\nIf you want to disable a user, use ALTER USER and set DISABLED = TRUE instead.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error.\nImportant\nWhen you drop a user, the folders, worksheets, and dashboards owned by that user become inaccessible and do not transfer to another user\nunless sharing is enabled.\nShare recipients with View, View + Run, and Edit permissions\nwill retain their assigned permissions and can still access the shared folders, worksheets, and dashboards. However, only users with Edit\npermissions can modify or delete the shared folders, worksheets, and dashboards. If you don’t give Edit permissions to at least one other\nuser before you drop the owner, that owner’s folders, worksheets, and dashboards cannot be deleted.\nIf a dropped user’s worksheets do not have sharing enabled, an administrator can recover up to 500 worksheets owned by the user.\nCaution\nAny worksheets in the Classic Console will be permanently deleted, and dashboards will be inaccessible if they were not previously shared\nwith another user."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/classes/classification_profile/commands/drop-classification-profile",
+    "title": "DROP CLASSIFICATION_PROFILE",
+    "description": "Fully qualified name: SNOWFLAKE.DATA_PRIVACY.CLASSIFICATION_PROFILE",
+    "syntax": "DROP SNOWFLAKE.DATA_PRIVACY.CLASSIFICATION_PROFILE\n  [ IF EXISTS ] <classification_profile_name>",
+    "examples": [
+        {
+            "code": "DROP SNOWFLAKE.DATA_PRIVACY.CLASSIFICATION_PROFILE my_classification_profile;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "classification_profile_name",
+            "description": "Specifies the identifier of the instance of the CLASSIFICATION_PROFILE class. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "Dropped instances cannot be recovered; they must be recreated."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-service",
+    "title": "DROP SERVICE",
+    "description": "Removes the specified\nSnowpark Container Services service from the current\nor specified schema. The containers for the service are terminated.",
+    "syntax": "DROP SERVICE [ IF EXISTS ] <name> [ FORCE ]",
+    "examples": [
+        {
+            "code": "DROP SERVICE my_tutorial;"
+        },
+        {
+            "code": "+-----------------------------------+\n| status                            |\n|-----------------------------------|\n| MY_TUTORIAL successfully dropped. |\n+-----------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the service to be dropped. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        },
+        {
+            "name": "FORCE",
+            "description": "Drops the service (including job services) and the associated block storage volumes. If FORCE is not specified and the service uses a block storage volume an error is returned."
+        }
+    ],
+    "usage_notes": "When the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-external-table",
+    "title": "DROP EXTERNAL TABLE",
+    "description": "Removes an external table from the current/specified schema. Note that this is a metadata-only operation. None of the files that the\nexternal table refers to are dropped.",
+    "syntax": "DROP EXTERNAL TABLE [ IF EXISTS ] <name> [ CASCADE | RESTRICT ]",
+    "examples": [
+        {
+            "code": "SHOW EXTERNAL TABLES LIKE 't2%';\n\n+-------------------------------+------------------+---------------+-------------+-----------------------+---------+-----------------------------------------+------------------+------------------+-------+-----------+----------------------+\n| created_on                    | name             | database_name | schema_name | owner                 | comment | location                                | file_format_name | file_format_type | cloud | region    | notification_channel |\n|-------------------------------+------------------+---------------+-------------+-----------------------+---------+-----------------------------------------+------------------+------------------+-------+-----------+----------------------|\n| 2018-08-06 06:00:42.340 -0700 | T2               | MYDB          | PUBLIC      | MYROLE                |         | @MYDB.PUBLIC.MYSTAGE/                   |                  | JSON             | AWS   | us-east-1 | NULL                 |\n+-------------------------------+------------------+---------------+-------------+-----------------------+---------+-----------------------------------------+------------------+------------------+-------+-----------+----------------------+\n\nDROP EXTERNAL TABLE t2;\n\n+--------------------------+\n| status                   |\n|--------------------------|\n| T2 successfully dropped. |\n+--------------------------+\n\nSHOW EXTERNAL TABLES LIKE 't2%';\n\n+------------+------+---------------+-------------+-------+---------+----------+------------------+------------------+-------+--------+----------------------+\n| created_on | name | database_name | schema_name | owner | comment | location | file_format_name | file_format_type | cloud | region | notification_channel |\n|------------+------+---------------+-------------+-------+---------+----------+------------------+------------------+-------+--------+----------------------|\n+------------+------+---------------+-------------+-------+---------+----------+------------------+------------------+-------+--------+----------------------+"
+        },
+        {
+            "code": "DROP EXTERNAL TABLE IF EXISTS t2;\n\n+------------------------------------------------------------+\n| status                                                     |\n|------------------------------------------------------------|\n| Drop statement executed successfully (T2 already dropped). |\n+------------------------------------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the external table to drop. If the identifier contains spaces, special characters, or mixed-case characters,\nthe entire string must be enclosed in double quotes. Identifiers enclosed in double quotes are also case sensitive\n(for example, \"My Object\" ). If the external table identifier is not fully qualified (in the form of db_name . schema_name . table_name or schema_name . table_name ), the command looks for the external table in the current schema for the session."
+        },
+        {
+            "name": "CASCADE   |   RESTRICT",
+            "description": "Specifies whether the external table can be dropped if foreign keys exist that reference the table: CASCADE drops the external table even if it has primary/unique keys that are referenced by foreign keys in other tables. RESTRICT returns a warning about existing foreign key references and does not drop the external table. Default: CASCADE"
+        }
+    ],
+    "usage_notes": "Unlike a standard table, dropping an external table purges it from the system. An external table cannot be recovered using Time Travel;\nalso, there is no UNDROP EXTERNAL TABLE command. A dropped external table must be recreated.\nAfter dropping an external table, creating an external table with the same name recreates the table. No history from the old version\nof the external table is retained.\nBefore dropping an external table, verify that no views reference the table. Dropping an external table referenced by a view\ninvalidates the view (that is, querying the view returns an “object does not exist” error).\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-index",
+    "title": "DROP INDEX",
+    "description": "Drops a secondary index.",
+    "syntax": "DROP INDEX [ IF EXISTS ] <table_name>.<index_name>",
+    "examples": [
+        {
+            "code": "DROP INDEX t0.c_idx;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "table_name",
+            "description": "Specifies the identifier for the table."
+        },
+        {
+            "name": "index_name",
+            "description": "Specifies the identifier for the index."
+        }
+    ],
+    "usage_notes": "This command can only be used to drop a secondary index. To drop an index that is used to enforce a UNIQUE\nor FOREIGN KEY constraint, use the ALTER TABLE command to drop the constraint.\nIndexes cannot be undropped.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-failover-group",
+    "title": "DROP FAILOVER GROUP",
+    "description": "Removes a failover group from the account.",
+    "syntax": "DROP FAILOVER GROUP [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "DROP FAILOVER GROUP IF EXISTS myfg;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the failover group."
+        }
+    ],
+    "usage_notes": "Only an account administrator (user with the ACCOUNTADMIN role) or the group owner (role with the OWNERSHIP privilege on the group) can\nexecute this SQL command.\nA primary failover group can only be successfully dropped if no linked secondary failover groups exist.\nA database that is included in a failover group is not dropped when the failover group is dropped.\nIf a secondary failover group is dropped, any database previously included in the group loses read-only protection and becomes writable.\nIf the secondary failover group is re-created from the same primary failover group as before, the databases in the group are\noverwritten by the databases in the primary failover group during the first refresh. These databases are read-only.\nTo retrieve the set of accounts in your organization that are enabled for replication, use\nSHOW REPLICATION ACCOUNTS.\nTo retrieve the list of failover groups in your organization, use SHOW FAILOVER GROUPS.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-role",
+    "title": "DROP ROLE",
+    "description": "Removes the specified role from the system.",
+    "syntax": "DROP ROLE [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "DROP ROLE myrole;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the role to drop. If the identifier contains spaces or special characters, the entire string must be\nenclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        }
+    ],
+    "usage_notes": "Dropped roles cannot be recovered; they must be recreated.\nThe current primary role cannot be dropped. An attempt to drop this role returns an error. For example:\nFor more information, see Active roles and Authorization through primary role and secondary roles.\nA role cannot be dropped if it has the OWNERSHIP privilege on a shared database. Use the GRANT OWNERSHIP command to transfer the\nOWNERSHIP privilege on the shared database first, and then drop the role.\nOwnership of any objects owned by the dropped role is transferred to the role that executes the DROP ROLE command. To transfer\nownership of each of these objects to a different role, use\nGRANT OWNERSHIP … COPY CURRENT GRANTS.\nIf a role has a future privilege as a grantor or grantee, the role can only be dropped by a user with a role that has the\nMANAGE GRANTS privilege.\nAll current and future grants that name the role as either the grantor or the grantee are revoked when the role is dropped.\nQuery the GRANTS_TO_ROLES Account Usage view to retrieve the privilege grants\nthat name a specified role as the grantor or grantee:\nThe following example retrieves the grants where myrole is the grantor or grantee:\nIf a role is a grantor of roles to users, dropping the role revokes these grants automatically.\nRevoking grants happens as the DROP ROLE command executes. If there are thousands or millions of grants to revoke, the DROP ROLE\ncommand might time out. It is safe to rerun the command to continue execution where the previous invocation stopped.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-file-format",
+    "title": "DROP FILE FORMAT",
+    "description": "Removes the specified file format from the current/specified schema.",
+    "syntax": "DROP FILE FORMAT [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "DROP FILE FORMAT my_format;\n\n---------------------------------+\n           status                |\n---------------------------------+\nMY_FORMAT successfully dropped.  |\n---------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the file format to drop. If the identifier contains spaces, special characters, or mixed-case characters,\nthe entire string must be enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        }
+    ],
+    "usage_notes": "Dropped file formats cannot be recovered; they must be recreated.\nDropping a file format that is referenced in another object (e.g. named stage) does not cause errors because the object uses the\nfile format defaults in place of the dropped file format.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/undrop",
+    "title": "UNDROP",
+    "description": "Restores the specified object to the system. This command is part of the Time Travel feature."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-tag",
+    "title": "DROP TAG",
+    "description": "Removes a tag from the system.",
+    "syntax": "DROP TAG [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "DROP TAG [ IF EXISTS ] <name>"
+        },
+        {
+            "code": "DROP TAG cost_center;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Identifier for the tag. The identifier value must start with an alphabetic character and cannot contain spaces or special characters unless the entire\nidentifier string is enclosed in double quotes (e.g. \"My object\" ). Identifiers enclosed in double quotes are also case-sensitive. For more details, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "Prior to dropping a tag, determine all of the objects the tag is assigned to by calling the Account Usage table function\nTAG_REFERENCES_WITH_LINEAGE.\nA tag can be dropped if it is currently assigned to an object. If dropping the tag was\nunintentional, execute an UNDROP TAG command. Note that the UNDROP TAG command restores the tag assignments\nprior to the DROP TAG operation.\nA tag cannot be dropped if a masking policy is assigned to the tag.\nIn this scenario, unset the masking policy from the tag first and then execute the DROP TAG statement.\nFor more information on tag DDL authorization, see required privileges.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-sequence",
+    "title": "DROP SEQUENCE",
+    "description": "Removes a sequence from the current/specified schema.",
+    "syntax": "DROP SEQUENCE [ IF EXISTS ] <name> [ CASCADE | RESTRICT ]",
+    "examples": [
+        {
+            "code": "DROP SEQUENCE IF EXISTS invoice_sequence_number;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier of the sequence to drop. If the sequence identifier is not fully-qualified (in the form of db_name . schema_name . sequence_name or schema_name . sequence_name ), the command looks for the sequence in the current schema for the session."
+        },
+        {
+            "name": "CASCADE   |   RESTRICT",
+            "description": "Snowflake allows the keywords CASCADE and RESTRICT syntactically, but does not act on them. For example,\ndropping a sequence with the CASCADE keyword does not actually drop a table that uses the sequence.\nDropping a sequence with the RESTRICT keyword does not issue a warning if a table is still using the sequence."
+        }
+    ],
+    "usage_notes": "To drop a sequence, you must be using a role that has ownership privilege on the sequence.\nAfter dropping a sequence, creating a sequence with the same name creates a new version of the sequence. The\nnew sequence does not resume generating numbers where the old sequence left off.\nBefore dropping a sequence, verify that no tables or other database objects reference the sequence.\nIf the dropped sequence was referenced in the DEFAULT clause of a table, then calling GET_DDL() for that\ntable results in an error, rather than in the DDL that created the table.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-account",
+    "title": "DROP ACCOUNT",
+    "description": "Drops an account, which initiates the process of deleting the account.",
+    "syntax": "DROP ACCOUNT [ IF EXISTS ] <name> GRACE_PERIOD_IN_DAYS = <integer>",
+    "examples": [
+        {
+            "code": "DROP ACCOUNT [ IF EXISTS ] <name> GRACE_PERIOD_IN_DAYS = <integer>"
+        },
+        {
+            "code": "DROP ACCOUNT my_account GRACE_PERIOD_IN_DAYS = 14;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the name of the account being dropped. As an example, if the full account identifier is myorg-account123 , then specify account123 as the name. If you do not know the account name, execute the SHOW ACCOUNTS command, and find the name in the account_name column. The legacy account locator cannot be used to identify the account."
+        },
+        {
+            "name": "GRACE_PERIOD_IN_DAYS   =   integer",
+            "description": "Specifies the number of days during which the account can be restored (“undropped”). The minimum is 3 days and the maximum is 90 days."
+        }
+    ],
+    "usage_notes": "Only organization administrators can execute the command.\nThe organization administrator cannot drop the account they are currently logged in to.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-connection",
+    "title": "DROP CONNECTION",
+    "description": "Removes a connection from the account.",
+    "syntax": "DROP CONNECTION [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "SHOW CONNECTIONS LIKE 't2%';\n\n\nDROP CONNECTION t2;\n\n\nSHOW CONNECTIONS LIKE 't2%';"
+        },
+        {
+            "code": "DROP CONNECTION IF EXISTS t2;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the connection to drop."
+        }
+    ],
+    "usage_notes": "Only account administrators (users with the ACCOUNTADMIN role) can execute this SQL command.\nA primary connection can’t be dropped if it has one or more secondary connections. To drop the primary connection, first promote a secondary\nconnection to serve as the primary connection, and then drop the former primary connection. Alternatively, drop all of the secondary connections,\nand then drop the primary connection.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-network-policy",
+    "title": "DROP NETWORK POLICY",
+    "description": "Removes the specified network policy from the system.",
+    "syntax": "DROP NETWORK POLICY [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "DROP NETWORK POLICY mypolicy;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the network policy to drop. If the identifier contains spaces or special characters, the entire\nstring must be enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        }
+    ],
+    "usage_notes": "Only the network policy owner (i.e. role with the OWNERSHIP privilege on the network policy) or higher can execute this command.\nDropped network policies cannot be recovered; they must be recreated.\nA network policy cannot be dropped if it is currently assigned to an account, security integration, or user.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-table",
+    "title": "DROP TABLE",
+    "description": "Removes a table from the current or specified schema, but retains a version of the table so that it can be recovered by using\nUNDROP TABLE. For information, see Usage Notes.",
+    "syntax": "DROP TABLE [ IF EXISTS ] <name> [ CASCADE | RESTRICT ]",
+    "examples": [
+        {
+            "code": "SHOW TABLES LIKE 't2%';\n\n+---------------------------------+------+---------------+-------------+-----------+------------+------------+------+-------+--------------+----------------+\n| created_on                      | name | database_name | schema_name | kind      | comment    | cluster_by | rows | bytes | owner        | retention_time |\n|---------------------------------+------+---------------+-------------+-----------+------------+------------+------+-------+--------------+----------------+\n| Tue, 17 Mar 2015 16:48:16 -0700 | T2   | TESTDB        | PUBLIC      | TABLE     |            |            |    5 | 4096  | PUBLIC       |              1 |\n+---------------------------------+------+---------------+-------------+-----------+------------+------------+------+-------+--------------+----------------+\n\nDROP TABLE t2;\n\n+--------------------------+\n| status                   |\n|--------------------------|\n| T2 successfully dropped. |\n+--------------------------+\n\nSHOW TABLES LIKE 't2%';\n\n+------------+------+---------------+-------------+------+---------+------------+------+-------+-------+----------------+\n| created_on | name | database_name | schema_name | kind | comment | cluster_by | rows | bytes | owner | retention_time |\n|------------+------+---------------+-------------+------+---------+------------+------+-------+-------+----------------|\n+------------+------+---------------+-------------+------+---------+------------+------+-------+-------+----------------+"
+        },
+        {
+            "code": "DROP TABLE IF EXISTS t2;\n\n+------------------------------------------------------------+\n| status                                                     |\n|------------------------------------------------------------|\n| Drop statement executed successfully (T2 already dropped). |\n+------------------------------------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the table to drop. If the identifier contains spaces, special characters, or mixed-case characters, the\nentire string must be enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive\n(for example, \"My Object\" ). If the table identifier is not fully-qualified (in the form of db_name . schema_name . table_name or schema_name . table_name ), the command looks for the table in the current schema for the session."
+        },
+        {
+            "name": "CASCADE   |   RESTRICT",
+            "description": "Specifies whether the table can be dropped if foreign keys exist that reference the table: CASCADE: Drops the table even if the table has primary or unique keys that are referenced by foreign keys in other tables. RESTRICT: Returns a warning about existing foreign key references and doesn’t drop the table. Default: CASCADE for standard tables; RESTRICT for hybrid tables. See also Dropping hybrid tables ."
+        }
+    ],
+    "usage_notes": "Dropping a table does not permanently remove it from the system. A version of the dropped table is retained in\nTime Travel for the number of days specified by the\ndata retention period for the table:\nWithin the Time Travel retention period, you can restore a dropped table by using the UNDROP TABLE command.\nChanging the Time Travel retention period for the account or for a parent object (a database or a schema) after\nyou drop a table doesn’t change the Time Travel retention period for the dropped table.\nFor more information, see the note in the Time Travel topic.\nWhen the Time Travel retention period ends, the next state for the dropped table depends on whether it is permanent, transient, or\ntemporary:\nA permanent table moves into Fail-safe. In Fail-safe (7 days), a dropped table can be recovered,\nbut only by Snowflake. When the table leaves Fail-safe, it is purged.\nA transient or temporary table has no Fail-safe, so it is purged when it moves out of Time Travel.\nNote\nA long-running Time Travel query delays the movement of any data and objects (tables, schemas, and databases) in the account into\nFail-safe, until the query completes. The purging of temporary and transient tables is delayed in the same way.\nAfter a dropped table is purged, it can’t be recovered; it must be recreated.\nAfter you drop a table, creating a table with the same name creates a new version of the table. You can still restore the dropped version of the\nprevious table by following these steps:\nRename the current version of the table.\nUse the UNDROP TABLE command to restore the previous version of the table.\nBefore dropping a table, verify that no views reference the table. Dropping a table referenced by a view invalidates the view\n(that is, querying the view returns an “object does not exist” error).\nTo drop a table, you must use a role that has OWNERSHIP privilege on the table.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-projection-policy",
+    "title": "DROP PROJECTION POLICY",
+    "description": "Removes a projection policy from the current/specified schema.",
+    "syntax": "DROP PROJECTION POLICY <name>",
+    "examples": [
+        {
+            "code": "DROP PROJECTION POLICY <name>"
+        },
+        {
+            "code": "SELECT * from table(mydb.information_schema.policy_references(policy_name=>'do_not_project'));"
+        },
+        {
+            "code": "DROP PROJECTION POLICY do_not_project;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the projection policy to drop. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "Prior to dropping the projection policy, execute the following statement to determine if the projection policy is set on any columns.\nFor more information, see Identify projection policy references.\nA projection policy cannot be dropped successfully if it is currently assigned to a column.\nBefore executing a DROP statement, UNSET the projection policy from the column with an ALTER TABLE … ALTER COLUMN or an\nALTER VIEW statement."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-packages-policy",
+    "title": "DROP PACKAGES POLICY",
+    "description": "Removes a packages policy from the system.",
+    "syntax": "DROP PACKAGES POLICY [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "DROP PACKAGES POLICY [ IF EXISTS ] <name>"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the packages policy to drop. If the identifier contains spaces or special characters, the entire string must be\nenclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive. For more details, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "A packages policy cannot be dropped successfully if it is currently attached to an account. Before executing a DROP statement,\nto UNSET the packages policy from the account,\nrun ALTER ACCOUNT UNSET PACKAGES POLICY.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-application",
+    "title": "DROP APPLICATION",
+    "description": "Removes an application from the system in the Native Apps Framework.",
+    "syntax": "DROP APPLICATION [ IF EXISTS ] <name> [ CASCADE ]",
+    "examples": [
+        {
+            "code": "DROP APPLICATION hello_snowflake_app;"
+        },
+        {
+            "code": "+-------------------------------------------+\n| status                                    |\n|-------------------------------------------|\n| hello_snowflake_app successfully dropped. |\n+-------------------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the application object to drop. If the identifier contains spaces,\nspecial characters, or mixed-case characters, the entire string must be enclosed in double\nquotes. Identifiers enclosed in double quotes are also case-sensitive."
+        },
+        {
+            "name": "CASCADE",
+            "description": "Drops the application object and all objects owned by the app, including tables with primary or unique\nkeys that are referenced by foreign keys in other tables. If CASCADE is not specified, this command returns an error if the app owns\nobjects outside of itself. If CASCADE is specified all objects owned by the app are dropped, even if those\nobjects contain other objects owned by the consumer. For example, if the consumer transfers\nownership of a schema or table to an account role, but leaves the parent database owned\nby the app, running this command with CASCADE also drops those objects. To retain objects owned by the application, use the GRANT OWNERSHIP command to transfer ownership of those objects, then run this command without CASCADE ."
+        }
+    ],
+    "usage_notes": "This command can be run by the app owner or a user with the MANAGE GRANTS privilege on the\napp.\nAll app roles are dropped when the application object is dropped. Any access granted\nby those roles on objects in the consumer account are lost.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-cortex-search",
+    "title": "DROP CORTEX SEARCH SERVICE",
+    "description": "Removes the specified Cortex Search service from the current schema.",
+    "syntax": "DROP CORTEX SEARCH SERVICE <name>;",
+    "examples": [
+        {
+            "code": "DROP CORTEX SEARCH SERVICE mysvc;"
+        },
+        {
+            "code": "+------------------------------+\n| status                       |\n|------------------------------|\n| mysvc successfully dropped.  |\n+------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the Cortex Search service to drop. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/create",
+    "title": "CREATE",
+    "description": "Creates a new object of the specified type."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-listing",
+    "title": "DROP LISTING",
+    "description": "Removes the specified listing from the system and immediately revokes access for all consumers.",
+    "syntax": "DROP LISTING <name>",
+    "examples": [
+        {
+            "code": "DROP LISTING IF EXISTS MYLISTING"
+        },
+        {
+            "code": "+----------------------------------+\n| status                           |\n|----------------------------------|\n| MYLISTING successfully dropped. |\n+----------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "The identifier of the listing to drop. If the identifier contains spaces, special characters, or mixed-case characters, the\nentire string must be enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        }
+    ],
+    "usage_notes": "Only the listing owner, the role with the OWNERSHIP privilege on the listing, has the privileges to drop a listing.\nExecuting this command with any other role returns an error.\nDropped listings cannot be recovered; they must be recreated.\nDropping a listing automatically invokes the retirement process for all public and monetized listings.\nAdditionally, for other listing types the listing is dropped immediately, and all consumer access automatically revoked.\nProvider account Listing Auto-Fulfillment (LAF) replication groups don’t get dropped when you drop a private listing. To resolve this issue after you drop a private listing, revoke the existing grants on the replication group and then drop the replication group. For example:"
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-streamlit",
+    "title": "DROP STREAMLIT",
+    "description": "Removes the specified Streamlit object from the current/specified schema.",
+    "syntax": "DROP STREAMLIT [IF EXISTS] <name>",
+    "examples": [
+        {
+            "code": "DROP STREAMLIT [IF EXISTS] <name>"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the Streamlit object to drop. If the identifier contains spaces, special characters, or\nmixed-case characters, the entire string must be enclosed in double quotes. Identifiers enclosed in double quotes are\nalso case-sensitive (e.g. \"My Object\" ). If the Streamlit object identifier is not fully-qualified (in the form of db_name . schema_name . streamlit_name or schema_name . streamlit_name ), the command looks for\nthe Streamlit object in the current schema for the session."
+        }
+    ],
+    "usage_notes": "For Streamlit objects created using ROOT_LOCATION, this command does not drop the underlying stage because\nthe owner of the Streamlit object may not be the owner of the stage. Additionally, multiple Streamlit objects\nmay point to the same stage. If you need to drop the corresponding stage, use the DROP STAGE command.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-stage",
+    "title": "DROP STAGE",
+    "description": "Removes the specified named internal or external stage from the current/specified schema. The status of the files in the stage depends on\nthe stage type:",
+    "syntax": "DROP STAGE [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "DROP STAGE my_stage;\n\n--------------------------------+\n             status             |\n--------------------------------+\n MY_STAGE successfully dropped. |\n--------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the stage to drop. If the identifier contains spaces, special characters, or mixed-case characters, the\nentire string must be enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        }
+    ],
+    "usage_notes": "Dropped stages cannot be recovered; they must be recreated.\nThis command cannot be used to drop the stage associated with a table or user; only named stages (internal or external) can be dropped.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-semantic-view",
+    "title": "DROP SEMANTIC VIEW",
+    "description": "Removes the specified semantic view from the current/specified schema.",
+    "syntax": "DROP SEMANTIC VIEW [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "DROP SEMANTIC VIEW my_semantic_view;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the semantic view to drop. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-pipe",
+    "title": "DROP PIPE",
+    "description": "Removes the specified pipe from the current/specified schema.",
+    "syntax": "DROP PIPE [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "DROP PIPE mypipe;\n\n+------------------------------+\n| status                       |\n|------------------------------|\n| MYPIPE successfully dropped. |\n+------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the pipe to drop. If the identifier contains spaces or special characters, the entire string must\nbe enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        }
+    ],
+    "usage_notes": "Dropped pipes can’t be recovered; they must be recreated.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-dbt-project",
+    "title": "DROP DBT PROJECT",
+    "description": "Removes the specified dbt project object from the current or specified schema.",
+    "syntax": "DROP DBT PROJECT [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "DROP DBT PROJECT my_dbt_project;"
+        },
+        {
+            "code": "+--------------------------------------+\n| status                               |\n|--------------------------------------|\n| MY_DBT_PROJECT successfully dropped. |\n+--------------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the dbt project object to drop. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "When the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-database",
+    "title": "DROP DATABASE",
+    "description": "Removes a database from the system.",
+    "syntax": "DROP DATABASE [ IF EXISTS ] <name> [ CASCADE | RESTRICT ]",
+    "examples": [
+        {
+            "code": "DROP DATABASE mytestdb2;\n\n+---------------------------------+\n| status                          |\n|---------------------------------|\n| MYTESTDB2 successfully dropped. |\n+---------------------------------+\n\nSHOW DATABASES LIKE 'mytestdb2';\n\n+------------+------+------------+------------+--------+-------+---------+---------+----------------+\n| created_on | name | is_default | is_current | origin | owner | comment | options | retention_time |\n|------------+------+------------+------------+--------+-------+---------+---------+----------------|\n+------------+------+------------+------------+--------+-------+---------+---------+----------------+\n\nSHOW DATABASES HISTORY LIKE 'mytestdb2';\n\n+---------------------------------+-----------+------------+------------+--------+--------+---------+---------+----------------+---------------------------------+\n| created_on                      | name      | is_default | is_current | origin | owner  | comment | options | retention_time | dropped_on                      |\n|---------------------------------+-----------+------------+------------+--------+--------+---------+---------+----------------+---------------------------------|\n| Wed, 25 Feb 2015 16:16:54 -0800 | MYTESTDB2 | N          | N          |        | PUBLIC |         |         |              1 | Fri, 13 May 2016 17:35:09 -0700 |\n+---------------------------------+-----------+------------+------------+--------+--------+---------+---------+----------------+---------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the database to drop. If the identifier contains spaces, special characters, or mixed-case characters,\nthe entire string must be enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        },
+        {
+            "name": "CASCADE   |   RESTRICT",
+            "description": "Specifies whether the database can be dropped if foreign keys exist that reference any tables in the database: CASCADE drops the database and all objects in the database, including tables with primary/unique keys that are referenced by\nforeign keys in other tables. RESTRICT returns a warning about existing foreign key references and does not drop the database. Default: CASCADE"
+        }
+    ],
+    "usage_notes": "Dropping a database does not permanently remove it from the system. A version of the dropped database is retained in\nTime Travel for the number of days specified by the DATA_RETENTION_TIME_IN_DAYS parameter\nfor the database:\nWithin the Time Travel retention period, a dropped database can be restored using the UNDROP DATABASE command.\nWhen the Time Travel retention period ends, the next state for the dropped database depends on whether it is permanent or transient:\nA permanent database moves into Fail-safe. In Fail-safe (7 days), a dropped database can be\nrecovered, but only by Snowflake. When the database leaves Fail-safe, it is purged.\nA transient database has no Fail-safe, so it is purged when it moves out of Time Travel.\nOnce a dropped database has been purged, it cannot be recovered; it must be recreated.\nCurrently, when a database is dropped, the data retention period for child schemas or tables, if explicitly set to be different from the\nretention of the database, is not honored. The child schemas or tables are retained for the same period of time as the database. To honor\nthe data retention period for these child objects (schemas or tables), drop them explicitly before you drop the database or\nschema.\nAfter dropping a database, creating a database with the same name creates a new version of the database. The dropped version of the\nprevious database can still be restored using the following method:\nRename the current version of the database to a different name.\nUse the UNDROP DATABASE command to restore the previous version.\nIf a policy or tag is attached a table or view column, dropping the database successfully requires the policy or tag to be self-contained\nwithin the database and schema. For example, database_1 contains policy_1 and policy_1 is only used in database_1.\nOtherwise, a dangling reference occurs.\nThe DROP operation fails if a session policy or password policy is set on a user or the account.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-view",
+    "title": "DROP VIEW",
+    "description": "Removes the specified view from the current/specified schema.",
+    "syntax": "DROP VIEW [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "DROP VIEW myview;"
+        },
+        {
+            "code": "------------------------------+\n           status             |\n------------------------------+\n MYVIEW successfully dropped. |\n------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the view to drop. If the identifier contains spaces, special characters, or mixed-case characters, the\nentire string must be enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive. If the view identifier is not fully-qualified (in the form of db_name . schema_name . table_name or schema_name . table_name ), the command looks for the view in the current schema for the session."
+        }
+    ],
+    "usage_notes": "Dropped views can’t be recovered; they must be recreated.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-session-policy",
+    "title": "DROP SESSION POLICY",
+    "description": "Removes a session policy from the system.",
+    "syntax": "DROP SESSION POLICY [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "DROP SESSION POLICY [ IF EXISTS ] <name>"
+        },
+        {
+            "code": "SELECT * from table(information_schema.policy_references(policy_name=>'<string>'));"
+        },
+        {
+            "code": "DROP SESSION POLICY session_policy_production_1;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Identifier for the session policy; must be unique for your account. The identifier value must start with an alphabetic character and cannot contain spaces or special characters unless the entire identifier\nstring is enclosed in double quotes (e.g. \"My object\" ). Identifiers enclosed in double quotes are also case-sensitive. For more details, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "Prior to dropping a session policy, execute the following statement to determine if any session policies are applied to accounts or\nusers. For more information, see POLICY_REFERENCES.\nA session policy cannot be dropped successfully if it is currently attached to an account or user. Before executing a DROP statement,\nUNSET the session policy from the account with an ALTER ACCOUNT statement or unset the session policy from a\nuser with an ALTER USER statement.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-warehouse",
+    "title": "DROP WAREHOUSE",
+    "description": "Removes the specified virtual warehouse from the system.",
+    "syntax": "DROP WAREHOUSE [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "DROP WAREHOUSE [ IF EXISTS ] <name>"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the warehouse to drop. If the identifier contains spaces, special characters, or mixed-case characters, the\nentire string must be enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        }
+    ],
+    "usage_notes": "Dropped warehouses can’t be recovered; they must be recreated.\nWhen this command is issued, Snowflake aborts any queries being processed by the specified warehouse and shuts down the compute\nresources utilized by the warehouse. Metering on the compute resources for the warehouse stops after all running statements complete.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error.\nTip\nTo prevent in-progress queries from being aborted for a dropped warehouse (i.e. you wish the queries to be completed):\nFirst suspend the warehouse.\nAfter all the queries have completed, drop the warehouse."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-network-rule",
+    "title": "DROP NETWORK RULE",
+    "description": "Removes the specified network rule from the system.",
+    "syntax": "DROP NETWORK RULE [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "DROP NETWORK RULE myrule;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the network rule to drop. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes. Identifiers enclosed in\ndouble quotes are case-sensitive."
+        }
+    ],
+    "usage_notes": "Dropped network rules can’t be recovered; they must be recreated.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-model",
+    "title": "DROP MODEL",
+    "description": "Removes a machine learning model from the current/specified schema.",
+    "syntax": "DROP MODEL <name>",
+    "examples": [
+        {
+            "code": "DROP MODEL <name>"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the model to drop. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements . If the model identifier is not fully-qualified (in the form of db_name . schema_name . model_name or schema_name . model_name ), the command looks for the model in the current schema for the session."
+        }
+    ],
+    "usage_notes": "All versions in the model are dropped along with the model.\nThere is no UNDROP MODEL command. To restore a dropped model, train and log it again."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/classes/budget/commands/drop-budget",
+    "title": "DROP BUDGET",
+    "description": "Fully qualified name: SNOWFLAKE.CORE.BUDGET",
+    "syntax": "DROP SNOWFLAKE.CORE.BUDGET [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "DROP SNOWFLAKE.CORE.BUDGET my_budget;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier (i.e. name) of the budget. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "To refer to this class by its unqualified name, include the database and schema of the class in your\nsearch path.\nDropped budgets cannot be recovered; they must be recreated."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-dynamic-table",
+    "title": "DROP DYNAMIC TABLE",
+    "description": "Removes a dynamic table from the current/specified schema.",
+    "syntax": "DROP DYNAMIC TABLE [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "DROP DYNAMIC TABLE my_dynamic_table;"
+        },
+        {
+            "code": "DROP TABLE my_dynamic_table;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the dynamic table to drop. If the identifier contains spaces, special characters, or mixed-case\ncharacters, the entire string must be enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive\n(e.g. \"My Object\" ). If the table identifier is not fully-qualified (in the form of db_name . schema_name . table_name or schema_name . table_name ), the command looks for the table in the current schema for the session."
+        }
+    ],
+    "usage_notes": "To drop a dynamic table, you must be using a role that has OWNERSHIP privilege on that dynamic table.\nYou can also drop a dynamic table using the DROP TABLE command.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-external-volume",
+    "title": "DROP EXTERNAL VOLUME",
+    "description": "Removes an external volume from the account, but retains a version of the\nexternal volume so that it can be recovered using UNDROP EXTERNAL VOLUME. For more information, see Usage Notes (in this topic).",
+    "syntax": "DROP EXTERNAL VOLUME [ IF EXISTS ] <name>",
+    "examples": [
+        {
+            "code": "DROP EXTERNAL VOLUME my_external_volume;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the external volume to drop. If the identifier contains spaces, special characters, or mixed-case characters,\nthe entire string must be enclosed in double quotes (for example, \"My object\" ). Identifiers enclosed in double quotes are also case-sensitive."
+        }
+    ],
+    "usage_notes": "You can’t drop or replace an external volume if one or more Iceberg tables\nare associated with the external volume.\nTo view the tables that depend on an external volume,\nyou can use the SHOW ICEBERG TABLES command and\na query using the pipe operator that filters on the external_volume_name column.\nNote\nThe column identifier (external_volume_name) is case-sensitive.\nSpecify the column identifier exactly as it appears in the SHOW ICEBERG TABLES output.\nFor example:\nDropping an external volume does not permanently remove it from the system. Snowflake retains a version of the dropped external volume in\nTime Travel. You can restore a dropped external volume by using\nthe UNDROP EXTERNAL VOLUME command.\nAfter a dropped external volume has been purged, it cannot be recovered; it must be recreated.\nAfter dropping an external volume, creating an external volume with the same name creates a new version of the external volume.\nYou can restore the dropped version of the previous external volume by following these steps:\nRename the current version of the external volume.\nUse the UNDROP EXTERNAL VOLUME command to restore the previous version.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/drop-procedure",
+    "title": "DROP PROCEDURE",
+    "description": "Removes the specified stored procedure from the current/specified schema.",
+    "syntax": "DROP PROCEDURE [ IF EXISTS ] <procedure_name> ( [ <arg_data_type> , ... ] )",
+    "examples": [
+        {
+            "code": "DROP PROCEDURE add_accounting_user(varchar);\n\n-------------------------------------------+\n             status                        |\n-------------------------------------------+\n ADD_ACCOUNTING_USER successfully dropped. |\n-------------------------------------------+"
+        }
+    ],
+    "usage_notes": "All Languages\nFor each argument defined for the procedure, the data type for the argument must be specified. This is required because overloading of\nprocedure names is supported and the data type(s) for the argument(s) are required to identify the procedure.\nWhen the IF EXISTS clause is specified and the target object doesn’t exist, the command completes successfully\nwithout returning an error.\nJava, Python, and Scala\nFor procedures that store code in a file (such as a .jar file or .py file) in a stage, the DROP PROCEDURE command does not remove\nthe file. Different procedures can use different functions/methods in the same file, so the file should not be removed\nwhile any procedure refers to it. Snowflake does not store a count of the number of references to each staged file and\ndoes not remove that staged file when there are no remaining references."
+}
+]

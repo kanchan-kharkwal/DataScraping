@@ -1,0 +1,1194 @@
+[
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-external-volume",
+    "title": "DESCRIBE EXTERNAL VOLUME",
+    "description": "Describes the properties of an external volume.",
+    "syntax": "DESC[RIBE] EXTERNAL VOLUME <name>",
+    "examples": [
+        {
+            "code": "DESC EXTERNAL VOLUME my_external_volume;"
+        },
+        {
+            "code": "+-------------------+--------------------+---------------+-------------------------------------------------------------------------------------------+------------------+\n| parent_property   | property           | property_type | property_value                                                                            | property_default |\n|-------------------+--------------------+---------------+-------------------------------------------------------------------------------------------+------------------|\n|                   | ALLOW_WRITES       | Boolean       | true                                                                                      | true             |\n| STORAGE_LOCATIONS | STORAGE_LOCATION_1 | String        | {\"NAME\":\"my_storage_us_west\",\"STORAGE_PROVIDER\":\"S3\",\"STORAGE_BASE_URL\":\"s3://...\", ...}  |                  |\n| STORAGE_LOCATIONS | ACTIVE             | String        | my_storage_us_west                                                                        |                  |\n+-------------------+--------------------+---------------+-------------------------------------------------------------------------------------------+------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the external volume to describe. If the identifier contains spaces or special characters, the entire string\nmust be enclosed in double quotes (for example, \"My object\" ). Identifiers enclosed in double quotes are also case-sensitive."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-warehouse",
+    "title": "DESCRIBE WAREHOUSE",
+    "description": "Describes a virtual warehouse. For example, shows the date that the warehouse was created.",
+    "syntax": "DESC[RIBE] WAREHOUSE <name>",
+    "examples": [
+        {
+            "code": "CREATE WAREHOUSE temporary_warehouse WAREHOUSE_SIZE=XSMALL;"
+        },
+        {
+            "code": "DESCRIBE WAREHOUSE temporary_warehouse;"
+        },
+        {
+            "code": "+-------------------------------+---------------------+-----------+\n| created_on                    | name                | kind      |\n|-------------------------------+---------------------+-----------|\n| 2022-06-23 00:00:00.000 -0700 | TEMPORARY_WAREHOUSE | WAREHOUSE |\n+-------------------------------+---------------------+-----------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier of the warehouse to describe."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-snapshot",
+    "title": "DESCRIBE SNAPSHOT",
+    "description": "Describes the properties of a snapshot.",
+    "syntax": "{ DESC | DESCRIBE } SNAPSHOT <name>",
+    "examples": [
+        {
+            "code": "DESC SNAPSHOT my_snapshot;"
+        },
+        {
+            "code": "+-------------+---------+---------------+-------------+----------------------------------------------------+-------------+----------+------+--------------+-----------+-----------------+-------------------------------+-------------------------------+---------------+\n| name        | state   | database_name | schema_name | service_name                                       | volume_name | instance | size | comment      | owner     | owner_role_type | created_on                    | updated_on                    | encryption    |\n|-------------+---------+---------------+-------------+----------------------------------------------------+-------------+----------+------+--------------+-----------+-----------------+-------------------------------+-------------------------------+---------------|\n| MY_SNAPSHOT | CREATED | TUTORIAL_DB   | DATA_SCHEMA | TUTORIAL_DB.DATA_SCHEMA.MY_SERVICE_WITH_EBS_VOLUME | block-vol1  | 0        |   10 | new snapshot | TEST_ROLE | ROLE            | 2024-05-09 21:36:58.502 -0700 | 2024-05-09 21:38:03.424 -0700 | SNOWFLAKE_SSE |\n+-------------+---------+---------------+-------------+----------------------------------------------------+-------------+----------+------+--------------+-----------+-----------------+-------------------------------+-------------------------------+---------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the snapshot to describe. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-stage",
+    "title": "DESCRIBE STAGE",
+    "description": "Describes the values specified for the properties in a stage (file format, copy, and location), as well as the default values for\neach property.",
+    "syntax": "DESC[RIBE] STAGE <name>",
+    "examples": [
+        {
+            "code": "DESC STAGE my_s3_stage;\n+--------------------+--------------------------------+---------------+-------------------------------------------------------+------------------+\n| parent_property    | property                       | property_type | property_value                                        | property_default |\n|--------------------+--------------------------------+---------------+-------------------------------------------------------+------------------|\n| STAGE_FILE_FORMAT  | TYPE                           | String        | CSV                                                   | CSV              |\n| STAGE_FILE_FORMAT  | RECORD_DELIMITER               | String        | \\n                                                    | \\n               |\n| STAGE_FILE_FORMAT  | FIELD_DELIMITER                | String        | ,                                                     | ,                |\n| STAGE_FILE_FORMAT  | FILE_EXTENSION                 | String        |                                                       |                  |\n| STAGE_FILE_FORMAT  | SKIP_HEADER                    | Integer       | 0                                                     | 0                |\n| STAGE_FILE_FORMAT  | DATE_FORMAT                    | String        | AUTO                                                  | AUTO             |\n| STAGE_FILE_FORMAT  | TIME_FORMAT                    | String        | AUTO                                                  | AUTO             |\n| STAGE_FILE_FORMAT  | TIMESTAMP_FORMAT               | String        | AUTO                                                  | AUTO             |\n| STAGE_FILE_FORMAT  | BINARY_FORMAT                  | String        | HEX                                                   | HEX              |\n| STAGE_FILE_FORMAT  | ESCAPE                         | String        | NONE                                                  | NONE             |\n| STAGE_FILE_FORMAT  | ESCAPE_UNENCLOSED_FIELD        | String        | \\\\                                                    | \\\\               |\n| STAGE_FILE_FORMAT  | TRIM_SPACE                     | Boolean       | false                                                 | false            |\n| STAGE_FILE_FORMAT  | FIELD_OPTIONALLY_ENCLOSED_BY   | String        | NONE                                                  | NONE             |\n| STAGE_FILE_FORMAT  | NULL_IF                        | List          | [\\\\N]                                                 | [\\\\N]            |\n| STAGE_FILE_FORMAT  | COMPRESSION                    | String        | AUTO                                                  | AUTO             |\n| STAGE_FILE_FORMAT  | ERROR_ON_COLUMN_COUNT_MISMATCH | Boolean       | true                                                  | true             |\n| STAGE_FILE_FORMAT  | VALIDATE_UTF8                  | Boolean       | true                                                  | true             |\n| STAGE_FILE_FORMAT  | SKIP_BLANK_LINES               | Boolean       | false                                                 | false            |\n| STAGE_FILE_FORMAT  | REPLACE_INVALID_CHARACTERS     | Boolean       | false                                                 | false            |\n| STAGE_FILE_FORMAT  | EMPTY_FIELD_AS_NULL            | Boolean       | true                                                  | true             |\n| STAGE_FILE_FORMAT  | SKIP_BYTE_ORDER_MARK           | Boolean       | true                                                  | true             |\n| STAGE_FILE_FORMAT  | ENCODING                       | String        | UTF8                                                  | UTF8             |\n| STAGE_COPY_OPTIONS | ON_ERROR                       | String        | ABORT_STATEMENT                                       | ABORT_STATEMENT  |\n| STAGE_COPY_OPTIONS | SIZE_LIMIT                     | Long          |                                                       |                  |\n| STAGE_COPY_OPTIONS | PURGE                          | Boolean       | false                                                 | false            |\n| STAGE_COPY_OPTIONS | RETURN_FAILED_ONLY             | Boolean       | false                                                 | false            |\n| STAGE_COPY_OPTIONS | ENFORCE_LENGTH                 | Boolean       | true                                                  | true             |\n| STAGE_COPY_OPTIONS | TRUNCATECOLUMNS                | Boolean       | false                                                 | false            |\n| STAGE_COPY_OPTIONS | FORCE                          | Boolean       | false                                                 | false            |\n| STAGE_LOCATION     | URL                            | String        | [\"s3://EXAMPLE-S3-PATH/my-csvfiles/\"] |                  |\n| STAGE_CREDENTIALS  | AWS_KEY_ID                     | String        |                                                       |                  |\n| DIRECTORY          | LAST_REFRESHED_ON              | Timestamp     | 2023-05-03 12:50:28.000 -0700                         |                  |\n| DIRECTORY          | ENABLE                         | Boolean       | true                                                  | false            |\n| DIRECTORY          | AUTO_REFRESH                   | Boolean       | false                                                 | false            |\n+--------------------+--------------------------------+---------------+-------------------------------------------------------+------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the stage to describe. If the identifier contains spaces or special characters, the entire string must\nbe enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-application",
+    "title": "DESCRIBE APPLICATION",
+    "description": "Displays information about a Snowflake Native App.",
+    "syntax": "DESC[RIBE] APPLICATION <name>",
+    "examples": [
+        {
+            "code": "DESC APPLICATION hello_snowflake_app;"
+        },
+        {
+            "code": "+------------------------------------+-------------------------------+\n| property                           | value                         |\n|------------------------------------+-------------------------------|\n| name                               | hello_snowflake_app           |\n| source_organization                | my_organization               |\n| source_account                     | provider_account              |\n| source_type                        | APPLICATION PACKAGE           |\n| source                             | hello_snowflake_package       |\n| version                            | v1_0                          |\n| version_label                      | NULL                          |\n| patch                              | 0                             |\n| created_on                         | 2024-05-25 08:30:41.520 -0700 |\n| last_upgraded_on                   |                               |\n| share_events_with_provider         | FALSE                         |\n| authorize_telemetry_event_sharing  | FALSE                         |\n| log_level                          | OFF                           |\n| trace_level                        | OFF                           |\n| debug_mode                         | FALSE                         |\n| upgrade_state                      | COMPLETE                      |\n| upgrade_target_version             | NULL                          |\n| upgrade_target_patch               | 0                             |\n| upgrade_attempt                    | NULL                          |\n| upgrade_task_id                    | NULL                          |\n| upgrade_started_on                 |                               |\n| upgrade_attempted_on               |                               |\n| upgrade_failure_type               | NULL                          |\n| upgrade_failure_reason             | NULL                          |\n| previous_version                   | NULL                          |\n| previous_patch                     | 0                             |\n| previous_version_state             | COMPLETE                      |\n| comment                            |                               |\n+------------------------------------+-------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier of the app to\ndescribe."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-password-policy",
+    "title": "DESCRIBE PASSWORD POLICY",
+    "description": "Describes the details about a password policy.",
+    "syntax": "DESC[RIBE] PASSWORD POLICY <name>",
+    "examples": [
+        {
+            "code": "DESC[RIBE] PASSWORD POLICY <name>"
+        },
+        {
+            "code": "DESC PASSWORD POLICY password_policy_prod_1;"
+        },
+        {
+            "code": "+-----------------------------------+----------------------------------------+-------------+-----------------------------------------------------------------------------------------------------------------------------------------------+\n|   property                        |   value                                |   default   |   description                                                                                                                                 |\n+-----------------------------------+----------------------------------------+-------------+-----------------------------------------------------------------------------------------------------------------------------------------------+\n|   NAME                            |   PASSWORD_POLICY_PROD_1               |   null      |   Name of password policy.                                                                                                                    |\n|   OWNER                           |   PROD_ADMIN                           |   null      |   Owner of password policy.                                                                                                                   |\n|   COMMENT                         |   production account password policy   |   null      |   user comment associated to an object in the dictionary                                                                                      |\n|   PASSWORD_MIN_LENGTH             |   12                                   |   8         |   Minimum length of new password.                                                                                                             |\n|   PASSWORD_MAX_LENGTH             |   24                                   |   256       |   Maximum length of new password.                                                                                                             |\n|   PASSWORD_MIN_UPPER_CASE_CHARS   |   2                                    |   1         |   Minimum number of uppercase characters in new password.                                                                                     |\n|   PASSWORD_MIN_LOWER_CASE_CHARS   |   2                                    |   1         |   Minimum number of lowercase characters in new password.                                                                                     |\n|   PASSWORD_MIN_NUMERIC_CHARS      |   2                                    |   1         |   Minimum number of numeric characters in new password.                                                                                       |\n|   PASSWORD_MIN_SPECIAL_CHARS      |   2                                    |   0         |   Minimum number of special characters in new password.                                                                                       |\n|   PASSWORD_MIN_AGE_DAYS           |   1                                    |   0         |   Period after a password is changed during which a password cannot be changed again, in days.                                                |\n|   PASSWORD_MAX_AGE_DAYS           |   30                                   |   90        |   Period after which password must be changed, in days.                                                                                       |\n|   PASSWORD_MAX_RETRIES            |   5                                    |   5         |   Number of attempts users have to enter the correct password before their account is locked.                                                 |\n|   PASSWORD_LOCKOUT_TIME_MINS      |   30                                   |   15        |   Period of time for which users will be locked after entering their password incorrectly many times (specified by MAX_RETRIES), in minutes   |\n|   PASSWORD_HISTORY                |   5                                    |   24        |   Number of most recent passwords that may not be repeated by the user                                                                        |\n+-----------------------------------+----------------------------------------+-------------+-----------------------------------------------------------------------------------------------------------------------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Identifier for the password policy; must be unique for your account. The identifier value must start with an alphabetic character and cannot contain spaces or special characters unless the entire identifier\nstring is enclosed in double quotes (e.g. \"My object\" ). Identifiers enclosed in double quotes are also case-sensitive. For more details, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-dynamic-table",
+    "title": "DESCRIBE DYNAMIC TABLE",
+    "description": "Describes the columns in a dynamic table.",
+    "syntax": "DESC[RIBE] DYNAMIC TABLE <name>",
+    "examples": [
+        {
+            "code": "DESC DYNAMIC TABLE my_dynamic_table;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the dynamic table to describe. If the identifier contains spaces or special characters, the entire\nstring must be enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        }
+    ],
+    "usage_notes": "To DESCRIBE a dynamic table, you must be using a role that has MONITOR privilege on the table.\nTo post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-organization-profile",
+    "title": "DESCRIBE ORGANIZATION PROFILE",
+    "description": "Describes the properties of an organization profile.",
+    "syntax": "{ DESC | DESCRIBE } ORGANIZATION PROFILE <name>",
+    "examples": [
+        {
+            "code": "DESCRIBE ORGANIZATION PROFILE myorganizationprofile;"
+        },
+        {
+            "code": "+-------------------------+-------------+--------------------------+---------------------+---------------------+----------------------------------+---------------------+---------------------+----------------+--------------------------------+----------------------------------------------------------------------------------------+----------------------------------------------------------+----------------------------------------------------------+-------------------------+-------------------------+\n|created_on               |name         |title                     |system_generated     |state                |description                       |owner_contact        |approver_contact     |logo            |allowed_publishers              |manifest_yaml                                                                           |live_version_uri                                          |published_version_uri                                     |published_version_name   |published_version_alias  |\n+-------------------------+-------------+--------------------------+---------------------+---------------------+----------------------------------+---------------------+---------------------+----------------+--------------------------------+----------------------------------------------------------------------------------------+----------------------------------------------------------+----------------------------------------------------------+-------------------------+-------------------------+\n|2025-01-01 01:01:01.000  |ORGPROFILE   |My Organization Profile   |FALSE                |ACTIVE               |Organization profile description  |test@test.com        |test@test.com        |urn:icon:shield |{“all_internal_accounts”: true} | title: \"My Organization Profile\" description: \"Organization profile description\". . .  |snow://organization_profile/ORGPROFILE/versions/version$1 |snow://organization_profile/ORGPROFILE/versions/version$1 |VERSION$1                |V1                       |\n+-------------------------+-------------+--------------------------+---------------------+---------------------+----------------------------------+---------------------+---------------------+----------------+--------------------------------+----------------------------------------------------------------------------------------+----------------------------------------------------------+----------------------------------------------------------+-------------------------+-------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the organization profile to describe. Must contain only uppercase characters or numbers. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes. Identifiers enclosed in double quotes are also case sensitive. See Identifier requirements ."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-table",
+    "title": "DESCRIBE TABLE",
+    "description": "Describes either the columns in a table or the set of stage properties for the table (current values and default values).",
+    "syntax": "{ DESCRIBE | DESC } TABLE <name> [ TYPE =  { COLUMNS | STAGE } ]",
+    "examples": [
+        {
+            "code": "CREATE OR REPLACE TABLE desc_example(\n  c1 INT PRIMARY KEY,\n  c2 INT,\n  c3 INT UNIQUE,\n  c4 VARCHAR(30) DEFAULT 'Not applicable' COMMENT 'This column is rarely populated',\n  c5 VARCHAR(100));"
+        },
+        {
+            "code": "DESCRIBE TABLE desc_example;"
+        },
+        {
+            "code": "+------+--------------+--------+-------+------------------+-------------+------------+-------+------------+---------------------------------+-------------+----------------+-------------------------+\n| name | type         | kind   | null? | default          | primary key | unique key | check | expression | comment                         | policy name | privacy domain | schema evolution record |\n|------+--------------+--------+-------+------------------+-------------+------------+-------+------------+---------------------------------+-------------+----------------+-------------------------|\n| C1   | NUMBER(38,0) | COLUMN | N     | NULL             | Y           | N          | NULL  | NULL       | NULL                            | NULL        | NULL           | NULL                    |\n| C2   | NUMBER(38,0) | COLUMN | Y     | NULL             | N           | N          | NULL  | NULL       | NULL                            | NULL        | NULL           | NULL                    |\n| C3   | NUMBER(38,0) | COLUMN | Y     | NULL             | N           | Y          | NULL  | NULL       | NULL                            | NULL        | NULL           | NULL                    |\n| C4   | VARCHAR(30)  | COLUMN | Y     | 'Not applicable' | N           | N          | NULL  | NULL       | This column is rarely populated | NULL        | NULL           | NULL                    |\n| C5   | VARCHAR(100) | COLUMN | Y     | NULL             | N           | N          | NULL  | NULL       | NULL                            | NULL        | NULL           | NULL                    |\n+------+--------------+--------+-------+------------------+-------------+------------+-------+------------+---------------------------------+-------------+----------------+-------------------------+"
+        },
+        {
+            "code": "CREATE OR REPLACE TABLE desc_example(\n  c1 INT PRIMARY KEY,\n  c2 INT,\n  c3 INT UNIQUE,\n  c4 VARCHAR(30) DEFAULT 'Not applicable' COMMENT 'This column is rarely populated',\n  c5 VARCHAR(100) WITH MASKING POLICY email_mask);"
+        },
+        {
+            "code": "+------+--------------+--------+-------+------------------+-------------+------------+-------+------------+---------------------------------+---------------------------------+----------------+-------------------------+\n| name | type         | kind   | null? | default          | primary key | unique key | check | expression | comment                         | policy name                     | privacy domain | schema evolution record |\n|------+--------------+--------+-------+------------------+-------------+------------+-------+------------+---------------------------------+---------------------------------+----------------|-------------------------|\n| C1   | NUMBER(38,0) | COLUMN | N     | NULL             | Y           | N          | NULL  | NULL       | NULL                            | NULL                            | NULL           | NULL                    |\n| C2   | NUMBER(38,0) | COLUMN | Y     | NULL             | N           | N          | NULL  | NULL       | NULL                            | NULL                            | NULL           | NULL                    |\n| C3   | NUMBER(38,0) | COLUMN | Y     | NULL             | N           | Y          | NULL  | NULL       | NULL                            | NULL                            | NULL           | NULL                    |\n| C4   | VARCHAR(30)  | COLUMN | Y     | 'Not applicable' | N           | N          | NULL  | NULL       | This column is rarely populated | NULL                            | NULL           | NULL                    |\n| C5   | VARCHAR(100) | COLUMN | Y     | NULL             | N           | N          | NULL  | NULL       | NULL                            | HT_SENSORS.HT_SCHEMA.EMAIL_MASK | NULL           | NULL                    |\n+------+--------------+--------+-------+------------------+-------------+------------+-------+------------+---------------------------------+---------------------------------+----------------+-------------------------+"
+        },
+        {
+            "code": "DESCRIBE TABLE desc_example TYPE = STAGE;"
+        },
+        {
+            "code": "+--------------------+--------------------------------+---------------+-----------------+------------------+\n| parent_property    | property                       | property_type | property_value  | property_default |\n|--------------------+--------------------------------+---------------+-----------------+------------------|\n| STAGE_FILE_FORMAT  | TYPE                           | String        | CSV             | CSV              |\n| STAGE_FILE_FORMAT  | RECORD_DELIMITER               | String        | \\n              | \\n               |\n| STAGE_FILE_FORMAT  | FIELD_DELIMITER                | String        | ,               | ,                |\n| STAGE_FILE_FORMAT  | FILE_EXTENSION                 | String        |                 |                  |\n| STAGE_FILE_FORMAT  | SKIP_HEADER                    | Integer       | 0               | 0                |\n..."
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the table to describe. If the identifier contains spaces or special characters, the entire string must\nbe enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        },
+        {
+            "name": "TYPE   =   COLUMNS   |   STAGE",
+            "description": "Specifies whether to display the columns for the table or the set of stage properties for the table (current values and default values). Default: TYPE = COLUMNS"
+        }
+    ],
+    "usage_notes": "This command does not show the object parameters for a table. Instead, use SHOW PARAMETERS IN TABLE.\nDESCRIBE TABLE and DESCRIBE VIEW are interchangeable. Both commands return details for the specified table or view; however,\nTYPE = STAGE does not apply for views because views do not have stage properties.\nIf schema evolution is enabled on the table, the output contains a SchemaEvolutionRecord column. This column was introduced with the 2023_08 Bundle (Generally Enabled). For more information, see Table schema evolution.\nThe output includes a policy name column to indicate the masking policy set on the column.\nIf a masking policy is not set on the column or if the Snowflake account is not Enterprise Edition or higher, Snowflake returns\nNULL.\nThe output includes a privacy domain column to indicate the privacy domain\nset on the column.\nIf a privacy domain is not set on the column or if the Snowflake account is not Enterprise Edition or higher, Snowflake returns\nNULL.\nTo post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-secret",
+    "title": "DESCRIBE SECRET",
+    "description": "Describes the properties of a secret.",
+    "syntax": "{ DESC | DESCRIBE } SECRET <name>",
+    "examples": [
+        {
+            "code": "DESC SECRET service_now_creds_pw;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the secret to describe. If the identifier contains spaces or special characters, the entire string\nmust be enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        }
+    ],
+    "usage_notes": "Snowflake never returns the PASSWORD property value.\nTo post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-compute-pool",
+    "title": "DESCRIBE COMPUTE POOL",
+    "description": "Describes the properties of a compute pool.",
+    "syntax": "DESC[RIBE] COMPUTE POOL <name>",
+    "examples": [
+        {
+            "code": "DESCRIBE COMPUTE POOL tutorial_compute_pool;"
+        },
+        {
+            "code": "+-----------------------+--------+-----------+-----------+-----------------+--------------+----------+-------------------+-------------+--------------+------------+--------------+-------------------------------+-------------------------------+-------------------------------+-----------+---------+--------------+-------------+--------+------------+----------------+\n| name                  | state  | min_nodes | max_nodes | instance_family | num_services | num_jobs | auto_suspend_secs | auto_resume | active_nodes | idle_nodes | target_nodes | created_on                    | resumed_on                    | updated_on                    | owner     | comment | is_exclusive | application | budget | error_code | status_message |\n|-----------------------+--------+-----------+-----------+-----------------+--------------+----------+-------------------+-------------+--------------+------------+--------------+-------------------------------+-------------------------------+-------------------------------+-----------+---------+--------------+-------------+--------+------------+----------------|\n| TUTORIAL_COMPUTE_POOL | ACTIVE |         1 |         1 | CPU_X64_XS      |            3 |        0 |              3600 | true        |            1 |          0 |            1 | 2024-02-24 20:41:31.978 -0800 | 2024-08-08 11:27:01.775 -0700 | 2024-08-18 13:29:08.124 -0700 | TEST_ROLE | NULL    | false        | NULL        | NULL   |            |                |\n+-----------------------+--------+-----------+-----------+-----------------+--------------+----------+-------------------+-------------+--------------+------------+--------------+-------------------------------+-------------------------------+-------------------------------+-----------+---------+--------------+-------------+--------+------------+----------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the compute pool to describe. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-authentication-policy",
+    "title": "DESCRIBE AUTHENTICATION POLICY",
+    "description": "Describes the properties of an authentication policy.",
+    "syntax": "{ DESC | DESCRIBE } AUTHENTICATION POLICY <name>",
+    "examples": [
+        {
+            "code": "DESC AUTHENTICATION POLICY my_auth_policy;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the authentication policy to describe. If the identifier contains spaces or special characters, you must enclose\nthe string in double quotation marks. Identifiers enclosed in double quotation marks are case-sensitive. The identifier must meet the identifier requirements ."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-notebook",
+    "title": "DESCRIBE NOTEBOOK",
+    "description": "Describes the properties of a notebook.",
+    "syntax": "{ DESC | DESCRIBE } NOTEBOOK <name>",
+    "examples": [
+        {
+            "code": "DESCRIBE NOTEBOOK mybook;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the notebook to describe. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-git-repository",
+    "title": "DESCRIBE GIT REPOSITORY",
+    "description": "Describes an existing Snowflake Git repository clone.",
+    "syntax": "{ DESC | DESCRIBE } GIT REPOSITORY <name>",
+    "examples": [
+        {
+            "code": "DESCRIBE GIT REPOSITORY snowflake_extensions;"
+        },
+        {
+            "code": "--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n| CREATED_ON                    | NAME                 | DATABASE_NAME | SCHEMA_NAME | ORIGIN                                                 | API_INTEGRATION     | GIT_CREDENTIALS           | OWNER        | OWNER_ROLE_TYPE | COMMENT |\n--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n| 2023-06-28 08:46:10.886 -0700 | SNOWFLAKE_EXTENSIONS | MY_DB         | MAIN        | https://github.com/my-account/snowflake-extensions.git | GIT_API_INTEGRATION | MY_DB.MAIN.GIT_SECRET     | ACCOUNTADMIN | ROLE            |         |\n--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the Git repository clone to describe. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-join-policy",
+    "title": "DESCRIBE JOIN POLICY",
+    "description": "Describes the details about a join policy, including the creation date, name, and the SQL expression.",
+    "syntax": "{ DESCRIBE | DESC } JOIN POLICY <name>",
+    "examples": [
+        {
+            "code": "{ DESCRIBE | DESC } JOIN POLICY <name>"
+        },
+        {
+            "code": "DESCRIBE JOIN POLICY jp3;"
+        },
+        {
+            "code": "+------+-----------+-----------------+-----------------------------------------+\n| name | signature | return_type     | body                                    |\n|------+-----------+-----------------+-----------------------------------------|\n| JP3  | ()        | JOIN_CONSTRAINT | JOIN_CONSTRAINT(JOIN_REQUIRED => FALSE) |\n+------+-----------+-----------------+-----------------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the join policy to describe. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-cortex-search",
+    "title": "DESCRIBE CORTEX SEARCH SERVICE",
+    "description": "Describes the properties of a Cortex Search service.",
+    "syntax": "{ DESC | DESCRIBE } CORTEX SEARCH SERVICE <name>;",
+    "examples": [
+        {
+            "code": "DESCRIBE CORTEX SEARCH SERVICE mysvc;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the Cortex Search service. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-schema",
+    "title": "DESCRIBE SCHEMA",
+    "description": "Describes the schema. For example, lists the tables and views in the schema.",
+    "syntax": "DESC[RIBE] SCHEMA <schema_name>",
+    "examples": [
+        {
+            "code": "CREATE SCHEMA sample_schema_2;\nUSE SCHEMA sample_schema_2;\n\nCREATE TABLE sample_table_1 (i INTEGER);\n\nCREATE VIEW sample_view_1 AS\n    SELECT i FROM sample_table_1;\n\nCREATE MATERIALIZED VIEW sample_mview_1 AS\n    SELECT i FROM sample_table_1 WHERE i < 100;\n\nDESCRIBE SCHEMA sample_schema_2;\n\n+-------------------------------+----------------+-------------------+\n| created_on                    | name           | kind              |\n|-------------------------------+----------------+-------------------|\n| 2022-06-23 01:00:00.000 -0700 | SAMPLE_TABLE_1 | TABLE             |\n| 2022-06-23 02:00:00.000 -0700 | SAMPLE_VIEW_1  | VIEW              |\n| 2022-06-23 03:00:00.000 -0700 | SAMPLE_MVIEW_1 | MATERIALIZED_VIEW |\n+-------------------------------+----------------+-------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "schema_name",
+            "description": "Specifies the identifier of the schema to describe."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-feature-policy",
+    "title": "DESCRIBE FEATURE POLICY",
+    "description": "Describes the properties of a feature policy.",
+    "syntax": "{ DESC | DESCRIBE } FEATURE POLICY <name>",
+    "examples": [
+        {
+            "code": "DESCRIBE FEATURE POLICY block_db_policy;"
+        },
+        {
+            "code": "+------------------------------------+-------------------------------+\n| property                           | value                         |\n+------------------------------------|-------------------------------+\n| created_on                         | 2025-05-23 08:19:49.483 -0700 |\n| name                               | BLOCK_CREATE_DB_POLICY        |\n| owner                              | ACCOUNTADMIN                  |\n| owner_role_type                    | ROLE                          |\n| comment                            |                               |\n| blocked_object_types_for_creation  | DATABASES                     |\n+------------------------------------+-------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the feature policy to describe. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        }
+    ]
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-catalog-integration",
+    "title": "DESCRIBE CATALOG INTEGRATION",
+    "description": "Describes the properties of a catalog integration.",
+    "syntax": "DESC[RIBE] CATALOG INTEGRATION <name>",
+    "examples": [
+        {
+            "code": "DESC CATALOG INTEGRATION my_catalog_integration;"
+        },
+        {
+            "code": "+-----------------------+---------------+----------------------------------+------------------+\n|       property        | property_type |          property_value          | property_default |\n+-----------------------+---------------+----------------------------------+------------------+\n| ENABLED               | Boolean       | true                             | false            |\n| CATALOG_SOURCE        | String        | GLUE                             |                  |\n| CATALOG_NAMESPACE     | String        | dbname                           |                  |\n| TABLE_FORMAT          | String        | ICEBERG                          |                  |\n| GLUE_AWS_ROLE_ARN     | String        | arn:aws:iam::123:role/dummy-role |                  |\n| GLUE_CATALOG_ID       | String        | 123456789012                     |                  |\n| GLUE_REGION           | String        | us-west-2                        |                  |\n| GLUE_AWS_IAM_USER_ARN | String        | arn:aws:iam::123:user/example    |                  |\n| GLUE_AWS_EXTERNAL_ID  | String        | exampleGlueExternalId            |                  |\n| COMMENT               | String        |                                  |                  |\n+-----------------------+---------------+----------------------------------+------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the catalog integration to describe. If the identifier contains spaces or special characters,\nthe entire string must be enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-alert",
+    "title": "DESCRIBE ALERT",
+    "description": "Describes the properties of an alert.",
+    "syntax": "DESC[RIBE] ALERT <name>",
+    "examples": [
+        {
+            "code": "DESC[RIBE] ALERT <name>"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Identifier for the alert to describe. If the identifier contains spaces or special characters, the entire string must be\nenclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        }
+    ],
+    "usage_notes": "Only returns rows for an alert owner (i.e. the role with the OWNERSHIP privilege on an alert) or a role with the OPERATE\nprivilege on an alert.\nTo post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-share",
+    "title": "DESCRIBE SHARE",
+    "description": "Describes the data objects that are included in a share.",
+    "syntax": "DESC[RIBE] SHARE <name>\n\nDESC[RIBE] SHARE <provider_account>.<share_name>",
+    "examples": [
+        {
+            "code": "DESC SHARE sales_s;\n\n+----------+--------------------------------------+-------------------------------+\n| kind     | name                                 | shared_on                     |\n|----------+--------------------------------------+-------------------------------|\n| DATABASE | SALES_DB                             | 2017-06-15 17:03:16.642 -0700 |\n| SCHEMA   | SALES_DB.AGGREGATES_EULA             | 2017-06-15 17:03:16.790 -0700 |\n| TABLE    | SALES_DB.AGGREGATES_EULA.AGGREGATE_1 | 2017-06-15 17:03:16.963 -0700 |\n+----------+--------------------------------------+-------------------------------+"
+        },
+        {
+            "code": "DESC SHARE ab67890.sales_s;\n\n+----------+----------------------------------+---------------------------------+\n| kind     | name                             | shared_on                       |\n|----------+----------------------------------+---------------------------------|\n| DATABASE | <DB>                             | Thu, 15 Jun 2017 17:03:16 -0700 |\n| SCHEMA   | <DB>.AGGREGATES_EULA             | Thu, 15 Jun 2017 17:03:16 -0700 |\n| TABLE    | <DB>.AGGREGATES_EULA.AGGREGATE_1 | Thu, 15 Jun 2017 17:03:16 -0700 |\n+----------+----------------------------------+---------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the outbound share to describe. If the identifier contains spaces or special characters, the entire string\nmust be enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        },
+        {
+            "name": "provider_account . share_name",
+            "description": "Specifies the fully-qualified identifier for the inbound share to describe."
+        }
+    ],
+    "usage_notes": "Only the ACCOUNTADMIN role has the privileges to describe a share. Executing this command with any role other than ACCOUNTADMIN returns\nan error.\nTo post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-integration",
+    "title": "DESCRIBE INTEGRATION",
+    "description": "Describes the properties of an integration.",
+    "syntax": "{ DESC | DESCRIBE } [ { API | CATALOG | EXTERNAL ACCESS | NOTIFICATION | SECURITY | STORAGE } ] INTEGRATION <name>",
+    "examples": [
+        {
+            "code": "DESC INTEGRATION my_int;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "{   API   |   CATALOG   |   EXTERNAL   ACCESS   |   NOTIFICATION   |   SECURITY   |   STORAGE   }",
+            "description": "Describes an integration of the specified type. For more information about some of these types, see the following topics: DESCRIBE CATALOG INTEGRATION DESCRIBE NOTIFICATION INTEGRATION"
+        },
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the integration to describe. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query.\nIf the integration is an API integration, then the output includes the API_KEY column. The API_KEY displays a masked value if an\nAPI key was entered. (This does not display either the original unencrypted key or the\nencrypted version of the key.)\nIf the security integration has the TYPE property set to OAUTH (i.e. Snowflake OAuth), Snowflake returns two additional security\nintegration properties in the query result that cannot be set with either a CREATE SECURITY INTEGRATION or an ALTER SECURITY INTEGRATION\ncommand:\nA list of all supported endpoints for a client application to receive an authorization code from Snowflake.\nA list of all supported endpoints for a client application to exchange an authorization code for an access token or to obtain a refresh\ntoken."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-model-monitor",
+    "title": "DESCRIBE MODEL MONITOR",
+    "description": "Displays information about a specific model monitor.\nThis command displays all the information shown by the SHOW MODEL MONITORS command, plus additional information.",
+    "syntax": "{ DESCRIBE | DESC } MODEL MONITOR <monitor_name>",
+    "examples": [
+        {
+            "code": "{ DESCRIBE | DESC } MODEL MONITOR <monitor_name>"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "monitor_name",
+            "description": "Specifies the identifier for the model monitor to describe. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-masking-policy",
+    "title": "DESCRIBE MASKING POLICY",
+    "description": "Describes the details about a masking policy, including the creation date, name, data type, and SQL expression.",
+    "syntax": "DESC[RIBE] MASKING POLICY <name>",
+    "examples": [
+        {
+            "code": "DESC[RIBE] MASKING POLICY <name>"
+        },
+        {
+            "code": "DESC MASKING POLICY ssn_mask;"
+        },
+        {
+            "code": "+-----+------------+---------------+-------------------+-----------------------------------------------------------------------+\n| Row | name       | signature     | return_type       | body                                                                  |\n+-----+------------+---------------+-------------------+-----------------------------------------------------------------------+\n| 1   | SSN_MASK   | (VAL VARCHAR) | VARCHAR(16777216) | case when current_role() in ('ANALYST') then val else '*********' end |\n+-----+------------+---------------+-------------------+-----------------------------------------------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Identifier for the masking policy; must be unique for your account. The identifier value must start with an alphabetic character and cannot contain spaces or special characters unless the entire\nidentifier string is enclosed in double quotes (e.g. \"My object\" ). Identifiers enclosed in double quotes are also\ncase-sensitive. For more details, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-stream",
+    "title": "DESCRIBE STREAM",
+    "description": "Describes the properties specified for a stream.",
+    "syntax": "DESC[RIBE] STREAM <name>",
+    "examples": [
+        {
+            "code": "CREATE STREAM mystream ( ... );"
+        },
+        {
+            "code": "DESC STREAM mystream;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the stream to describe. If the identifier contains spaces or special characters, the entire string must be\nenclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-specification",
+    "title": "DESCRIBE SPECIFICATION",
+    "description": "Describes the details about an app specification.",
+    "syntax": "{ DESCRIBE | DESC }  SPECIFICATION <name> [ IN APPLICATION <app_name> ];",
+    "examples": [
+        {
+            "code": "{ DESCRIBE | DESC }  SPECIFICATION <name> [ IN APPLICATION <app_name> ];"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "IN   APPLICATION   app_name",
+            "description": "Specifies the name of the app whose app specification you want to view."
+        }
+    ],
+    "usage_notes": "Consumers must provide the name of an app using the IN APPLICATION clause.\nAn app can run this command without specifying the\nIN APPLICATION clause."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-sequence",
+    "title": "DESCRIBE SEQUENCE",
+    "description": "Describes a sequence, including the sequence’s interval.",
+    "syntax": "DESC[RIBE] SEQUENCE <name>",
+    "examples": [
+        {
+            "code": "DESC SEQUENCE my_sequence;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the sequence to describe."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-session-policy",
+    "title": "DESCRIBE SESSION POLICY",
+    "description": "Describes the details about a session policy.",
+    "syntax": "{ DESCRIBE | DESC } SESSION POLICY <name>",
+    "examples": [
+        {
+            "code": "{ DESCRIBE | DESC } SESSION POLICY <name>"
+        },
+        {
+            "code": "DESC SESSION POLICY session_policy_prod_1;"
+        },
+        {
+            "code": "+---------------------------------+-----------------------+---------------------------+------------------------------+-------------------------+--------------------------------------------------+\n| created_on                       | name                 | session_idle_timeout_mins | session_ui_idle_timeout_mins | allowed_secondary_roles |  comment                                         |\n+---------------------------------+-----------------------+---------------------------+------------------------------+-------------------------+--------------------------------------------------+\n| Mon, 11 Jan 2021 00:00:00 -0700 | session_policy_prod_1 | 60                        | 30                           |           []            | session policy for use in the prod_1 environment |\n+---------------------------------+-----------------------+---------------------------+------------------------------+-------------------------+--------------------------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Identifier for the session policy; must be unique for your account. The identifier value must start with an alphabetic character and cannot contain spaces or special characters unless the entire identifier\nstring is enclosed in double quotes (e.g. \"My object\" ). Identifiers enclosed in double quotes are also case-sensitive. For more details, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-packages-policy",
+    "title": "DESCRIBE PACKAGES POLICY",
+    "description": "Describes the details about a packages policy.",
+    "syntax": "DESC[RIBE] PACKAGES POLICY <name>",
+    "examples": [
+        {
+            "code": "DESC[RIBE] PACKAGES POLICY <name>"
+        },
+        {
+            "code": "DESC PACKAGES POLICY packages_policy_prod_1;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the packages policy to describe. If the identifier contains spaces or special characters, the entire string must be\nenclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive. For more details, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-database",
+    "title": "DESCRIBE DATABASE",
+    "description": "Describes the database. For example, shows the schemas in the database.",
+    "syntax": "DESC[RIBE] DATABASE <database_name>",
+    "examples": [
+        {
+            "code": "CREATE DATABASE desc_demo;\n\nCREATE SCHEMA sample_schema_1;\n\nCREATE SCHEMA sample_schema_2;\n\nDESCRIBE DATABASE desc_demo;"
+        },
+        {
+            "code": "+-------------------------------+--------------------+--------+\n| created_on                    | name               | kind   |\n|-------------------------------+--------------------+--------|\n| 2022-06-23 00:00:00.000 -0700 | INFORMATION_SCHEMA | SCHEMA |\n| 2022-06-23 00:00:00.000 -0700 | PUBLIC             | SCHEMA |\n| 2022-06-23 01:00:00.000 -0700 | SAMPLE_SCHEMA_1    | SCHEMA |\n| 2022-06-23 02:00:00.000 -0700 | SAMPLE_SCHEMA_2    | SCHEMA |\n+-------------------------------+--------------------+--------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "database_name",
+            "description": "Specifies the identifier of the database to describe."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-listing",
+    "title": "DESCRIBE LISTING",
+    "description": "Describes the columns in a listing.",
+    "syntax": "{ DESC | DESCRIBE } LISTING <name>  [ REVISION = { DRAFT | PUBLISHED } ]",
+    "examples": [
+        {
+            "code": "DESC LISTING MYLISTING;"
+        },
+        {
+            "code": "+------------------------------+---------------------+------------------+---------------------+--------------------------------------+--------------------------------------+--------------------------------------+----------------------------------------------------------------+----------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------+---------------------+------------------+--------------------+-----------------+---------------+---------------------+-------------+----------------------+-------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------+-------------------------+--------------------------------------------------+-----------------------------+----------------------+------------------------------------------------------------------------------------------------------------------------------------+-------------+-----------------------------------------------------------------------------------+------------------+----------------------+----------------+-----------------------------------------------------------------------------------------------------------------+---------------------------------+-----------------------+\n|   global_name                |   name              |   owner          |   owner_role_type   |   created_on                         |   updated_on                         |   published_on                       |   title                                                        |   subtitle                                         |   description                                                                                                              |   target_accounts   |   is_monetized   |   is_application   |   is_targeted   |   state       |   revisions         |   comment   |   refresh_schedule   |   refresh_type    |   business_needs                                                                                                                                         |   usage_examples                                                                                                     |   listing_terms         |   profile                                        |   customized_contact_info   |  application_package |  data_dictionary                                                                                                                   |   regions   |   manifest_yaml                                                                   |   review_state   |   rejection_reason   |   categories   |   resources                                                                                                     |   unpublished_by_admin_reason   | request_approval_type |\n+------------------------------+---------------------+------------------+---------------------+--------------------------------------+--------------------------------------+--------------------------------------+----------------------------------------------------------------+----------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------+---------------------+------------------+--------------------+-----------------+---------------+---------------------+-------------+----------------------+-------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------+-------------------------+--------------------------------------------------+-----------------------------+----------------------+------------------------------------------------------------------------------------------------------------------------------------+-------------+-----------------------------------------------------------------------------------+------------------+----------------------+----------------+-----------------------------------------------------------------------------------------------------------------+---------------------------------+-----------------------+\n|   GZ13Z1VEWNG                |   CDC_COVID_19_DATA |   ACCOUNTADMIN   |   ROLE              |   2023-12-01T13:01:13.367-08:00      |   2023-12-01T13:25:11.331-08:00      |   2023-12-01T13:25:11.331-08:00      |   Understanding COVID-19: Explore the Latest Data from the CDC |   Track cases, deaths, vaccination rates, and more |   Get the most up-to-date information on the COVID-19 pandemic from the Centers for Disease Control and Prevention (CDC).  |                     |   false          |   false            |   false         |   PUBLISHED   |   DRAFT,PUBLISHED   |             |   60 MINUTE          |   FULL_DATABASE   |   [{\"\"type\"\":\"\"CUSTOM\"\",\"\"name\"\":\"\"Public Health Monitoring and Response\"\",\"\"description\"\":\"\"Monitor trends in cases, deaths, and other key metrics.\"\"}] |   [{\"\"title\"\":\"\"Identify potential outbreaks of COVID-19 in [country name] by tracking trends in confirmed cases\"    |   {\"type\":\"STANDARD\"}   |   RAVENCLAW_9A314599_F644_4664_946B_4DE0B2169C28 |                             |                      |  {\"\"database\"\":\"\"COVIDDATADB\"\",\"\"objects\"\":[{\"\"schema\"\":\"\"PUBLIC\"\",\"\"domain\"\":\"\"TABLE\"\",\"\"name\"\":\"\"GLOBAL_COVID_STATISTICS\"\"}]}\"   |   ALL       |   title: \"Understanding COVID-19: Explore the Latest Data from the CDC\"  . . .    |                  |                      |   HEALTH       |   \"{\"\"documentation\"\":\"\"https://snowflake.com/doc\"\",\"\"media\"\":\"\"https://www.youtube.com/watch?v=AR88dZG-hwo\"\"}\" |                                 | NULL                  |\n+------------------------------+---------------------+------------------+---------------------+--------------------------------------+--------------------------------------+--------------------------------------+----------------------------------------------------------------+----------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------+---------------------+------------------+--------------------+-----------------+---------------+---------------------+-------------+----------------------+-------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------+-------------------------+--------------------------------------------------+-----------------------------+----------------------+------------------------------------------------------------------------------------------------------------------------------------+-------------+-----------------------------------------------------------------------------------+------------------+----------------------+----------------+-----------------------------------------------------------------------------------------------------------------+---------------------------------+-----------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "The identifier, specified when the listing was created, for the listing to describe.\nIf the identifier contains spaces or special characters, the entire\nstring must be enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive. See SHOW LISTINGS for listing details, including listing name ."
+        },
+        {
+            "name": "REVISION   =   {   DRAFT   |   PUBLISHED   }",
+            "description": "Specifies which revision to display. For example, If you have a draft of a published listing, you can specify either the draft or published version to display. DRAFT : Describe the draft version of the listing. PUBLISHED : Describe the published version of the listing. PUBLISHED"
+        },
+        {
+            "name": "Valid values :",
+            "description": "DRAFT : Describe the draft version of the listing. PUBLISHED : Describe the published version of the listing. PUBLISHED"
+        },
+        {
+            "name": "Default :",
+            "description": "PUBLISHED"
+        }
+    ],
+    "usage_notes": "To DESCRIBE a listing, you must be using a role that has one of USAGE, MODIFY, or OWNERSHIP privilege on the listing.\nTo post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-transaction",
+    "title": "DESCRIBE TRANSACTION",
+    "description": "Describes the transaction, including the start time and the state (running, committed, rolled\nback).",
+    "syntax": "{ DESC | DESCRIBE } TRANSACTION <transaction_id>",
+    "examples": [
+        {
+            "code": "DESC TRANSACTION 1651535571261000000;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "transaction_id",
+            "description": "Specifies the identifier of the transaction to describe. transaction_id must be a literal, not a session variable."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-network-policy",
+    "title": "DESCRIBE NETWORK POLICY",
+    "description": "Describes the properties specified for a network policy.",
+    "syntax": "DESC[RIBE] NETWORK POLICY <name>",
+    "examples": [
+        {
+            "code": "DESC[RIBE] NETWORK POLICY <name>"
+        },
+        {
+            "code": "DESC NETWORK POLICY mypolicy;"
+        },
+        {
+            "code": "-----------------+---------------+\n      name       |     value     |\n-----------------+---------------+\n ALLOWED_IP_LIST | 192.168.0.100 |\n BLOCKED_IP_LIST | 192.168.0.101 |\n-----------------+---------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the network policy to describe. If the identifier contains spaces or special characters, the\nentire string must be enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        }
+    ],
+    "usage_notes": "Only the network policy owner (i.e. role with the OWNERSHIP privilege on the network policy) or higher can execute this command.\nTo post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-aggregation-policy",
+    "title": "DESCRIBE AGGREGATION POLICY",
+    "description": "Describes the details about an aggregation policy, including the creation date, name, and the\nSQL expression.",
+    "syntax": "DESC[RIBE] AGGREGATION POLICY <name>",
+    "examples": [
+        {
+            "code": "DESC[RIBE] AGGREGATION POLICY <name>"
+        },
+        {
+            "code": "DESC AGGREGATION POLICY my_aggpolicy;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the aggregation policy to describe. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/show",
+    "title": "SHOW",
+    "description": "Lists the existing objects for the specified object type. The output includes metadata for the objects, including:"
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-user",
+    "title": "DESCRIBE USER",
+    "description": "Describes a user, including the current and default values of the properties of the\nuser.",
+    "syntax": "{ DESC | DESCRIBE } USER <name>",
+    "examples": [
+        {
+            "code": "DESCRIBE USER my_user;"
+        },
+        {
+            "code": "+--------------------------------------------+-------------------------+---------+--------------------------------------------------------------------------------------------------------------------------------------------+\n| property                                   | value                   | default | description                                                                                                                                |\n|--------------------------------------------+-------------------------+---------+--------------------------------------------------------------------------------------------------------------------------------------------|\n| NAME                                       | JSMITH                  | null    | Name                                                                                                                                       |\n| COMMENT                                    | null                    | null    | user comment associated to an object in the dictionary                                                                                     |\n| DISPLAY_NAME                               | Jane Smith              | null    | Display name of the associated object                                                                                                      |\n| TYPE                                       | PERSON                  | null    | Type of the account, application package, data exchange, data exchange listing, replication group, secret, network rule, or user.          |\n| LOGIN_NAME                                 | JSMITH                  | null    | Login name of the user                                                                                                                     |\n| FIRST_NAME                                 | Jane                    | null    | First name of the user                                                                                                                     |\n| MIDDLE_NAME                                | null                    | null    | Middle name of the user                                                                                                                    |\n| LAST_NAME                                  | Smith                   | null    | Last name of the user                                                                                                                      |\n| EMAIL                                      | jane.smith@example.com  | null    | Email address of the user                                                                                                                  |\n| PASSWORD                                   | ********                | null    | Password of the user                                                                                                                       |\n| MUST_CHANGE_PASSWORD                       | false                   | false   | User must change the password                                                                                                              |\n| DISABLED                                   | false                   | false   | Whether the entity is disabled                                                                                                             |\n| SNOWFLAKE_LOCK                             | false                   | false   | Whether the user, account, or organization is locked by Snowflake                                                                          |\n| SNOWFLAKE_SUPPORT                          | false                   | false   | Snowflake Support is allowed to use the user or account                                                                                    |\n| DAYS_TO_EXPIRY                             | null                    | null    | User record will be treated as expired after specified number of days                                                                      |\n| MINS_TO_UNLOCK                             | null                    | null    | Temporary lock on the user will be removed after specified number of minutes                                                               |\n| DEFAULT_WAREHOUSE                          | MY_WAREHOUSE            | null    | Default warehouse for this user                                                                                                            |\n| DEFAULT_NAMESPACE                          | MY_DB.MY_SCHEMA         | null    | Default database namespace prefix for this user                                                                                            |\n| DEFAULT_ROLE                               | MY_ROLE                 | null    | Primary principal of user session will be set to this role                                                                                 |\n| DEFAULT_SECONDARY_ROLES                    | []                      | [ALL]   | The secondary roles will be set to all roles provided here.                                                                                |\n| EXT_AUTHN_DUO                              | false                   | false   | Whether Duo Security is enabled as second factor authentication                                                                            |\n| EXT_AUTHN_UID                              | null                    | null    | External authentication ID of the user                                                                                                     |\n| DEFAULT_MFA_METHOD                         | null                    | null    | Default MFA method for the user                                                                                                            |\n| HAS_MFA                                    | true                    | false   | Whether the user is enrolled in multi-factor authentication                                                                                |\n| HAS_PAT                                    | true                    | false   | Whether the user has a programmatic access token                                                                                           |\n| HAS_FEDERATED_WORKLOAD_AUTHENTICATION      | false                   | false   | Reserved for future use                                                                                                                    |\n| MINS_TO_BYPASS_MFA                         | null                    | null    | Temporary bypass MFA for the user for a specified number of minutes                                                                        |\n| MINS_TO_BYPASS_NETWORK_POLICY              | null                    | null    | Temporary bypass network policy on the user for a specified number of minutes                                                              |\n| RSA_PUBLIC_KEY                             | ...                     | null    | RSA public key of the user                                                                                                                 |\n| RSA_PUBLIC_KEY_FP                          | SHA256:...=             | null    | Fingerprint of user's RSA public key.                                                                                                      |\n| RSA_PUBLIC_KEY_LAST_SET_TIME               | null                    | null    | The timestamp at which the RSA public key was last set for the user. Defaults to null if no RSA public key has been set yet.               |\n| RSA_PUBLIC_KEY_2                           | ...                     | null    | Second RSA public key of the user                                                                                                          |\n| RSA_PUBLIC_KEY_2_FP                        | SHA256:...=             | null    | Fingerprint of user's second RSA public key.                                                                                               |\n| RSA_PUBLIC_KEY_2_LAST_SET_TIME             | null                    | null    | The timestamp at which the second RSA public key was last set for the user. Defaults to null if no second RSA public key has been set yet. |\n| PASSWORD_LAST_SET_TIME                     | 2020-10-08 01:33:13.43  | null    | The timestamp on which the last non-null password was set for the user. Default to null if no password has been set yet.                   |\n| CUSTOM_LANDING_PAGE_URL                    | null                    | null    | Reserved for future use                                                                                                                    |\n| CUSTOM_LANDING_PAGE_URL_FLUSH_NEXT_UI_LOAD | false                   | false   | Reserved for future use                                                                                                                    |\n+--------------------------------------------+-------------------------+---------+--------------------------------------------------------------------------------------------------------------------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the user to describe. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "The user object property MINS_TO_BYPASS_NETWORK_POLICY defines the number of minutes in which a user can access Snowflake\nwithout conforming to an existing network policy. The number of minutes can only be set by\nSnowflake (Default: NULL) and is intended as a temporary workaround to allow user access to Snowflake. To set a value for\nthis property, please contact Snowflake Support.\nThis command does not show the session parameter defaults for a user. Instead, use SHOW PARAMETERS IN USER.\nThe user object property PASSWORD_LAST_SET_TIME defaults to Null if no password has been set yet. Values of\n292278994-08-17 07:12:55.807 or 1969-12-31 23:59:59.999 indicate the password was set before the inclusion of this row.\nA value of 1969-12-31 23:59:59.999 can also indicate an expired password and the user needs to change their password.\nTo post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-materialized-view",
+    "title": "DESCRIBE MATERIALIZED VIEW",
+    "description": "Describes the columns in a materialized view.",
+    "syntax": "DESC[RIBE] MATERIALIZED VIEW <name>",
+    "examples": [
+        {
+            "code": "CREATE MATERIALIZED VIEW emp_view\n    AS\n    SELECT id \"Employee Number\", lname \"Last Name\", location \"Home Base\" FROM emp;"
+        },
+        {
+            "code": "DESC MATERIALIZED VIEW emp_view;"
+        },
+        {
+            "code": "+-----------------+--------------+--------+-------+---------+-------------+------------+-------+------------+---------+\n| name            | type         | kind   | null? | default | primary key | unique key | check | expression | comment |\n|-----------------+--------------+--------+-------+---------+-------------+------------+-------+------------+---------|\n| Employee Number | NUMBER(38,0) | COLUMN | Y     | NULL    | N           | N          | NULL  | NULL       | NULL    |\n| Last Name       | VARCHAR(50)  | COLUMN | Y     | NULL    | N           | N          | NULL  | NULL       | NULL    |\n| Home Base       | VARCHAR(100) | COLUMN | Y     | NULL    | N           | N          | NULL  | NULL       | NULL    |\n+-----------------+--------------+--------+-------+---------+-------------+------------+-------+------------+---------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the materialized view to describe. If the identifier contains spaces or special characters, the\nentire string must be enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        }
+    ],
+    "usage_notes": "The command output does not include the view definition. To see the materialized view’s definition, use SHOW MATERIALIZED VIEWS\nor GET_DDL.\nDESC MATERIALIZED VIEW and DESCRIBE TABLE are interchangeable. Either command retrieves the details for the table\nor view that matches the criteria in the statement.\nTo post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-streamlit",
+    "title": "DESCRIBE STREAMLIT",
+    "description": "Describes the columns in a Streamlit object.",
+    "syntax": "DESC[RIBE] STREAMLIT <name>",
+    "examples": [
+        {
+            "code": "DESC[RIBE] STREAMLIT <name>"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the Streamlit object to describe. If the identifier contains spaces or special\ncharacters, the entire string must be enclosed in double quotes. Identifiers enclosed in double quotes are also\ncase-sensitive."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-event-table",
+    "title": "DESCRIBE EVENT TABLE",
+    "description": "Describes the columns in an event table.",
+    "syntax": "DESC[RIBE] EVENT TABLE <name>",
+    "examples": [
+        {
+            "code": "DESC EVENT TABLE my_logged_events;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the event table to describe. If the identifier contains spaces or special characters, the entire\nstring must be enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        }
+    ],
+    "usage_notes": "This command does not show the object parameters for a table. Instead, use\nSHOW PARAMETERS IN TABLE ….\nTo post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-network-rule",
+    "title": "DESCRIBE NETWORK RULE",
+    "description": "Describes the properties specified for a network rule.",
+    "syntax": "DESC[RIBE] NETWORK RULE <name>",
+    "examples": [
+        {
+            "code": "DESC[RIBE] NETWORK RULE <name>"
+        },
+        {
+            "code": "DESC NETWORK RULE myrule;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the network rule you want to describe. If the identifier contains spaces or special characters, the entire\nstring must be enclosed in double quotes. Identifiers enclosed in double quotes are case-sensitive."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-semantic-view",
+    "title": "DESCRIBE SEMANTIC VIEW",
+    "description": "Describes the properties of the logical tables, dimensions, facts, and metrics that make up a\nsemantic view.",
+    "syntax": "{ DESCRIBE | DESC } SEMANTIC VIEW <name>",
+    "examples": [
+        {
+            "code": "DESC SEMANTIC VIEW tpch_rev_analysis;"
+        },
+        {
+            "code": "+--------------+------------------------------+---------------+--------------------------+----------------------------------------+\n| object_kind  | object_name                  | parent_entity | property                 | property_value                         |\n|--------------+------------------------------+---------------+--------------------------+----------------------------------------|\n| NULL         | NULL                         | NULL          | COMMENT                  | Comment about the semantic view        |\n| TABLE        | CUSTOMERS                    | NULL          | BASE_TABLE_DATABASE_NAME | SNOWFLAKE_SAMPLE_DATA                  |\n| TABLE        | CUSTOMERS                    | NULL          | BASE_TABLE_SCHEMA_NAME   | TPCH_SF1                               |\n| TABLE        | CUSTOMERS                    | NULL          | BASE_TABLE_NAME          | CUSTOMER                               |\n| TABLE        | CUSTOMERS                    | NULL          | PRIMARY_KEY              | [\"C_CUSTKEY\"]                          |\n| TABLE        | CUSTOMERS                    | NULL          | COMMENT                  | Main table for customer data           |\n| DIMENSION    | CUSTOMER_NAME                | CUSTOMERS     | TABLE                    | CUSTOMERS                              |\n| DIMENSION    | CUSTOMER_NAME                | CUSTOMERS     | EXPRESSION               | customers.c_name                       |\n| DIMENSION    | CUSTOMER_NAME                | CUSTOMERS     | DATA_TYPE                | VARCHAR(25)                            |\n| DIMENSION    | CUSTOMER_NAME                | CUSTOMERS     | SYNONYMS                 | [\"customer name\"]                      |\n| DIMENSION    | CUSTOMER_NAME                | CUSTOMERS     | COMMENT                  | Name of the customer                   |\n| TABLE        | LINE_ITEMS                   | NULL          | BASE_TABLE_DATABASE_NAME | SNOWFLAKE_SAMPLE_DATA                  |\n| TABLE        | LINE_ITEMS                   | NULL          | BASE_TABLE_SCHEMA_NAME   | TPCH_SF1                               |\n| TABLE        | LINE_ITEMS                   | NULL          | BASE_TABLE_NAME          | LINEITEM                               |\n| TABLE        | LINE_ITEMS                   | NULL          | PRIMARY_KEY              | [\"L_ORDERKEY\",\"L_LINENUMBER\"]          |\n| TABLE        | LINE_ITEMS                   | NULL          | COMMENT                  | Line items in orders                   |\n| RELATIONSHIP | LINE_ITEM_TO_ORDERS          | LINE_ITEMS    | TABLE                    | LINE_ITEMS                             |\n| RELATIONSHIP | LINE_ITEM_TO_ORDERS          | LINE_ITEMS    | REF_TABLE                | ORDERS                                 |\n| RELATIONSHIP | LINE_ITEM_TO_ORDERS          | LINE_ITEMS    | FOREIGN_KEY              | [\"L_ORDERKEY\"]                         |\n| RELATIONSHIP | LINE_ITEM_TO_ORDERS          | LINE_ITEMS    | REF_KEY                  | [\"O_ORDERKEY\"]                         |\n| FACT         | DISCOUNTED_PRICE             | LINE_ITEMS    | TABLE                    | LINE_ITEMS                             |\n| FACT         | DISCOUNTED_PRICE             | LINE_ITEMS    | EXPRESSION               | l_extendedprice * (1 - l_discount)     |\n| FACT         | DISCOUNTED_PRICE             | LINE_ITEMS    | DATA_TYPE                | NUMBER(25,4)                           |\n| FACT         | DISCOUNTED_PRICE             | LINE_ITEMS    | COMMENT                  | Extended price after discount          |\n| FACT         | LINE_ITEM_ID                 | LINE_ITEMS    | TABLE                    | LINE_ITEMS                             |\n| FACT         | LINE_ITEM_ID                 | LINE_ITEMS    | EXPRESSION               | CONCAT(l_orderkey, '-', l_linenumber)  |\n| FACT         | LINE_ITEM_ID                 | LINE_ITEMS    | DATA_TYPE                | VARCHAR(134217728)                     |\n| TABLE        | ORDERS                       | NULL          | BASE_TABLE_DATABASE_NAME | SNOWFLAKE_SAMPLE_DATA                  |\n| TABLE        | ORDERS                       | NULL          | BASE_TABLE_SCHEMA_NAME   | TPCH_SF1                               |\n| TABLE        | ORDERS                       | NULL          | BASE_TABLE_NAME          | ORDERS                                 |\n| TABLE        | ORDERS                       | NULL          | SYNONYMS                 | [\"sales orders\"]                       |\n| TABLE        | ORDERS                       | NULL          | PRIMARY_KEY              | [\"O_ORDERKEY\"]                         |\n| TABLE        | ORDERS                       | NULL          | COMMENT                  | All orders table for the sales domain  |\n| RELATIONSHIP | ORDERS_TO_CUSTOMERS          | ORDERS        | TABLE                    | ORDERS                                 |\n| RELATIONSHIP | ORDERS_TO_CUSTOMERS          | ORDERS        | REF_TABLE                | CUSTOMERS                              |\n| RELATIONSHIP | ORDERS_TO_CUSTOMERS          | ORDERS        | FOREIGN_KEY              | [\"O_CUSTKEY\"]                          |\n| RELATIONSHIP | ORDERS_TO_CUSTOMERS          | ORDERS        | REF_KEY                  | [\"C_CUSTKEY\"]                          |\n| METRIC       | AVERAGE_LINE_ITEMS_PER_ORDER | ORDERS        | TABLE                    | ORDERS                                 |\n| METRIC       | AVERAGE_LINE_ITEMS_PER_ORDER | ORDERS        | EXPRESSION               | AVG(orders.count_line_items)           |\n| METRIC       | AVERAGE_LINE_ITEMS_PER_ORDER | ORDERS        | DATA_TYPE                | NUMBER(36,6)                           |\n| METRIC       | AVERAGE_LINE_ITEMS_PER_ORDER | ORDERS        | COMMENT                  | Average number of line items per order |\n| FACT         | COUNT_LINE_ITEMS             | ORDERS        | TABLE                    | ORDERS                                 |\n| FACT         | COUNT_LINE_ITEMS             | ORDERS        | EXPRESSION               | COUNT(line_items.line_item_id)         |\n| FACT         | COUNT_LINE_ITEMS             | ORDERS        | DATA_TYPE                | NUMBER(18,0)                           |\n| METRIC       | ORDER_AVERAGE_VALUE          | ORDERS        | TABLE                    | ORDERS                                 |\n| METRIC       | ORDER_AVERAGE_VALUE          | ORDERS        | EXPRESSION               | AVG(orders.o_totalprice)               |\n| METRIC       | ORDER_AVERAGE_VALUE          | ORDERS        | DATA_TYPE                | NUMBER(30,8)                           |\n| METRIC       | ORDER_AVERAGE_VALUE          | ORDERS        | COMMENT                  | Average order value across all orders  |\n| DIMENSION    | ORDER_DATE                   | ORDERS        | TABLE                    | ORDERS                                 |\n| DIMENSION    | ORDER_DATE                   | ORDERS        | EXPRESSION               | o_orderdate                            |\n| DIMENSION    | ORDER_DATE                   | ORDERS        | DATA_TYPE                | DATE                                   |\n| DIMENSION    | ORDER_DATE                   | ORDERS        | COMMENT                  | Date when the order was placed         |\n| DIMENSION    | ORDER_YEAR                   | ORDERS        | TABLE                    | ORDERS                                 |\n| DIMENSION    | ORDER_YEAR                   | ORDERS        | EXPRESSION               | YEAR(o_orderdate)                      |\n| DIMENSION    | ORDER_YEAR                   | ORDERS        | DATA_TYPE                | NUMBER(4,0)                            |\n| DIMENSION    | ORDER_YEAR                   | ORDERS        | COMMENT                  | Year when the order was placed         |\n+--------------+------------------------------+---------------+--------------------------+----------------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the semantic view to describe. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/create",
+    "title": "CREATE",
+    "description": "Creates a new object of the specified type."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-projection-policy",
+    "title": "DESCRIBE PROJECTION POLICY",
+    "description": "Describes the details about a projection policy, including the creation date, name, and the SQL\nexpression.",
+    "syntax": "DESC[RIBE] PROJECTION POLICY <name>",
+    "examples": [
+        {
+            "code": "DESC[RIBE] PROJECTION POLICY <name>"
+        },
+        {
+            "code": "DESC PROJECTION POLICY do_not_project;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the projection policy to describe. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-procedure",
+    "title": "DESCRIBE PROCEDURE",
+    "description": "Describes the specified stored procedure, including the stored procedure’s signature (i.e. arguments), return value, language, and\nbody (i.e. definition).",
+    "syntax": "DESC[RIBE] PROCEDURE <procedure_name> ( [ <arg_data_type> [ , <arg_data_type_2> ... ] ] )",
+    "examples": [
+        {
+            "code": "DESC PROCEDURE my_pi();\n+---------------+----------------------+\n| property      | value                |\n|---------------+----------------------|\n| signature     | ()                   |\n| returns       | FLOAT                |\n| language      | JAVASCRIPT           |\n| null handling | CALLED ON NULL INPUT |\n| volatility    | VOLATILE             |\n| execute as    | CALLER               |\n| body          |                      |\n|               |   return 3.1415926;  |\n|               |                      |\n+---------------+----------------------+"
+        },
+        {
+            "code": "DESC PROCEDURE area_of_circle(FLOAT);\n+---------------+------------------------------------------------------------------+\n| property      | value                                                            |\n|---------------+------------------------------------------------------------------|\n| signature     | (RADIUS FLOAT)                                                   |\n| returns       | FLOAT                                                            |\n| language      | JAVASCRIPT                                                       |\n| null handling | CALLED ON NULL INPUT                                             |\n| volatility    | VOLATILE                                                         |\n| execute as    | OWNER                                                            |\n| body          |                                                                  |\n|               |   var stmt = snowflake.createStatement(                          |\n|               |       {sqlText: \"SELECT pi() * POW($RADIUS, 2)\", binds:[RADIUS]} |\n|               |       );                                                         |\n|               |   var rs = stmt.execute();                                       |\n|               |   rs.next()                                                      |\n|               |   var output = rs.getColumnValue(1);                             |\n|               |   return output;                                                 |\n|               |                                                                  |\n+---------------+------------------------------------------------------------------+"
+        }
+    ],
+    "usage_notes": "To describe a stored procedure, you must specify the name and the argument data type(s), if any, for the stored procedure. The\narguments are required because stored procedures support name overloading (i.e. two stored procedures in the same schema can have\nthe same name as long as their argument data types are different).\nThe body property in the output displays the code for the stored procedure.\nTo post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-function",
+    "title": "DESCRIBE FUNCTION",
+    "description": "Describes the specified user-defined function (UDF) or external function, including the signature (i.e. arguments),\nreturn value, language, and body (i.e. definition).",
+    "syntax": "DESC[RIBE] FUNCTION <name> ( [ <arg_data_type> ] [ , ... ] )",
+    "examples": [
+        {
+            "code": "DESC FUNCTION multiply(number, number);\n\n-----------+----------------------------------+\n property  |              value               |\n-----------+----------------------------------+\n signature | (a NUMBER(38,0), b NUMBER(38,0)) |\n returns   | NUMBER(38,0)                     |\n language  | SQL                              |\n body      | a * b                            |\n-----------+----------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the function to describe. If the identifier contains spaces or special characters, the entire string must\nbe enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        },
+        {
+            "name": "arg_data_type   [   ,   ...   ]",
+            "description": "Specifies the data type of the argument(s), if any, for the function. The argument data types are necessary because functions support\nname overloading (i.e. two functions in the same schema can have the same name) and the argument data types are used to identify the\nfunction."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-privacy-policy",
+    "title": "DESCRIBE PRIVACY POLICY",
+    "description": "Describes the properties of a privacy policy.",
+    "syntax": "{ DESC | DESCRIBE } PRIVACY POLICY <name>",
+    "examples": [
+        {
+            "code": "DESCRIBE PRIVACY POLICY myprivpolicy;"
+        },
+        {
+            "code": "+--------------------+---------------+--------------------+-----------------------------------------------+\n|   name             |   signature   |   return_type      |   body                                        |\n+--------------------+---------------+--------------------+-----------------------------------------------+\n|   MYPRIVPOLICY     |   ()          |   PRIVACY_BUDGET   |   PRIVACY_BUDGET(BUDGET_NAME=>'new_budget')   |\n+--------------------+---------------+--------------------+-----------------------------------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the privacy policy to describe. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-external-table",
+    "title": "DESCRIBE EXTERNAL TABLE",
+    "description": "Describes the VALUE column and virtual columns in an external table.",
+    "syntax": "DESC[RIBE] [ EXTERNAL ] TABLE <name> [ TYPE =  { COLUMNS | STAGE } ]",
+    "examples": [
+        {
+            "code": "CREATE EXTERNAL TABLE emp ( ... );"
+        },
+        {
+            "code": "DESC EXTERNAL TABLE emp;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the external table to describe. If the identifier contains spaces or special characters, the entire string\nmust be enclosed in double quotes. Identifiers enclosed in double quotes are also case sensitive."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-task",
+    "title": "DESCRIBE TASK",
+    "description": "Describes the columns in a task.",
+    "syntax": "DESC[RIBE] TASK <name>",
+    "examples": [
+        {
+            "code": "CREATE TASK mytask ( ... );"
+        },
+        {
+            "code": "DESC TASK mytask;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the task to describe. If the identifier contains spaces or special characters, the entire string must be\nenclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        }
+    ],
+    "usage_notes": "Only returns rows for a task owner (i.e. the role with the OWNERSHIP privilege on a task) or a role with either the MONITOR\nor OPERATE privilege on a task.\nTo post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-pipe",
+    "title": "DESCRIBE PIPE",
+    "description": "Describes the properties specified for a pipe, as well as the default values of the properties.",
+    "syntax": "DESC[RIBE] PIPE <name>",
+    "examples": [
+        {
+            "code": "desc pipe mypipe;\n\n+-------------------------------+--------+---------------+-------------+---------------------------------+----------+---------+\n| created_on                    | name   | database_name | schema_name | definition                      | owner    | comment |\n|-------------------------------+--------+---------------+-------------+---------------------------------+----------+---------|\n| 2017-08-15 06:11:05.703 -0700 | MYPIPE | MYDATABASE    | PUBLIC      | copy into mytable from @mystage | SYSADMIN |         |\n+-------------------------------+--------+---------------+-------------+---------------------------------+----------+---------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the pipe to describe. If the identifier contains spaces or special characters, the entire string must be\nenclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        }
+    ],
+    "usage_notes": "Returns results only for the pipe owner (i.e. the role with the OWNERSHIP privilege on the pipe), a role with the MONITOR or OPERATE\nprivilege on the pipe, or a role with the global MONITOR EXECUTION privilege.\nTo determine the current status of a pipe, query the SYSTEM$PIPE_STATUS function.\nTo post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-dbt-project",
+    "title": "DESCRIBE DBT PROJECT",
+    "description": "Describes the properties of a dbt project object.",
+    "syntax": "{ DESC | DESCRIBE } DBT PROJECT <name>",
+    "examples": [
+        {
+            "code": "DESCRIBE DBT PROJECT my_dbt_project;"
+        },
+        {
+            "code": "+----------------+--------------+------------+--------------+\n|      name      |    owner     |  comment   | default_args |\n+----------------+--------------+------------+--------------+\n| my_dbt_project | ACCOUNTADMIN | My comment |              |\n+----------------+--------------+------------+--------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the dbt project object to describe. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-notification-integration",
+    "title": "DESCRIBE NOTIFICATION INTEGRATION",
+    "description": "Describes the properties of a notification integration.",
+    "syntax": "{ DESC | DESCRIBE } NOTIFICATION INTEGRATION <name>",
+    "examples": [
+        {
+            "code": "DESC INTEGRATION my_notify_int;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the notification integration to describe. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-result",
+    "title": "DESCRIBE RESULT",
+    "description": "Describes the columns in the result of a query.",
+    "syntax": "DESC[RIBE] RESULT { '<query_id>' | LAST_QUERY_ID() }",
+    "examples": [
+        {
+            "code": "DESC RESULT 'f2f07bdb-6a08-4689-9ad8-a1ba968a44b6';"
+        },
+        {
+            "code": "SELECT * FROM boston_sales;\n\n+---------------+-------+-------+--------+-------------+---------------------+-------+\n| CITY          | ZIP   | STATE | SQ__FT | TYPE        | SALE_DATE           | PRICE |\n|---------------+-------+-------+--------+-------------+---------------------+-------|\n| MA-Lexington  | 40502 | MA    |    836 | Residential | 0016-01-25T00:00:00 | 59222 |\n| MA-Belmont    | 02478 | MA    |    852 | Residential | 0016-02-21T00:00:00 | 69307 |\n| MA-Winchester | 01890 | MA    |   1122 | Condo       | 0016-01-31T00:00:00 | 89921 |\n+---------------+-------+-------+--------+-------------+---------------------+-------+\n\nDESC RESULT LAST_QUERY_ID();\n\n+-----------+-------------------+--------+-------+---------+-------------+------------+-------+------------+---------+\n| name      | type              | kind   | null? | default | primary key | unique key | check | expression | comment |\n|-----------+-------------------+--------+-------+---------+-------------+------------+-------+------------+---------|\n| CITY      | VARCHAR(16777216) | COLUMN | Y     | NULL    | N           | N          | NULL  | NULL       | NULL    |\n| ZIP       | VARCHAR(16777216) | COLUMN | Y     | NULL    | N           | N          | NULL  | NULL       | NULL    |\n| STATE     | VARCHAR(16777216) | COLUMN | Y     | NULL    | N           | N          | NULL  | NULL       | NULL    |\n| SQ__FT    | NUMBER(38,0)      | COLUMN | Y     | NULL    | N           | N          | NULL  | NULL       | NULL    |\n| TYPE      | VARCHAR(16777216) | COLUMN | Y     | NULL    | N           | N          | NULL  | NULL       | NULL    |\n| SALE_DATE | DATE              | COLUMN | Y     | NULL    | N           | N          | NULL  | NULL       | NULL    |\n| PRICE     | NUMBER(38,0)      | COLUMN | Y     | NULL    | N           | N          | NULL  | NULL       | NULL    |\n+-----------+-------------------+--------+-------+---------+-------------+------------+-------+------------+---------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "query_id   or   LAST_QUERY_ID()",
+            "description": "Specifies either the ID for a query you executed (within the last 24 hours in any session) or the LAST_QUERY_ID function, which returns the ID for a query within your current session."
+        }
+    ],
+    "usage_notes": "To retrieve the ID for a specific query:\nLocate the query ID in the web interface. The History  page lists the ID along with each query; however, note\nthat you can only use this function for queries you have executed.\nExecute the QUERY_HISTORY , QUERY_HISTORY_BY_* table function, which returns a list of queries and their IDs; however,\nnote that you can only use this function for queries you have executed.\nIf the query was executed in the current session, execute the LAST_QUERY_ID function. For example:\nNote that this is equivalent to using LAST_QUERY_ID() as the input for DESC RESULT.\nTo post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-row-access-policy",
+    "title": "DESCRIBE ROW ACCESS POLICY",
+    "description": "Describes a row access policy, including the creation date, name, data type, and SQL expression.",
+    "syntax": "DESC[RIBE] ROW ACCESS POLICY <name>;",
+    "examples": [
+        {
+            "code": "DESC[RIBE] ROW ACCESS POLICY <name>;"
+        },
+        {
+            "code": "DESC ROW ACCESS POLICY rap_table_employee_info;"
+        },
+        {
+            "code": "+-------------------------+-------------+-------------+------+\n| name                    |  signature  | return_type | body |\n+-------------------------+-------------+-------------+------+\n| RAP_TABLE_EMPLOYEE_INFO | (V VARCHAR) | BOOLEAN     | true |\n+-------------------------+-------------+-------------+------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Identifier for the row access policy; must be unique for your account. The identifier value must start with an alphabetic character and cannot contain spaces or special characters unless the entire\nidentifier string is enclosed in double quotes (e.g. \"My object\" ). Identifiers enclosed in double quotes are also case-sensitive. For more details, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-iceberg-table",
+    "title": "DESCRIBE ICEBERG TABLE",
+    "description": "Describes either the columns in an Apache Iceberg™ table or the current values,\nas well as the default values, for the properties of an Iceberg table.",
+    "syntax": "DESC[RIBE] [ ICEBERG ] TABLE <name> [ TYPE =  { COLUMNS | STAGE } ]",
+    "examples": [
+        {
+            "code": "DESC[RIBE] [ ICEBERG ] TABLE <name> [ TYPE =  { COLUMNS | STAGE } ]"
+        },
+        {
+            "code": "SELECT SYSTEM$ENABLE_BEHAVIOR_CHANGE_BUNDLE('2025_01');"
+        },
+        {
+            "code": "CREATE OR REPLACE ICEBERG TABLE my_iceberg_table\n  CATALOG='my_catalog_integration'\n  EXTERNAL_VOLUME='my_ext_volume'\n  METADATA_FILE_PATH='path/to/metadata/v2.metadata.json';"
+        },
+        {
+            "code": "DESC ICEBERG TABLE my_iceberg_table ;"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the table to describe. If the identifier contains spaces or special characters, the entire string must be\nenclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        },
+        {
+            "name": "TYPE   =   COLUMNS   |   STAGE",
+            "description": "Specifies whether to display the columns for the table or the stage properties (including their current and default values) for the\ntable. Default: TYPE = COLUMNS"
+        }
+    ],
+    "usage_notes": "This command does not show the object parameters for a table. Instead, use\nSHOW PARAMETERS IN TABLE.\nDESC ICEBERG TABLE, DESCRIBE TABLE, and DESCRIBE VIEW are interchangeable. Any of these\ncommands retrieves the details for the table or view that matches the criteria in the statement; however, TYPE = STAGE does\nnot apply for views because views don’t have stage properties.\nThe output includes a POLICY NAME column to indicate the masking policy set on the column.\nIf a masking policy isn’t set on the column or if the Snowflake account isn’t Enterprise Edition or higher, Snowflake returns\nNULL.\nThe command returns the NAME_MAPPING column only if you configure Iceberg Compatibility V2\n(icebergCompatV2) for the Delta table\nthat your Iceberg table is based on.\nNote\nTo view the NAME_MAPPING column, you must also enable the 2025_01 behavior change bundle\nin your account.\nTo enable this bundle in your account,\nexecute the following statement:\nTo post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-file-format",
+    "title": "DESCRIBE FILE FORMAT",
+    "description": "Describes the property type (for example, String or Integer), the defined value of the property, and the default value for each property in a file format object definition. For more information about available properties for each file type, see “Format type options” in CREATE FILE FORMAT.",
+    "syntax": "DESC[RIBE] FILE FORMAT <name>",
+    "examples": [
+        {
+            "code": "DESC FILE FORMAT my_csv_format;"
+        },
+        {
+            "code": "+--------------------------------+---------------+----------------+------------------+\n| property                       | property_type | property_value | property_default |\n+--------------------------------+---------------+----------------+------------------+\n| TYPE                           | String        | csv            | CSV              |\n| RECORD_DELIMITER               | String        | \\n             | \\n               |\n| FIELD_DELIMITER                | String        | ,              | ,                |\n| FILE_EXTENSION                 | String        |                |                  |\n| SKIP_HEADER                    | Integer       | 0              | 0                |\n| PARSE_HEADER                   | Boolean       | FALSE          | FALSE            |\n| DATE_FORMAT                    | String        | AUTO           | AUTO             |\n| TIME_FORMAT                    | String        | AUTO           | AUTO             |\n| TIMESTAMP_FORMAT               | String        | AUTO           | AUTO             |\n| BINARY_FORMAT                  | String        | HEX            | HEX              |\n| ESCAPE                         | String        | NONE           | NONE             |\n| ESCAPE_UNENCLOSED_FIELD        | String        | \\\\             | \\\\               |\n| TRIM_SPACE                     | Boolean       | FALSE          | FALSE            |\n| FIELD_OPTIONALLY_ENCLOSED_BY   | String        | NONE           | NONE             |\n| NULL_IF                        | List          | [\\\\N]          | [\\\\N]            |\n| COMPRESSION                    | String        | AUTO           | AUTO             |\n| ERROR_ON_COLUMN_COUNT_MISMATCH | Boolean       | TRUE           | TRUE             |\n| VALIDATE_UTF8                  | Boolean       | TRUE           | TRUE             |\n| SKIP_BLANK_LINES               | Boolean       | FALSE          | FALSE            |\n| REPLACE_INVALID_CHARACTERS     | Boolean       | FALSE          | FALSE            |\n| EMPTY_FIELD_AS_NULL            | Boolean       | TRUE           | TRUE             |\n| SKIP_BYTE_ORDER_MARK           | Boolean       | TRUE           | TRUE             |\n| ENCODING                       | String        | UTF8           | UTF8             |\n+--------------------------------+---------------+----------------+------------------+"
+        },
+        {
+            "code": "DESC FILE FORMAT `my_json_format`;"
+        },
+        {
+            "code": "+----------------------------+---------------+----------------+------------------+\n| property                   | property_type | property_value | property_default |\n+----------------------------+---------------+----------------+------------------+\n| TYPE                       | String        | JSON           | CSV              |\n| FILE_EXTENSION             | String        |                |                  |\n| DATE_FORMAT                | String        | AUTO           | AUTO             |\n| TIME_FORMAT                | String        | AUTO           | AUTO             |\n| TIMESTAMP_FORMAT           | String        | AUTO           | AUTO             |\n| BINARY_FORMAT              | String        | HEX            | HEX              |\n| TRIM_SPACE                 | Boolean       | FALSE          | FALSE            |\n| NULL_IF                    | List          | []             | [\\\\N]            |\n| COMPRESSION                | String        | AUTO           | AUTO             |\n| ENABLE_OCTAL               | Boolean       | FALSE          | FALSE            |\n| ALLOW_DUPLICATE            | Boolean       | FALSE          | FALSE            |\n| STRIP_OUTER_ARRAY          | Boolean       | FALSE          | FALSE            |\n| STRIP_NULL_VALUES          | Boolean       | FALSE          | FALSE            |\n| IGNORE_UTF8_ERRORS         | Boolean       | FALSE          | FALSE            |\n| REPLACE_INVALID_CHARACTERS | Boolean       | FALSE          | FALSE            |\n| SKIP_BYTE_ORDER_MARK       | Boolean       | TRUE           | TRUE             |\n+----------------------------+---------------+----------------+------------------+"
+        },
+        {
+            "code": "DESC FILE FORMAT `my_parquet_format`;"
+        },
+        {
+            "code": "+----------------+---------------+----------------+------------------+\n| property       | property_type | property_value | property_default |\n+----------------+---------------+----------------+------------------+\n| TYPE           | String        | PARQUET        | CSV              |\n| TRIM_SPACE     | Boolean       | FALSE          | FALSE            |\n| NULL_IF        | List          | []             | [\\\\N]            |\n| COMPRESSION    | String        | SNAPPY         | AUTO             |\n| BINARY_AS_TEXT | Boolean       | TRUE           | TRUE             |\n+----------------+---------------+----------------+------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the file format to describe. If the identifier contains spaces or special characters, the entire string\nmust be enclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-view",
+    "title": "DESCRIBE VIEW",
+    "description": "Describes the columns in a view (or table).",
+    "syntax": "DESC[RIBE] VIEW <name>",
+    "examples": [
+        {
+            "code": "CREATE VIEW emp_view AS SELECT id \"Employee Number\", lname \"Last Name\", location \"Home Base\" FROM emp;"
+        },
+        {
+            "code": "DESC VIEW emp_view;\n\n+-----------------+--------------+--------+-------+---------+-------------+------------+-------+------------+---------+-------------+-----------------+\n| name            | type         | kind   | null? | default | primary key | unique key | check | expression | comment | policy name |  privacy domain |\n|-----------------+--------------+--------+-------+---------+-------------+------------+-------+------------+---------+-------------+-----------------+\n| Employee Number | NUMBER(38,0) | COLUMN | Y     | NULL    | N           | N          | NULL  | NULL       | NULL    | NULL        | NULL            |\n| Last Name       | VARCHAR(50)  | COLUMN | Y     | NULL    | N           | N          | NULL  | NULL       | NULL    | NULL        | NULL            |\n| Home Base       | VARCHAR(100) | COLUMN | Y     | NULL    | N           | N          | NULL  | NULL       | NULL    | NULL        | NULL            |\n+-----------------+--------------+--------+-------+---------+-------------+------------+-------+------------+---------+-------------+-----------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the view to describe. If the identifier contains spaces or special characters, the entire string must be\nenclosed in double quotes. Identifiers enclosed in double quotes are also case-sensitive."
+        }
+    ],
+    "usage_notes": "The command output does not include the view definition. Instead, use SHOW VIEWS.\nDESC VIEW and DESCRIBE TABLE are interchangeable. Either command retrieves the details for the table or view that matches the criteria\nin the statement.\nThe output returns a POLICY NAME column to indicate the masking policy set on the column.\nIf a masking policy is not set on the column or if the Snowflake account is not Enterprise Edition or higher, Snowflake returns\nNULL.\nTo post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+},
+{
+    "url": "https://docs.snowflake.com/en/sql-reference/sql/desc-service",
+    "title": "DESCRIBE SERVICE",
+    "description": "Describes the properties of a\nSnowpark Container Services service (including job services). Use this command for both a service and a service running like a job.",
+    "syntax": "DESC[RIBE] SERVICE <name>",
+    "examples": [
+        {
+            "code": "DESCRIBE SERVICE echo_service;"
+        },
+        {
+            "code": "+--------------+---------+---------------+-------------+-----------+-----------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------+-------------------+------------------+---------------------+---------------+---------------+-------------+------------------------------+-------------------------------+-------------------------------+------------+--------------+-------------------+---------+-----------------+-----------------+--------+--------------+------------------------------------------------------------------+--------------+------------------------+----------------------+\n| name         | status  | database_name | schema_name | owner     | compute_pool          | spec                                                                                                                                                         | dns_name                            | current_instances | target_instances | min_ready_instances | min_instances | max_instances | auto_resume | external_access_integrations | created_on                    | updated_on                    | resumed_on | suspended_on | auto_suspend_secs | comment | owner_role_type | query_warehouse | is_job | is_async_job | spec_digest                                                      | is_upgrading | managing_object_domain | managing_object_name |\n|--------------+---------+---------------+-------------+-----------+-----------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------+-------------------+------------------+---------------------+---------------+---------------+-------------+------------------------------+-------------------------------+-------------------------------+------------+--------------+-------------------+---------+-----------------+-----------------+--------+--------------+------------------------------------------------------------------+--------------+------------------------+----------------------|\n| ECHO_SERVICE | RUNNING | TUTORIAL_DB   | DATA_SCHEMA | TEST_ROLE | TUTORIAL_COMPUTE_POOL | ---                                                                                                                                                          | echo-service.k3m6.svc.spcs.internal |                 1 |                1 |                   1 |             1 |             1 | true        | NULL                         | 2024-11-29 12:12:47.310 -0800 | 2024-11-29 12:12:48.843 -0800 | NULL       | NULL         |                 0 | NULL    | ROLE            | NULL            | false  | false        | edaf548eb0c2744a87426529b53aac75756d0ea1c0ba5edb3cbb4295a381f2b4 | false        | NULL                   | NULL                 |\n|              |         |               |             |           |                       | spec:                                                                                                                                                        |                                     |                   |                  |                     |               |               |             |                              |                               |                               |            |              |                   |         |                 |                 |        |              |                                                                  |              |                        |                      |\n|              |         |               |             |           |                       |   containers:                                                                                                                                                |                                     |                   |                  |                     |               |               |             |                              |                               |                               |            |              |                   |         |                 |                 |        |              |                                                                  |              |                        |                      |\n|              |         |               |             |           |                       |   - name: \"echo\"                                                                                                                                             |                                     |                   |                  |                     |               |               |             |                              |                               |                               |            |              |                   |         |                 |                 |        |              |                                                                  |              |                        |                      |\n|              |         |               |             |           |                       |     image: \"sfengineering-prod1-snowservices-test2.registry.snowflakecomputing.com/tutorial_db/data_schema/tutorial_repository/my_echo_service_image:latest\" |                                     |                   |                  |                     |               |               |             |                              |                               |                               |            |              |                   |         |                 |                 |        |              |                                                                  |              |                        |                      |\n|              |         |               |             |           |                       |     sha256: \"@sha256:d04a2d7b7d9bd607df994926e3cc672edcb541474e4888a01703e8bb0dd3f173\"                                                                       |                                     |                   |                  |                     |               |               |             |                              |                               |                               |            |              |                   |         |                 |                 |        |              |                                                                  |              |                        |                      |\n|              |         |               |             |           |                       |     env:                                                                                                                                                     |                                     |                   |                  |                     |               |               |             |                              |                               |                               |            |              |                   |         |                 |                 |        |              |                                                                  |              |                        |                      |\n|              |         |               |             |           |                       |       SERVER_PORT: \"8000\"                                                                                                                                    |                                     |                   |                  |                     |               |               |             |                              |                               |                               |            |              |                   |         |                 |                 |        |              |                                                                  |              |                        |                      |\n|              |         |               |             |           |                       |       CHARACTER_NAME: \"Bob\"                                                                                                                                  |                                     |                   |                  |                     |               |               |             |                              |                               |                               |            |              |                   |         |                 |                 |        |              |                                                                  |              |                        |                      |\n|              |         |               |             |           |                       |     readinessProbe:                                                                                                                                          |                                     |                   |                  |                     |               |               |             |                              |                               |                               |            |              |                   |         |                 |                 |        |              |                                                                  |              |                        |                      |\n|              |         |               |             |           |                       |       port: 8000                                                                                                                                             |                                     |                   |                  |                     |               |               |             |                              |                               |                               |            |              |                   |         |                 |                 |        |              |                                                                  |              |                        |                      |\n|              |         |               |             |           |                       |       path: \"/healthcheck\"                                                                                                                                   |                                     |                   |                  |                     |               |               |             |                              |                               |                               |            |              |                   |         |                 |                 |        |              |                                                                  |              |                        |                      |\n|              |         |               |             |           |                       |     resources:                                                                                                                                               |                                     |                   |                  |                     |               |               |             |                              |                               |                               |            |              |                   |         |                 |                 |        |              |                                                                  |              |                        |                      |\n|              |         |               |             |           |                       |       limits:                                                                                                                                                |                                     |                   |                  |                     |               |               |             |                              |                               |                               |            |              |                   |         |                 |                 |        |              |                                                                  |              |                        |                      |\n|              |         |               |             |           |                       |         memory: \"6Gi\"                                                                                                                                        |                                     |                   |                  |                     |               |               |             |                              |                               |                               |            |              |                   |         |                 |                 |        |              |                                                                  |              |                        |                      |\n|              |         |               |             |           |                       |         cpu: \"1\"                                                                                                                                             |                                     |                   |                  |                     |               |               |             |                              |                               |                               |            |              |                   |         |                 |                 |        |              |                                                                  |              |                        |                      |\n|              |         |               |             |           |                       |       requests:                                                                                                                                              |                                     |                   |                  |                     |               |               |             |                              |                               |                               |            |              |                   |         |                 |                 |        |              |                                                                  |              |                        |                      |\n|              |         |               |             |           |                       |         memory: \"0.5Gi\"                                                                                                                                      |                                     |                   |                  |                     |               |               |             |                              |                               |                               |            |              |                   |         |                 |                 |        |              |                                                                  |              |                        |                      |\n|              |         |               |             |           |                       |         cpu: \"0.5\"                                                                                                                                           |                                     |                   |                  |                     |               |               |             |                              |                               |                               |            |              |                   |         |                 |                 |        |              |                                                                  |              |                        |                      |\n|              |         |               |             |           |                       |   endpoints:                                                                                                                                                 |                                     |                   |                  |                     |               |               |             |                              |                               |                               |            |              |                   |         |                 |                 |        |              |                                                                  |              |                        |                      |\n|              |         |               |             |           |                       |   - name: \"echoendpoint\"                                                                                                                                     |                                     |                   |                  |                     |               |               |             |                              |                               |                               |            |              |                   |         |                 |                 |        |              |                                                                  |              |                        |                      |\n|              |         |               |             |           |                       |     port: 8000                                                                                                                                               |                                     |                   |                  |                     |               |               |             |                              |                               |                               |            |              |                   |         |                 |                 |        |              |                                                                  |              |                        |                      |\n|              |         |               |             |           |                       |     public: true                                                                                                                                             |                                     |                   |                  |                     |               |               |             |                              |                               |                               |            |              |                   |         |                 |                 |        |              |                                                                  |              |                        |                      |\n|              |         |               |             |           |                       |                                                                                                                                                              |                                     |                   |                  |                     |               |               |             |                              |                               |                               |            |              |                   |         |                 |                 |        |              |                                                                  |              |                        |                      |\n+--------------+---------+---------------+-------------+-----------+-----------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------+-------------------+------------------+---------------------+---------------+---------------+-------------+------------------------------+-------------------------------+-------------------------------+------------+--------------+-------------------+---------+-----------------+-----------------+--------+--------------+------------------------------------------------------------------+--------------+------------------------+----------------------+"
+        }
+    ],
+    "parameters": [
+        {
+            "name": "name",
+            "description": "Specifies the identifier for the service to describe. If the identifier contains spaces or special characters, the entire string must be enclosed in double quotes.\nIdentifiers enclosed in double quotes are also case-sensitive. For more information, see Identifier requirements ."
+        }
+    ],
+    "usage_notes": "To post-process the output of this command, you can use the pipe operator\nor the RESULT_SCAN function. Both constructs treat the output as a result set that\nyou can query."
+}
+]
